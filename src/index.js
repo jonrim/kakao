@@ -2,35 +2,18 @@
 
 import React from 'react'
 import { render } from 'react-dom'
+import { BrowserRouter, Route, Link } from 'react-router-dom'
 import {
   Friends,
   Chats,
   Find,
   More
 } from 'Components';
-// import { Provider } from 'react-redux'
-// import { Router, browserHistory } from 'react-router'
-// import { syncHistoryWithStore } from 'react-router-redux'
-// import getRoutes from './routes'
-// import configureStore from './redux/configureStore'
+import Loadable from 'Utils';
 
-// import 'styles/index.scss'
-
-// const store = configureStore(browserHistory)
-// const history = syncHistoryWithStore(browserHistory)
-
-// const component = (
-//   <Router history={history} routes={getRoutes(store)} />
-// )
-
-// render(
-//   <Provider store={store} key='provider'>
-//     {component}
-//   </Provider>,
-//   document.getElementById('app')
-// )
-
-import { BrowserRouter, Route, Link } from 'react-router-dom'
+const AsyncFriends = Loadable({
+  loader: () => import(/* webpackChunkName: 'friends' */ 'Components/friends')
+});
 
 const App = () => (
   <div>
@@ -43,7 +26,7 @@ const App = () => (
     
     <hr/>
 
-    <Route exact path='/' component={Friends}/>
+    <Route exact path='/' component={AsyncFriends}/>
     <Route path='/chats' component={Chats}/>
     <Route path='/find' component={Find}/>
     <Route path='/more' component={More}/>

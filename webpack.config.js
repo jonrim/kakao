@@ -7,7 +7,8 @@ module.exports = {
     extensions: ['.js', '.jsx'],
     modules: ['src', 'node_modules'],
     alias: {
-      'Components': path.resolve(__dirname, 'src/components/')
+      'Components': path.resolve(__dirname, 'src/components'),
+      'Utils': path.resolve(__dirname, 'src/utils')
     }
   },
   module: {
