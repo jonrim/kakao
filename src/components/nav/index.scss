@@ -1,0 +1,42 @@
+#main-nav {
+  background-color: #433228;
+  padding: 10px;
+}
+
+#logo {
+  float: right;
+  height: 40px;
+}
+
+.main-button {
+  color: #888877;
+  font-size: 28px;
+  padding: 10px;
+
+  .tooltiptext {
+    visibility: hidden;
+    width: 60px;
+    background-color: lightblue;
+    color: dodgerblue;
+    font-weight: 700;
+    font-size: 13px;
+    text-align: center;
+    padding: 5px;
+    border: solid 3px lightskyblue;
+    border-radius: 3px;
+    position: absolute;
+    top: 50px;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.1s;
+  }
+
+  &:hover {
+    color: #e5e234;
+
+    .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}

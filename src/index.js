@@ -2,30 +2,25 @@
 
 import React from 'react'
 import { render } from 'react-dom'
-import { BrowserRouter, Route, Link } from 'react-router-dom'
+import { BrowserRouter, Route } from 'react-router-dom'
 import {
+  Nav,
   Friends,
   Chats,
   Find,
   More
-} from 'Components';
-import Loadable from 'Utils';
+} from 'Components'
+import Loadable from 'Utils'
+
+import 'Styles/index.scss'
 
 const AsyncFriends = Loadable({
   loader: () => import(/* webpackChunkName: 'friends' */ 'Components/friends')
-});
+})
 
 const App = () => (
   <div>
-    <ul>
-      <li><Link to="/">Friends</Link></li>
-      <li><Link to="/chats">Chats</Link></li>
-      <li><Link to="/find">Find</Link></li>
-      <li><Link to="/more">More</Link></li>
-    </ul>
-    
-    <hr/>
-
+    <Nav/>
     <Route exact path='/' component={AsyncFriends}/>
     <Route path='/chats' component={Chats}/>
     <Route path='/find' component={Find}/>
