@@ -1,0 +1,45 @@
+.friends-wrapper {
+  .friends-list {
+    padding: 10px;
+
+    span {
+      font-weight: 700;
+    }
+
+    .section-name {
+      color: darkgray;
+    }
+
+    .friend {
+      margin: 0 0 10px;
+      position: relative;
+
+      img {
+        height: 10vw;
+        min-height: 40px;
+        width: 10vw;
+        min-width: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin: 0 15px 0 0;
+      }
+
+      .motto {
+        color: darkgray;
+        position: absolute;
+        top: 0;
+        right: 10px;
+        min-width: 150px;
+        width: 50%;
+        height: 100%;
+
+        p {
+          position: relative;
+          top: 50%;
+          right: 0;
+          transform: translateY(-50%);
+        }
+      }
+    }
+  }
+}

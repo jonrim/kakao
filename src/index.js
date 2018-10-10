@@ -21,17 +21,17 @@ const AsyncFriends = Loadable({
 const App = () => (
   <div>
     <Nav/>
-    <Route exact path='/' component={AsyncFriends}/>
-    <Route path='/chats' component={Chats}/>
-    <Route path='/find' component={Find}/>
-    <Route path='/more' component={More}/>
+    <Route exact path='/' component={AsyncFriends} />
+    <Route path='/chats' component={Chats} />
+    <Route path='/find' component={Find} />
+    <Route path='/more' component={More} />
   </div>
 )
 
 
 render(
   <BrowserRouter>
-    <App/>
+    <App />
   </BrowserRouter>,
   document.getElementById('app')
 )
