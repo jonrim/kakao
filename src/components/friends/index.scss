@@ -2,17 +2,23 @@
   .friends-list {
     padding: 10px;
 
-    span {
-      font-weight: 700;
-    }
-
     .section-name {
       color: darkgray;
+      margin-top: 10px;
     }
 
     .friend {
-      margin: 0 0 10px;
       position: relative;
+      padding: 5px 10px;
+      margin: 0 -10px;
+
+      &:hover {
+        background-color: #ecedef;
+      }
+
+      &:active {
+        background-color: #dbdee1;
+      }
 
       img {
         height: 10vw;
@@ -22,23 +28,35 @@
         border-radius: 50%;
         object-fit: cover;
         margin: 0 15px 0 0;
-      }
+        vertical-align: top;
+      } 
 
-      .motto {
-        color: darkgray;
+      .friend-name, .friend-motto {
+        height: 100%;
         position: absolute;
         top: 0;
-        right: 10px;
-        min-width: 150px;
-        width: 50%;
-        height: 100%;
+      }
 
-        p {
-          position: relative;
-          top: 50%;
-          right: 0;
-          transform: translateY(-50%);
-        }
+      .friend-name {
+        font-weight: 700;
+        display: inline-block;
+        max-width: 30%;
+      }
+
+      .friend-motto {
+        color: darkgray;
+        right: 10px;
+        max-width: 50%;
+      }
+
+      p {
+        position: relative;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+        line-height: 1.2em;
+        max-height: 2.4em;
+        overflow: hidden;
       }
     }
   }
