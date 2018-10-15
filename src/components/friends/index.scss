@@ -11,6 +11,8 @@
       position: relative;
       padding: 5px 10px;
       margin: 0 -10px;
+      user-select: none;
+      cursor: pointer;
 
       &:hover {
         background-color: #ecedef;

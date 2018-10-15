@@ -9,18 +9,21 @@ export default class Friends extends Component {
     super(props);
 
     this.state = {
+      searchNameInput: '',
       myProfile: [{photo: '/src/images/me.jpg', name: 'Jonathan Rim', motto: '이 세상에서 제일 필오한건.. 마음이 따뜻한 사람~'}],
-      favorites: [{photo: '/src/images/sejin.jpg', name: '세진❤', motto: '🥑'}],
       friends: [
-        {photo: '/src/images/justinkim.jpg', name: 'Justin Kim', motto: `Throwback to the good ol' days in Europe.`},
-        {photo: '/src/images/lawrenceparsons.jpg', name: 'Lawrence Parsons', motto: 'One of the new friends I made in Costa Rica!'},
-        {photo: '/src/images/johnchen.jpg', name: 'John Chen', motto: 'happy new years'},
-        {photo: '/src/images/aaronan.jpg', name: 'Aaron An', motto: `"But I have trusted in your steadfast love;
+        {photo: '/src/images/sejin.jpg', name: '세진❤', favorite: true, motto: '🥑'},
+        {photo: '/src/images/justinkim.jpg', name: 'Justin Kim', favorite: false, motto: `Throwback to the good ol' days in Europe.`},
+        {photo: '/src/images/lawrenceparsons.jpg', name: 'Lawrence Parsons', favorite: false, motto: 'One of the new friends I made in Costa Rica!'},
+        {photo: '/src/images/johnchen.jpg', name: 'John Chen', favorite: false, motto: 'happy new years'},
+        {photo: '/src/images/aaronan.jpg', name: 'Aaron An', favorite: false, motto: `"But I have trusted in your steadfast love;
           my heart shall rejoice in your salvation." -Psalm 13:5`},
-        {photo: '/src/images/yongwoolee.jpg', name: '이용우', motto: ''},
-        {photo: '/src/images/scottlee.jpg', name: '이현호', motto: ''},
+        {photo: '/src/images/yongwoolee.jpg', name: '이용우', favorite: false, motto: ''},
+        {photo: '/src/images/scottlee.jpg', name: '이현호', favorite: false, motto: ''},
       ]
     };
+
+    this.changeInputValue = this.changeInputValue.bind(this);
   }
 
   componentDidMount() {
@@ -33,16 +36,30 @@ export default class Friends extends Component {
     throttle.end();
   }
 
+  changeInputValue(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
   render() {
-    const { myProfile, favorites, friends } = this.state;
+    const { myProfile, friends, searchNameInput } = this.state;
+    const { changeInputValue } = this;
     let friendSections = [
       {name: 'My Profile', list: myProfile},
-      {name: 'Favorites', list: favorites},
+      {name: 'Favorites', list: friends.filter(friend => friend.favorite)},
       {name: 'Friends', list: friends}
     ];
     return (
       <div className='friends-wrapper'>
-        <Input icon='search' placeholder='Search name...' />
+        <Input 
+          focus
+          icon='search'
+          name='searchNameInput'
+          placeholder='Search name...'
+          onChange={changeInputValue} 
+          value={searchNameInput}
+        />
         <div className='friends-list'>
           {
             friendSections.map(section => (
@@ -50,7 +67,9 @@ export default class Friends extends Component {
                 <div className='section-name'>{section.name}</div>
                 <hr/>
                 {
-                  section.list.sort((a,b) => a.name < b.name ? -1 : 1).map((friend, index) => (
+                  section.list.sort((a,b) => a.name < b.name ? -1 : 1)
+                  .filter(friend => friend.name.toLowerCase().replace(/\s/g, '').includes(searchNameInput.toLowerCase().replace(/\s/g, '')))
+                  .map((friend, index) => (
                     <div className='friend' key={friend.name + index}>
                       <img src={friend.photo} />
                       <div className='friend-name'>
