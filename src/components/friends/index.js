@@ -30,6 +30,21 @@ export default class Friends extends Component {
     throttle.add('resize', 200, e => {
       
     });
+    document.getElementsByClassName('friends-list')[0].addEventListener('mousedown', e => {
+      let clickedFriend = e.target.closest('div.friend');
+      /* 
+        Have only one 'clicked friend' styling on at one time. Clicking on a different
+        friend will remove the 'clicked' class from all other friends
+      */
+      if (clickedFriend) {
+        if (!clickedFriend.classList.contains('clicked')) {
+          Array.from(e.currentTarget.getElementsByClassName('friend')).forEach(friend => {
+            friend.classList.remove('clicked');
+          });
+        }
+        clickedFriend.classList.add('clicked');
+      }
+    });
   }
 
   componentWillUnmount() {
