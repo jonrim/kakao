@@ -3,6 +3,10 @@
   padding: 10px;
   height: 60px;
   position: relative;
+
+  .active {
+    color: #e5e234;
+  }
 }
 
 #logo {
@@ -21,14 +25,13 @@
   .tooltiptext {
     visibility: hidden;
     width: 60px;
-    background-color: lightblue;
-    color: dodgerblue;
+    background-color: #fcfcfd;
+    color: #000;
+    border: solid 0.5px #e0e3e6;
     font-weight: 700;
     font-size: 13px;
     text-align: center;
     padding: 5px;
-    border: solid 3px lightskyblue;
-    border-radius: 3px;
     position: absolute;
     top: 50px;
     z-index: 1;
@@ -37,7 +40,7 @@
   }
 
   &:hover {
-    color: #e5e234;
+    color: #a8a51f;
 
     .tooltiptext {
       visibility: visible;
