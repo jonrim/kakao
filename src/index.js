@@ -28,50 +28,81 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      chatroom: null
+      chatroom: null,
+      width: window.innerWidth
     };
     this.changeFriendState = this.changeFriendState.bind(this);
+    this.changeWidthState = this.changeWidthState.bind(this);
   }
 
   changeFriendState(propName, friend, router) {
     this.setState({
       [propName]: friend
     }, () => {
-      router.push('/chat/' + this.state.chatroom.id)
+      // router.push('/chat/' + this.state.chatroom.id)
     });
   }
 
+  changeWidthState() {
+    this.setState({width: window.innerWidth});
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.changeWidthState);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.changeWidthState);
+  }
+
   render() {
-    const { chatroom } = this.state;
+    const { chatroom, width } = this.state;
     const { changeFriendState } = this;
     return (
       <div>
-        <Nav/>
-        <Switch>
-          <Route exact path='/' render={props => (
-            <AsyncFriends {...props}
-              chatroom={chatroom}
-              changeFriendState={changeFriendState}
-            />
-          )}/>
-          <Route path='/chats' component={Chats} />
-          <Route path='/find' component={Find} />
-          <Route path='/more' component={More} />
-          
-            <Route path='/chat/:id' exact render={props => (
-              <Chatroom
-                chatroom={chatroom}
-              />
-            )}/>
-          
-        </Switch>
         {
-          chatroom && window.innerWidth >= 900 &&
-          <Route path='/chat/:id' exact render={props => (
+          chatroom && width >= 900 ? (
+            <SplitPane split='vertical' minSize={350} defaultSize={450}>
+              <div>
+                <Nav/>
+                <Switch>
+                  <Route exact path='/' render={props => (
+                    <AsyncFriends {...props}
+                      chatroom={chatroom}
+                      changeFriendState={changeFriendState}
+                    />
+                  )}/>
+                  <Route path='/chats' component={Chats} />
+                  <Route path='/find' component={Find} />
+                  <Route path='/more' component={More} />
+                </Switch>
+              </div>
+              <div>
+                <Chatroom
+                  chatroom={chatroom}
+                />  
+              </div>
+            </SplitPane>
+          ) : chatroom && width < 900 ? (
             <Chatroom
               chatroom={chatroom}
             />
-          )}/>
+          ) : (
+            <div>
+              <Nav/>
+              <Switch>
+                <Route exact path='/' render={props => (
+                  <AsyncFriends {...props}
+                    chatroom={chatroom}
+                    changeFriendState={changeFriendState}
+                  />
+                )}/>
+                <Route path='/chats' component={Chats} />
+                <Route path='/find' component={Find} />
+                <Route path='/more' component={More} />
+              </Switch>
+            </div>
+          )
         }
       </div>
     )

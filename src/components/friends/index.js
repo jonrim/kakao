@@ -121,7 +121,9 @@ const Friend = props => {
       // onClick={changeFocusedFriend}
       onDoubleClick={changeChatroom}
     >
-      <img src={friend.photo} />
+      <div className='friend-photo'>
+        <img src={friend.photo} />
+      </div>
       <div className='friend-name'>
         <p>{friend.name}</p>
       </div>

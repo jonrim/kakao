@@ -9,7 +9,6 @@ export default class Chatroom extends Component {
 
   render() {
     const { chatroom } = this.props;
-    console.log('rendered', chatroom)
     return (
       <div className='chatroom'>
         <p>
