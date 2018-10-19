@@ -1,9 +1,16 @@
 #app {
   min-width: 350px;
+  height: 100%;
 }
 
 .input {
   width: 100%;
+
+  input {
+    border-radius: 0px !important;
+    border: none !important;
+    border-bottom: solid 1px rgba(0,0,0,.1) !important;
+  }
 }
 
 .Resizer {

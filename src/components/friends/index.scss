@@ -1,6 +1,11 @@
 .friends-wrapper {
+  height: calc(100vh - 96.66px);
+
   .friends-list {
     padding: 10px;
+    width: 100%;
+    overflow-y: scroll;
+    height: 100%;
 
     .section-name {
       color: darkgray;

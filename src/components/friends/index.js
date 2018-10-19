@@ -84,18 +84,20 @@ export default class Friends extends Component {
               <div key={section.name}>
                 <div className='section-name'>{section.name + (section.name === 'Friends' ? ' ' + section.list.length : '')}</div>
                 <hr/>
-                {
-                  section.list.sort((a,b) => a.name < b.name ? -1 : 1)
-                  .filter(friend => friend.name.toLowerCase().replace(/\s/g, '').includes(searchNameInput.toLowerCase().replace(/\s/g, '')))
-                  .map(friend => (
-                    <FriendWithRouter
-                      key={friend.id}
-                      friend={friend}
-                      changeFriendState={changeFriendState}
-                      // focusedFriend={focusedFriend}
-                    />
-                  ))
-                }
+                <div>
+                  {
+                    section.list.sort((a,b) => a.name < b.name ? -1 : 1)
+                    .filter(friend => friend.name.toLowerCase().replace(/\s/g, '').includes(searchNameInput.toLowerCase().replace(/\s/g, '')))
+                    .map(friend => (
+                      <FriendWithRouter
+                        key={friend.id}
+                        friend={friend}
+                        changeFriendState={changeFriendState}
+                        // focusedFriend={focusedFriend}
+                      />
+                    ))
+                  }
+                </div>
               </div>
             ))
           }
@@ -107,18 +109,14 @@ export default class Friends extends Component {
 
 const Friend = props => {
 
-  const {friend, /* focusedFriend,*/ changeFriendState, history} = props;
-  // const changeFocusedFriend = () => {
-  //   changeFriendState('focusedFriend', friend)
-  // }
+  const {friend, changeFriendState} = props;
   const changeChatroom = () => {
-    changeFriendState('chatroom', friend, history)
-  }
+    changeFriendState('chatroom', friend);
+  };
 
   return (
     <div 
-      className={'friend' /* + (focusedFriend && focusedFriend.id === friend.id ? ' clicked' : '') */}
-      // onClick={changeFocusedFriend}
+      className={'friend'}
       onDoubleClick={changeChatroom}
     >
       <div className='friend-photo'>

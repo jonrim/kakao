@@ -28,40 +28,40 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      chatroom: null,
-      width: window.innerWidth
+      chatroom: {id: 1, photo: '/src/images/sejin.jpg', name: '세진❤', favorite: true, motto: '🥑'},
+      mobileWindow: window.innerWidth < 900
     };
     this.changeFriendState = this.changeFriendState.bind(this);
-    this.changeWidthState = this.changeWidthState.bind(this);
+    this.changeIsMobileState = this.changeIsMobileState.bind(this);
   }
 
-  changeFriendState(propName, friend, router) {
+  changeFriendState(propName, friend) {
     this.setState({
       [propName]: friend
-    }, () => {
-      // router.push('/chat/' + this.state.chatroom.id)
     });
   }
 
-  changeWidthState() {
-    this.setState({width: window.innerWidth});
+  changeIsMobileState() {
+    const { mobileWindow } = this.state;
+    if (window.innerWidth < 900 && !mobileWindow) this.setState({mobileWindow: true});
+    else if (window.innerWidth >= 900 && mobileWindow) this.setState({mobileWindow: false});
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.changeWidthState);
+    window.addEventListener('resize', this.changeIsMobileState);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.changeWidthState);
+    window.removeEventListener('resize', this.changeIsMobileState);
   }
 
   render() {
-    const { chatroom, width } = this.state;
+    const { chatroom, mobileWindow } = this.state;
     const { changeFriendState } = this;
     return (
-      <div>
+      <div style={{height: '100%'}}>
         {
-          chatroom && width >= 900 ? (
+          chatroom && !mobileWindow ? (
             <SplitPane split='vertical' minSize={350} defaultSize={450}>
               <div>
                 <Nav/>
@@ -77,15 +77,17 @@ class App extends Component {
                   <Route path='/more' component={More} />
                 </Switch>
               </div>
-              <div>
-                <Chatroom
-                  chatroom={chatroom}
-                />  
-              </div>
+              <Chatroom
+                chatroom={chatroom}
+                changeFriendState={changeFriendState}
+                mobileWindow={mobileWindow}
+              />
             </SplitPane>
-          ) : chatroom && width < 900 ? (
+          ) : chatroom && mobileWindow ? (
             <Chatroom
               chatroom={chatroom}
+              changeFriendState={changeFriendState}
+              mobileWindow={mobileWindow}
             />
           ) : (
             <div>
