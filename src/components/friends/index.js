@@ -93,7 +93,6 @@ export default class Friends extends Component {
                         key={friend.id}
                         friend={friend}
                         changeFriendState={changeFriendState}
-                        // focusedFriend={focusedFriend}
                       />
                     ))
                   }

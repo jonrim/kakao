@@ -3,6 +3,13 @@
   width: 100%;
   background-color: #b1ecfc;
 
+  .chatroom-photo {
+    width: 40px;
+    border-radius: 50%;
+    height: 40px;
+    object-fit: cover;
+  }
+
   .chatroom-nav {
     padding: 10px;
     height: 60px;
@@ -26,10 +33,6 @@
     }
 
     .chatroom-photo {
-      width: 40px;
-      border-radius: 50%;
-      height: 40px;
-      object-fit: cover;
       top: -5px;
       position: relative;
     }
@@ -70,6 +73,127 @@
     }
   }
 
+  .chatroom-messages {
+    padding: 15px;
+    overflow-y: auto;
+
+    .date {
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .date:before,
+    .date:after {
+      background-color: rgba(0,0,0,0.1);
+      content: "";
+      display: inline-block;
+      height: 1px;
+      position: relative;
+      vertical-align: middle;
+      width: 50%;
+    }
+
+    .date:before {
+      right: 0.5em;
+      margin-left: -50%;
+    }
+
+    .date:after {
+      left: 0.5em;
+      margin-right: -50%;
+    }
+
+
+    .her-message {
+
+      .text {
+        float: left;
+        background-color: #fff;
+
+
+        &:after {
+          content: '';
+          left: 0;
+          margin-top: 6px;
+          margin-left: -5px;
+          border: 5px solid transparent;
+          border-right-color: #fff;
+          border-left: 0;
+          border-top: 0;
+        }
+      }
+    }
+
+    .my-message {
+
+      .date-container {
+        flex: 1;
+        position: relative;
+
+        span {
+          right: 2px;
+        }
+      }
+
+      .text {
+        float: right;
+        background-color: #f9f05d;
+        
+        span {
+          position: absolute;
+          bottom: 4px;
+          right: calc(100% - 93px);
+        }
+
+        &:after {
+          content: '';
+          right: 0;
+          margin-top: 6px;
+          margin-right: -5px;
+          border: 5px solid transparent;
+          border-left-color: #f9f05d;
+          border-right: 0;
+          border-top: 0;
+        }
+      }
+    }
+
+    .message {
+
+      .date-container {
+
+        span {
+          position: absolute;
+          bottom: 4px;
+          margin: 0 2px;
+        }
+      }
+
+      &:after, .clearfix { 
+        content: " "; 
+        display: block;
+        clear: both;
+      } 
+
+      .text {
+        border-radius: 5px;
+        max-width: calc(100% - 100px);
+        overflow-wrap: break-word;
+        margin: 3px;
+        padding: 7px;
+        position: relative;
+        word-break: keep-all;
+
+        &:after {
+          position: absolute;
+          top: 0;
+          width: 0;
+          height: 0;
+        }
+      }
+    }
+  }
+
   .chatroom-type {
     position: absolute;
     bottom: 0;
@@ -91,7 +215,7 @@
 
       button {
         color: #000 !important;
-        background-color: #fcf84a;
+        background-color: #f9f05d;
         border: solid 1px #fbe483;
         border-radius: 1px;
         position: absolute;
@@ -99,10 +223,10 @@
         right: 10px;
 
         &:hover {
-          background-color: #f4f025;
+          background-color: #f6e91e;
         }
         &:active {
-          background-color: #ddd908;
+          background-color: #d6ca0a;
         }
       }
 
@@ -118,7 +242,7 @@
         position: absolute;
         bottom: 10px;
         color: rgba(0,0,0, 0.5);
-        
+
         &:hover {
           color: #43c3e5;
         }
