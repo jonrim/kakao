@@ -137,46 +137,49 @@ export default class Chatroom extends Component {
                     </p>
                   )
                 }
-                {
-                  message.friend &&
-                  <div style={{width: '40px', display: 'inline-block'}}>
+                <div style={{display: 'flex'}}>
                   {
-                    message.firstMessageOfMinute &&
-                    <img className='chatroom-photo' src={chatroom.photo}/>
+                    message.friend &&
+                    <div style={{width: '40px', display: 'inline-block'}}>
+                    {
+                      message.firstMessageOfMinute &&
+                      <img className='chatroom-photo' src={chatroom.photo}/>
+                    }
+                    </div>
                   }
+                  <div 
+                    className='clearfix' 
+                    style={{
+                      /* 
+                        if it's a friend's message, or if it's one of my messages that doesn't display the time,
+                        make this clearfix container an inline-block. otherwise use flex for my own messages that show time
+                        so that I can properly position the time to be at the bottom right corner of it's container,
+                        just to the left of the message 
+                       */
+                      display: !displayTimeForThisMessage(i) || chatHistory[i].friend ? 'inline-block' : 'flex',
+                      verticalAlign: 'top',
+                      marginLeft: '3px',
+                      position: 'relative',
+                      flex: 1
+                    }}>
+                    {
+                      message.friend && message.firstMessageOfMinute &&
+                      <p style={{margin: '0', padding: '0 10px'}}>{chatroom.name}</p>
+                    }
+                    {
+                      displayTimeForThisMessage(i) && !chatHistory[i].friend &&
+                      <div className='date-container'>
+                        <span>{ message.date.format('h:mm A') }</span>
+                      </div>
+                    }
+                    <p className='text'>{ message.text }</p>
+                    {
+                      displayTimeForThisMessage(i) && chatHistory[i].friend &&
+                      <div className='date-container'>
+                        <span>{ message.date.format('h:mm A') }</span>
+                      </div>
+                    }
                   </div>
-                }
-                <div 
-                  className='clearfix' 
-                  style={{
-                    /* 
-                      if it's a friend's message, or if it's one of my messages that doesn't display the time,
-                      make this clearfix container an inline-block. otherwise use flex for my own messages that show time
-                      so that I can properly position the time to be at the bottom right corner of it's container,
-                      just to the left of the message 
-                     */
-                    display: !displayTimeForThisMessage(i) || chatHistory[i].friend ? 'inline-block' : 'flex',
-                    'verticalAlign': 'top',
-                    'marginLeft': '3px',
-                    'position': 'relative'
-                  }}>
-                  {
-                    message.friend && message.firstMessageOfMinute &&
-                    <p style={{margin: '0', padding: '0 10px'}}>{chatroom.name}</p>
-                  }
-                  {
-                    displayTimeForThisMessage(i) && !chatHistory[i].friend &&
-                    <div className='date-container'>
-                      <span>{ message.date.format('h:mm A') }</span>
-                    </div>
-                  }
-                  <p className='text'>{ message.text }</p>
-                  {
-                    displayTimeForThisMessage(i) && chatHistory[i].friend &&
-                    <div className='date-container'>
-                      <span>{ message.date.format('h:mm A') }</span>
-                    </div>
-                  }
                 </div>
               </div>
             ))
