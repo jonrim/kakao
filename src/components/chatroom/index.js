@@ -59,6 +59,26 @@ export default class Chatroom extends Component {
           friend: false,
           firstMessageOfDay: true,
           firstMessageOfMinute: false
+        },
+        {
+          date: moment().set({
+            year: 2018, month: 9, date: 21, day: 0,
+            hour: 7, minute: 32, second: 58
+          }),
+          text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
+          friend: true,
+          firstMessageOfDay: false,
+          firstMessageOfMinute: true
+        },
+        {
+          date: moment().set({
+            year: 2018, month: 9, date: 21, day: 0,
+            hour: 7, minute: 32, second: 59
+          }),
+          text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
+          friend: true,
+          firstMessageOfDay: false,
+          firstMessageOfMinute: false
         }
       ]
     };
@@ -127,7 +147,16 @@ export default class Chatroom extends Component {
         <div className='chatroom-messages'>
           {
             chatHistory.map((message, i) => (
-              <div className={(message.friend ? 'her-message' : 'my-message') + ' message'} key={'message' + i}>
+              <div 
+                className={(message.friend ? 'her-message' : 'my-message') + ' message'} 
+                key={'message' + i}
+                style={{
+                  /*
+                    separate (more) texts with different time stamps
+                  */
+                  marginBottom: displayTimeForThisMessage(i) ? '8px' : '0'
+                }}
+              >
                 {
                   message.firstMessageOfDay && (
                     <p className='date' style={{margin: '15px 0'}}>
@@ -137,6 +166,11 @@ export default class Chatroom extends Component {
                     </p>
                   )
                 }
+                {/*
+                  flex container used for its child (right sibling) to extend its width to the remaining width of
+                  the container. this is so the actual text bubble can utilize most of the width. e.g. short
+                  texts can now be displayed on one line instead of awkwardly being put on 3 lines.
+                */}
                 <div style={{display: 'flex'}}>
                   {
                     message.friend &&
