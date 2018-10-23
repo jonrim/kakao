@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import moment from 'moment'
 
 import './index.scss'
 
@@ -11,9 +12,16 @@ export default class ChatroomMessages extends Component {
 
   displayTimeForThisMessage(i) {
     const { chatHistory } = this.props;
+    /*
+      If the difference between this date and the next date is greater than 1 minute, or
+      if the difference is less than 1 minute (e.g. 10:55pm 55 sec and 10:56pm 05 sec has 
+      different time stamp but less than 1 minute difference) but the the time stamps are
+      different, print the timestamp next to this message
+    */
     return (i + 1 === chatHistory.length || i + 1 < chatHistory.length &&
-          (chatHistory[i].date.diff(chatHistory[i + 1].date, 'minutes') ||
-          chatHistory[i].friend !== chatHistory[i + 1].friend));
+          (moment(chatHistory[i].date).diff(moment(chatHistory[i + 1].date), 'minutes') < 0 ||
+          chatHistory[i].date.getMinutes() !== chatHistory[i + 1].date.getMinutes()) ||
+          chatHistory[i].friend !== chatHistory[i + 1].friend);
   }
 
   componentDidMount() {
@@ -60,7 +68,7 @@ export default class ChatroomMessages extends Component {
                 message.firstMessageOfDay && (
                   <p className='date' style={{margin: '15px 0'}}>
                     {
-                      message.date.format('dddd, MMMM D, YYYY')
+                      moment(message.date).format('dddd, MMMM D, YYYY')
                     }
                   </p>
                 )
@@ -102,14 +110,14 @@ export default class ChatroomMessages extends Component {
                   {
                     displayTimeForThisMessage(i) && !chatHistory[i].friend &&
                     <div className='date-container'>
-                      <span>{ message.date.format('h:mm A') }</span>
+                      <span>{ moment(message.date).format('h:mm A') }</span>
                     </div>
                   }
                   <p className='text'>{ message.text }</p>
                   {
                     displayTimeForThisMessage(i) && chatHistory[i].friend &&
                     <div className='date-container'>
-                      <span>{ message.date.format('h:mm A') }</span>
+                      <span>{ moment(message.date).format('h:mm A') }</span>
                     </div>
                   }
                 </div>

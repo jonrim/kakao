@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Input, Form, TextArea, Button } from 'semantic-ui-react'
-import moment from 'moment'
 import ChatroomMessages from './chatroomMessages'
 
 import './index.scss'
@@ -10,81 +9,63 @@ export default class Chatroom extends Component {
     super(props);
     this.state = {
       search: false,
+      messageInput: '',
       chatHistory: [
         {
-          date: moment().set({
-            year: 2018, month: 9, date: 20, day: 6, 
-            hour: 7, minute: 30, second: 20
-          }),
+          date: new Date(2018, 9, 20, 7, 30, 20, 0),
           text: '보고시뿌 보낼려구 들어왔는데~',
           friend: true,
           firstMessageOfDay: true,
           firstMessageOfMinute: true
         },
         {
-          date: moment().set({
-            year: 2018, month: 9, date: 20, day: 6,
-            hour: 7, minute: 30, second: 55
-          }),
+          date: new Date(2018, 9, 20, 7, 30, 55, 0),
           text: '문자와있었네ㅋㅋ 잠깐 깼어요?',
           friend: true,
           firstMessageOfDay: false,
           firstMessageOfMinute: false
         },
         {
-          date: moment().set({
-            year: 2018, month: 9, date: 20, day: 6,
-            hour: 7, minute: 30, second: 58
-          }),
+          date: new Date(2018, 9, 20, 7, 30, 58, 0),
           text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
           friend: false,
           firstMessageOfDay: false,
           firstMessageOfMinute: false
         },
         {
-          date: moment().set({
-            year: 2018, month: 9, date: 20, day: 6,
-            hour: 7, minute: 31, second: 58
-          }),
+          date: new Date(2018, 9, 20, 7, 31, 20, 0),
           text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
           friend: false,
           firstMessageOfDay: false,
           firstMessageOfMinute: false
         },
         {
-          date: moment().set({
-            year: 2018, month: 9, date: 21, day: 0,
-            hour: 7, minute: 31, second: 58
-          }),
+          date: new Date(2018, 9, 21, 7, 30, 20, 0),
           text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
           friend: false,
           firstMessageOfDay: true,
           firstMessageOfMinute: false
         },
         {
-          date: moment().set({
-            year: 2018, month: 9, date: 21, day: 0,
-            hour: 7, minute: 32, second: 58
-          }),
+          date: new Date(2018, 9, 21, 7, 30, 21, 0),
           text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
           friend: true,
           firstMessageOfDay: false,
           firstMessageOfMinute: true
         },
         {
-          date: moment().set({
-            year: 2018, month: 9, date: 21, day: 0,
-            hour: 7, minute: 32, second: 59
-          }),
+          date: new Date(2018, 9, 21, 7, 32, 22, 0),
           text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
           friend: true,
           firstMessageOfDay: false,
-          firstMessageOfMinute: false
+          firstMessageOfMinute: true
         }
       ]
     };
     this.showSearch = this.showSearch.bind(this);
     this.showMore = this.showMore.bind(this);
+    this.changeMessageInput = this.changeMessageInput.bind(this);
+    this.sendMessage = this.sendMessage.bind(this);
   }
 
   showSearch() {
@@ -98,14 +79,27 @@ export default class Chatroom extends Component {
 
   }
 
+  changeMessageInput(e) {
+    this.setState({ messageInput: e.target.value });
+  }
+
+  sendMessage(e) {
+    this.setState({ messageInput: '' });
+  }
+
   componentDidMount() {
     document.getElementById('chatroom-type-input').focus();
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.chatroom.id !== this.props.chatroom.id) {
+      document.getElementById('chatroom-type-input').focus();
+    }
+  }
+
   render() {
     const { chatroom, changeFriendState, mobileWindow } = this.props;
-    const { search, chatHistory } = this.state;
-    const { showSearch, showMore } = this;
+    const { search, chatHistory, messageInput } = this.state;
     return (
       <div className='chatroom'>
         <div className='chatroom-nav'>
@@ -118,11 +112,11 @@ export default class Chatroom extends Component {
           </div>
           <i
             className='button fas fa-search'
-            onClick={showSearch}
+            onClick={this.showSearch}
           />
           <i
             className='button fas fa-bars'
-            onClick={showMore}
+            onClick={this.showMore}
           />
         </div>
         {
@@ -143,8 +137,8 @@ export default class Chatroom extends Component {
         />
         <div className='chatroom-type'>
           <Form>
-            <TextArea autoHeight rows='2' id='chatroom-type-input'/>
-            <Button size='mini'>Send</Button>
+            <TextArea autoHeight rows='2' id='chatroom-type-input' value={messageInput} onChange={this.changeMessageInput}/>
+            <Button size='mini' onClick={this.sendMessage}>Send</Button>
             <i className="bot-button far fa-smile-wink" />
             <i className="bot-button fas fa-paperclip" />
             <i className="bot-button far fa-image" />
