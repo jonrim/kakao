@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Input, Form, TextArea, Button } from 'semantic-ui-react'
+import ReactResizeDetector from 'react-resize-detector'
 import ChatroomMessages from './chatroomMessages'
 
 import './index.scss'
@@ -67,6 +68,7 @@ export default class Chatroom extends Component {
     this.changeMessageInput = this.changeMessageInput.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
+    this.onResize = this.onResize.bind(this);
   }
 
   showSearch() {
@@ -92,6 +94,11 @@ export default class Chatroom extends Component {
     }
   }
 
+  scrollToBottom() {
+    let chatMessagesDiv = document.getElementsByClassName('chatroom-messages')[0];
+    chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+  }
+
   sendMessage(e) {
     const { chatHistory, messageInput } = this.state;
     let today = new Date();
@@ -108,9 +115,12 @@ export default class Chatroom extends Component {
         firstMessageOfMinute: false
       }]
     }, () => {
-      let chatMessagesDiv = document.getElementsByClassName('chatroom-messages')[0];
-      chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+      this.scrollToBottom();
     });
+  }
+
+  onResize() {
+    this.scrollToBottom();
   }
 
   componentDidMount() {
@@ -163,14 +173,16 @@ export default class Chatroom extends Component {
         />
         <div className='chatroom-type'>
           <Form>
-            <TextArea 
-              autoHeight 
-              rows='2' 
-              id='chatroom-type-input' 
-              value={messageInput} 
-              onChange={this.changeMessageInput}
-              onKeyPress={this.handleKeyPress}
-            />
+            <ReactResizeDetector handleWidth handleHeight onResize={this.onResize}>
+              <TextArea 
+                autoHeight 
+                rows='2' 
+                id='chatroom-type-input' 
+                value={messageInput} 
+                onChange={this.changeMessageInput}
+                onKeyPress={this.handleKeyPress}
+              />
+            </ReactResizeDetector>
             <Button size='mini' onClick={this.sendMessage}>Send</Button>
             <i className="bot-button far fa-smile-wink" />
             <i className="bot-button fas fa-paperclip" />
