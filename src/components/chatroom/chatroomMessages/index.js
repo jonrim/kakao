@@ -24,6 +24,11 @@ export default class ChatroomMessages extends Component {
           chatHistory[i].friend !== chatHistory[i + 1].friend);
   }
 
+  scrollToBottom() {
+    let chatMessagesDiv = document.getElementsByClassName('chatroom-messages')[0];
+    chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+  }
+
   componentDidMount() {
     // let messages = document.getElementsByClassName('message');
     //   let lastMessage = messages[messages.length - 1];
@@ -31,8 +36,7 @@ export default class ChatroomMessages extends Component {
     //     behavior: 'instant',
     //     inline: 'end'
     //   })
-    let chatMessagesDiv = document.getElementsByClassName('chatroom-messages')[0];
-    chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+    this.scrollToBottom();
     // setTimeout(() => {
       
     // }, 2000)
@@ -41,10 +45,8 @@ export default class ChatroomMessages extends Component {
   componentDidUpdate(prevProps) {
     // if you change to a different friend's chatroom, scroll back to bottom
     if (prevProps.chatroom.id !== this.props.chatroom.id) {
-      let chatMessagesDiv = document.getElementsByClassName('chatroom-messages')[0];
-      chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+      this.scrollToBottom();
     }
-
   }
 
   render() {

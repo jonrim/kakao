@@ -65,6 +65,7 @@ export default class Chatroom extends Component {
     this.showSearch = this.showSearch.bind(this);
     this.showMore = this.showMore.bind(this);
     this.changeMessageInput = this.changeMessageInput.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
   }
 
@@ -83,8 +84,33 @@ export default class Chatroom extends Component {
     this.setState({ messageInput: e.target.value });
   }
 
+  handleKeyPress(e) {
+    console.log('handleKeyPress')
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (this.state.messageInput !== '') this.sendMessage();
+    }
+  }
+
   sendMessage(e) {
-    this.setState({ messageInput: '' });
+    const { chatHistory, messageInput } = this.state;
+    let today = new Date();
+    let latestMessageDate = chatHistory[chatHistory.length - 1].date;
+    this.setState({
+      messageInput: '',
+      chatHistory: [...chatHistory, {
+        date: today,
+        text: messageInput,
+        friend: false,
+        firstMessageOfDay: !(today.getFullYear() === latestMessageDate.getFullYear() &&
+                           today.getMonth() === latestMessageDate.getMonth() &&
+                           today.getDate() === latestMessageDate.getDate()),
+        firstMessageOfMinute: false
+      }]
+    }, () => {
+      let chatMessagesDiv = document.getElementsByClassName('chatroom-messages')[0];
+      chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
+    });
   }
 
   componentDidMount() {
@@ -137,7 +163,14 @@ export default class Chatroom extends Component {
         />
         <div className='chatroom-type'>
           <Form>
-            <TextArea autoHeight rows='2' id='chatroom-type-input' value={messageInput} onChange={this.changeMessageInput}/>
+            <TextArea 
+              autoHeight 
+              rows='2' 
+              id='chatroom-type-input' 
+              value={messageInput} 
+              onChange={this.changeMessageInput}
+              onKeyPress={this.handleKeyPress}
+            />
             <Button size='mini' onClick={this.sendMessage}>Send</Button>
             <i className="bot-button far fa-smile-wink" />
             <i className="bot-button fas fa-paperclip" />

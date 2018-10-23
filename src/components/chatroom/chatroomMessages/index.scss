@@ -109,6 +109,7 @@
       padding: 7px;
       position: relative;
       word-break: keep-all;
+      white-space: pre-line;
 
       &:after {
         position: absolute;
