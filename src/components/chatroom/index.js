@@ -133,6 +133,8 @@ export default class Chatroom extends Component {
   addEmoji(emoji) {
     this.setState({ 
       messageInput: this.state.messageInput + emoji.colons
+    }, () => {
+      document.getElementById('chatroom-type-input').focus();
     });
   }
 
