@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import moment from 'moment'
+import { Emoji } from 'emoji-mart'
+import reactStringReplace from 'react-string-replace'
 
 import './index.scss'
 
@@ -115,7 +117,13 @@ export default class ChatroomMessages extends Component {
                       <span>{ moment(message.date).format('h:mm A') }</span>
                     </div>
                   }
-                  <p className='text'>{ message.text }</p>
+                  <p className='text'>
+                    { 
+                      reactStringReplace(message.text, /(\:[a-zA-Z_-]+\:)/g, (match, i) => (
+                        <Emoji key={match+i} size={16} emoji={match} set='emojione' />
+                      ))
+                    }
+                  </p>
                   {
                     displayTimeForThisMessage(i) && chatHistory[i].friend &&
                     <div className='date-container'>

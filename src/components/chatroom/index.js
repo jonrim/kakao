@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { Input, Form, TextArea, Button } from 'semantic-ui-react'
 import ReactResizeDetector from 'react-resize-detector'
 import ChatroomMessages from './chatroomMessages'
+import { Picker } from 'emoji-mart'
 
+import 'emoji-mart/css/emoji-mart.css'
 import './index.scss'
 
 export default class Chatroom extends Component {
@@ -69,6 +71,7 @@ export default class Chatroom extends Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
     this.onResize = this.onResize.bind(this);
+    this.addEmoji = this.addEmoji.bind(this);
   }
 
   showSearch() {
@@ -87,10 +90,9 @@ export default class Chatroom extends Component {
   }
 
   handleKeyPress(e) {
-    console.log('handleKeyPress')
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      if (this.state.messageInput !== '') this.sendMessage();
+      this.sendMessage();
     }
   }
 
@@ -101,6 +103,7 @@ export default class Chatroom extends Component {
 
   sendMessage(e) {
     const { chatHistory, messageInput } = this.state;
+    if (messageInput === '') return;
     let today = new Date();
     let latestMessageDate = chatHistory[chatHistory.length - 1].date;
     this.setState({
@@ -121,6 +124,16 @@ export default class Chatroom extends Component {
 
   onResize() {
     this.scrollToBottom();
+  }
+
+  displayEmojis() {
+    document.getElementsByClassName('emoji-mart')[0].classList.toggle('visible');
+  }
+
+  addEmoji(emoji) {
+    this.setState({ 
+      messageInput: this.state.messageInput + emoji.colons
+    });
   }
 
   componentDidMount() {
@@ -184,12 +197,16 @@ export default class Chatroom extends Component {
               />
             </ReactResizeDetector>
             <Button size='mini' onClick={this.sendMessage}>Send</Button>
-            <i className="bot-button far fa-smile-wink" />
+            <i 
+              className="bot-button far fa-smile-wink"
+              onClick={this.displayEmojis}
+            />
             <i className="bot-button fas fa-paperclip" />
             <i className="bot-button far fa-image" />
             <i className="bot-button fas fa-phone" />
           </Form>
         </div>
+        <Picker set='emojione' onSelect={this.addEmoji} />
       </div>
     )
   }

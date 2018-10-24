@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "emoji-mart": "^2.8.1",
     "moment": "^2.22.2",
     "react": "^16.5.1",
     "react-dom": "^16.5.1",
@@ -23,6 +24,7 @@
     "react-router-dom": "^4.3.1",
     "react-router-redux": "^4.0.8",
     "react-split-pane": "^0.1.84",
+    "react-string-replace": "^0.4.1",
     "semantic-ui-react": "^0.82.5",
     "throttled-event-listener": "0.0.3"
   },
