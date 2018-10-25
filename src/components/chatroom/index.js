@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Input, Form, TextArea, Button } from 'semantic-ui-react'
+import { Input, Form, TextArea, Button, Modal } from 'semantic-ui-react'
 import ReactResizeDetector from 'react-resize-detector'
-import ChatroomMessages from './chatroomMessages'
 import { Picker } from 'emoji-mart'
+import Dropzone from 'react-dropzone'
+import ChatroomMessages from './chatroomMessages'
 
 import 'emoji-mart/css/emoji-mart.css'
 import './index.scss'
@@ -13,6 +14,7 @@ export default class Chatroom extends Component {
     this.state = {
       search: false,
       messageInput: '',
+      filesToSend: [],
       chatHistory: [
         {
           date: new Date(2018, 9, 20, 7, 30, 20, 0),
@@ -72,6 +74,7 @@ export default class Chatroom extends Component {
     this.sendMessage = this.sendMessage.bind(this);
     this.onResize = this.onResize.bind(this);
     this.addEmoji = this.addEmoji.bind(this);
+    this.onDrop = this.onDrop.bind(this);
   }
 
   showSearch() {
@@ -101,24 +104,37 @@ export default class Chatroom extends Component {
     chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight;
   }
 
+  sameDate(a, b) {
+    return a.getFullYear() === b.getFullYear() &&
+           a.getMonth() === b.getMonth() &&
+           a.getDate() === b.getDate();
+  }
+
+  sameMinute(a, b) {
+    return a.getHours() === b.getHours() &&
+           a.getMinutes() === b.getMinutes();
+  }
+
   sendMessage(e) {
     const { chatHistory, messageInput } = this.state;
+    const { sameDate, sameMinute } = this;
     if (messageInput === '') return;
     let today = new Date();
-    let latestMessageDate = chatHistory[chatHistory.length - 1].date;
+    let latestMessage = chatHistory[chatHistory.length - 1].date;
+    let sameDay = sameDate(today, latestMessage);
+    let sameTime = sameMinute(today, latestMessage);
     this.setState({
       messageInput: '',
       chatHistory: [...chatHistory, {
         date: today,
         text: messageInput,
         friend: false,
-        firstMessageOfDay: !(today.getFullYear() === latestMessageDate.getFullYear() &&
-                           today.getMonth() === latestMessageDate.getMonth() &&
-                           today.getDate() === latestMessageDate.getDate()),
-        firstMessageOfMinute: false
+        firstMessageOfDay: !sameDay,
+        firstMessageOfMinute: !sameDay || sameDay && !sameTime
       }]
     }, () => {
       this.scrollToBottom();
+      console.log(this.state.chatHistory)
     });
   }
 
@@ -138,8 +154,35 @@ export default class Chatroom extends Component {
     });
   }
 
+  onDrop(files) {
+    const { chatHistory } = this.state;
+    this.setState({
+      filesToSend: files,
+      chatHistory: [...chatHistory].append(files.map(file => {
+        return {
+          friend: false,
+          date: new Date()
+        }
+      }))
+    }, () => {
+      console.log(this.state.filesToSend)
+
+    });
+  }
+
+  // hideEmojiPickerOnClick(e) {
+  //   if (!e.target.closest('.emoji-mart').length) {
+  //     document.getElementsByClassName('emoji-mart')[0].classList.remove('visible');
+  //   }
+  // }
+
   componentDidMount() {
     document.getElementById('chatroom-type-input').focus();
+    // window.addEventListener('click', this.hideEmojiPickerOnClick)
+  }
+
+  componentWillUnmount() {
+    // window.removeEventListener('click', this.hideEmojiPickerOnClick)
   }
 
   componentDidUpdate(prevProps) {
@@ -152,64 +195,80 @@ export default class Chatroom extends Component {
     const { chatroom, changeFriendState, mobileWindow } = this.props;
     const { search, chatHistory, messageInput } = this.state;
     return (
-      <div className='chatroom'>
-        <div className='chatroom-nav'>
-          <BackButton
-            changeFriendState={changeFriendState}
-          />
-          <img className='chatroom-photo' src={chatroom.photo}/>
-          <div className='chatroom-name'>
-            <p>{chatroom.name}</p>
-          </div>
-          <i
-            className='button fas fa-search'
-            onClick={this.showSearch}
-          />
-          <i
-            className='button fas fa-bars'
-            onClick={this.showMore}
-          />
-        </div>
-        {
-          search &&
-          <div className='search-container'>
-            <Input
-              focus
-              icon='search'
-              name='searchInput'
-              id='chatroom-search-input'
-              placeholder='Search'
-            />
-          </div>
-        }
-        <ChatroomMessages
-          chatHistory={chatHistory}
-          chatroom={chatroom}
-        />
-        <div className='chatroom-type'>
-          <Form>
-            <ReactResizeDetector handleWidth handleHeight onResize={this.onResize}>
-              <TextArea 
-                autoHeight 
-                rows='2' 
-                id='chatroom-type-input' 
-                value={messageInput} 
-                onChange={this.changeMessageInput}
-                onKeyPress={this.handleKeyPress}
+      <Dropzone
+        className='dropzone'
+        onDrop={this.onDrop}
+        disableClick={true}
+        acceptClassName='dropzone-drag'
+      >
+        {({ open }) => (
+          <div className='chatroom'>
+            <div className='chatroom-nav'>
+              <BackButton
+                changeFriendState={changeFriendState}
               />
-            </ReactResizeDetector>
-            <Button size='mini' onClick={this.sendMessage}>Send</Button>
-            <i 
-              className="bot-button far fa-smile-wink"
-              onClick={this.displayEmojis}
+              <img className='chatroom-photo' src={chatroom.photo}/>
+              <div className='chatroom-name'>
+                <p>{chatroom.name}</p>
+              </div>
+              <i
+                className='button fas fa-search'
+                onClick={this.showSearch}
+              />
+              <i
+                className='button fas fa-bars'
+                onClick={this.showMore}
+              />
+            </div>
+            {
+              search &&
+              <div className='search-container'>
+                <Input
+                  focus
+                  icon='search'
+                  name='searchInput'
+                  id='chatroom-search-input'
+                  placeholder='Search'
+                />
+              </div>
+            }
+            <ChatroomMessages
+              chatHistory={chatHistory}
+              chatroom={chatroom}
             />
-            <i className="bot-button fas fa-paperclip" />
-            <i className="bot-button far fa-image" />
-            <i className="bot-button fas fa-phone" />
-          </Form>
-        </div>
-        <Picker set='emojione' onSelect={this.addEmoji} />
-      </div>
+            <div className='chatroom-type'>
+              <Form>
+                <ReactResizeDetector handleWidth handleHeight onResize={this.onResize}>
+                  <TextArea 
+                    autoHeight 
+                    rows='2' 
+                    id='chatroom-type-input' 
+                    value={messageInput} 
+                    onChange={this.changeMessageInput}
+                    onKeyPress={this.handleKeyPress}
+                  />
+                </ReactResizeDetector>
+                <Button size='mini' onClick={this.sendMessage}>Send</Button>
+                <i 
+                  className="bot-button far fa-smile-wink"
+                  onClick={this.displayEmojis}
+                />
+                <i
+                  className="bot-button fas fa-paperclip" 
+                  onClick={open}
+                />
+                <i className="bot-button far fa-image" />
+                <i className="bot-button fas fa-phone" />
+              </Form>
+            </div>
+            <Picker set='emojione' onSelect={this.addEmoji} style={{
+              bottom: mobileWindow ? (document.getElementsByClassName('chatroom-type')[0] ?
+                document.getElementsByClassName('chatroom-type')[0].scrollHeight : 120 + 'px') : '0',
+              left: mobileWindow ? '0' : '-348px'
+            }}/>
+          </div>
+        )}
+      </Dropzone>
     )
   }
 }

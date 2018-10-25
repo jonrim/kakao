@@ -156,10 +156,16 @@
 .emoji-mart {
   visibility: hidden;
   position: absolute;
-  bottom: 0;
-  left: -348px;
 }
 
 .visible {
   visibility: visible;
+}
+
+.dropzone {
+  height: 100%;
+}
+
+.dropzone-drag {
+  opacity: 0.5;
 }
