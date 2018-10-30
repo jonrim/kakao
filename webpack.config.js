@@ -1,23 +1,35 @@
 'use strict';
 
+const webpack = require('webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const path = require('path');
 const autoprefixer = require('autoprefixer');
 const precss = require('precss');
 const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
+  entry: [
+    './client/src/index.js',
+    'webpack-hot-middleware/client'
+  ],
+  output: {
+    path: path.join(__dirname, 'client', 'dist'),
+    filename: 'bundle.js',
+    publicPath: '/'
+  },
+  mode: 'development',
   resolve: {
     extensions: ['.js', '.jsx'],
-    modules: ['src', 'node_modules'],
+    modules: ['client', 'node_modules'],
     alias: {
-      'Components': path.resolve(__dirname, 'src/components'),
-      'Utils': path.resolve(__dirname, 'src/utils'),
-      'Styles': path.resolve(__dirname, 'src/styles'),
-      'Images': path.resolve(__dirname, 'src/images')
+      'Components': path.resolve(__dirname, 'client/src/components'),
+      'Utils': path.resolve(__dirname, 'client/src/utils'),
+      'Styles': path.resolve(__dirname, 'client/src/styles'),
+      'Images': path.resolve(__dirname, 'client/src/images')
     }
   },
   module: {
@@ -71,7 +83,10 @@ module.exports = {
         test: /\.(jpg|png|svg|gif)$/,
         use: [
           {
-            loader: 'file-loader'
+            loader: 'file-loader?hash=sha512&digest=hex&name=[hash].[ext]'
+          },
+          {
+            loader: 'image-webpack-loader?${JSON.stringify(query)}'
           }
         ]
       }
@@ -79,13 +94,18 @@ module.exports = {
   },
   plugins: [
     new HtmlWebPackPlugin({
-      template: './src/index.html',
+      template: './client/src/index.html',
       filename: './index.html'
     }),
     new MiniCSSExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[id].css'
-    })
+    }),
+    new webpack.HotModuleReplacementPlugin(),
+    new CopyWebpackPlugin([{
+      from: './client/src/images',
+      to: 'images'
+    }]),
   ],
   optimization: {
     minimizer: [

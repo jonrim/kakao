@@ -1,0 +1,50 @@
+#main-nav {
+  background-color: #433228;
+  padding: 10px;
+  height: 60px;
+  position: relative;
+
+  .active {
+    color: #f9f05d;
+  }
+}
+
+#logo {
+  height: 40px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.main-button {
+  color: #888877;
+  font-size: 28px;
+  display: inline-block;
+  margin: 5px 10px;
+
+  .tooltiptext {
+    visibility: hidden;
+    width: 60px;
+    background-color: #fcfcfd;
+    color: #000;
+    border: solid 0.5px #e0e3e6;
+    font-weight: 700;
+    font-size: 13px;
+    text-align: center;
+    padding: 5px;
+    position: absolute;
+    top: 50px;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.1s;
+  }
+
+  &:hover {
+    color: #a8a51f;
+
+    .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}

@@ -1,0 +1,171 @@
+.chatroom {
+  height: 100%;
+  width: 100%;
+  background-color: #b1ecfc;
+  display: flex;
+  flex-direction: column;
+
+  .chatroom-photo {
+    width: 40px;
+    border-radius: 50%;
+    height: 40px;
+    object-fit: cover;
+  }
+
+  .chatroom-nav {
+    padding: 10px;
+    height: 60px;
+    width: 100%;
+    border-bottom: solid 1px rgba(0,0,0,0.1);
+    position: relative;
+    flex: 0 1 auto;
+
+    .chatroom-name {
+      height: 100%;
+      top: 0;
+      position: absolute;
+      display: inline-block;
+      font-weight: 900;
+      padding: 0 10px;
+
+      p {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+
+    .chatroom-photo {
+      top: -5px;
+      position: relative;
+    }
+
+    .fa-search, .fa-bars {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .fa-search {
+      right: 40px;
+    }
+
+    .fa-bars {
+      right: 0px;
+    }
+
+    .button {
+      font-size: 21px;
+      padding: 10px;
+      border-radius: 50%;
+      height: 40px;
+      width: 40px;
+      cursor: pointer;
+      background-color: transparent;
+      margin-right: 10px;
+
+      &:hover {
+        background-color: rgba(0,0,0, 0.2);
+        transition: background-color 0.2s ease;
+      }
+
+      &:active {
+        background-color: rgba(0,0,0, 0.5);
+        transition: background-color 0.1s ease;
+      }
+    }
+  }
+
+  .chatroom-type {
+    flex: 0 1 auto;
+    width: 100%;
+    background-color: #fff;
+    border-top: solid 1px rgba(0,0,0,0.2);
+
+    .form {
+      min-height: 120px;
+      padding: 10px;
+      padding-bottom: 50px;
+
+      textarea {
+        border: none;
+        resize: none;
+        max-height: 300px;
+        padding: 0;
+        width: calc(100% - 72px);
+      }
+
+      button {
+        color: #000 !important;
+        background-color: #f9f05d;
+        border: solid 1px #fbe483;
+        border-radius: 1px;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+
+        &:hover {
+          background-color: #f6e91e;
+        }
+        &:active {
+          background-color: #d6ca0a;
+        }
+      }
+
+      .bot-button {
+        font-size: 24px;
+        padding: 10px;
+        border-radius: 50%;
+        height: 43px;
+        width: 43px;
+        cursor: pointer;
+        background-color: transparent;
+        margin-right: 10px;
+        position: absolute;
+        bottom: 10px;
+        color: rgba(0,0,0, 0.5);
+
+        &:hover {
+          color: #43c3e5;
+        }
+
+        &:active {
+          color: #1ca1c4;
+        }
+      }
+
+      .fa-smile-wink {
+        left: 10px;
+      }
+
+      .fa-paperclip {
+        left: 50px;
+      }
+
+      .fa-image {
+        left: 90px !important;
+      }
+
+      .fa-phone {
+        left: 130px;
+      }
+    }
+  }
+}
+
+.emoji-mart {
+  visibility: hidden;
+  position: absolute;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.dropzone {
+  height: 100%;
+}
+
+.dropzone-drag {
+  opacity: 0.5;
+}
