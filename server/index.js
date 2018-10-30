@@ -13,6 +13,7 @@ require('dotenv').config({
 
 const app = express();
 const server = require('http').Server(app);
+const io = require('socket.io')(server);
 
 app.use(require("webpack-dev-middleware")(compiler, {
     noInfo: true, publicPath: webpackConfig.output.publicPath
@@ -25,6 +26,13 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
+io.on('connection', socket => {
+  console.log(chalk.cyan('A user connected'));
+  socket.on('disconnect', () => {
+    console.log(chalk.cyan('A user disconnected'));
+  })
+});
+
 server.listen(process.env.PORT, () => {
   console.log(chalk.blue('Server started on port', chalk.magenta(process.env.PORT)));
-})
+});

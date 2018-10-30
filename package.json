@@ -35,6 +35,8 @@
     "react-split-pane": "^0.1.84",
     "react-string-replace": "^0.4.1",
     "semantic-ui-react": "^0.82.5",
+    "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1",
     "throttled-event-listener": "0.0.3"
   },
   "devDependencies": {

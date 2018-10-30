@@ -14,6 +14,7 @@ import {
 } from 'Components'
 import Loadable from 'Utils'
 import SplitPane from 'react-split-pane'
+import socketIOClient from 'socket.io-client'
 
 import 'Styles/index.scss'
 
@@ -28,6 +29,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      endpoint: 'http://localhost:8080',
       chatroom: {id: 1, photo: '/images/sejin.jpg', name: '세진❤', favorite: true, motto: '🥑'},
       mobileWindow: window.innerWidth < 900
     };
@@ -48,6 +50,9 @@ class App extends Component {
   }
 
   componentDidMount() {
+    const { endpoint } = this.state;
+    const socket = socketIOClient(endpoint);
+    
     window.addEventListener('resize', this.changeIsMobileState);
   }
 
