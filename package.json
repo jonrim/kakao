@@ -1,7 +1,7 @@
 {
   "name": "kakao",
   "version": "1.0.0",
-  "description": "",
+  "description": "A remake of KakaoTalk from scratch",
   "main": "server/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -34,6 +34,7 @@
     "react-router-redux": "^4.0.8",
     "react-split-pane": "^0.1.84",
     "react-string-replace": "^0.4.1",
+    "redux": "^4.0.1",
     "semantic-ui-react": "^0.82.5",
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1",
@@ -46,6 +47,7 @@
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "autoprefixer": "^9.1.5",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.0.2",
     "chalk": "^2.4.1",
     "copy-webpack-plugin": "^4.5.4",
@@ -69,5 +71,9 @@
     "webpack-dev-middleware": "^3.4.0",
     "webpack-dev-server": "^3.1.8",
     "webpack-hot-middleware": "^2.24.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonrim/kakao.git"
   }
 }

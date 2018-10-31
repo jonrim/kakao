@@ -15,11 +15,19 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
-app.use(require("webpack-dev-middleware")(compiler, {
-    noInfo: true, publicPath: webpackConfig.output.publicPath
-}));
-app.use(require("webpack-hot-middleware")(compiler));
+if (process.env.NODE_ENV !== 'production') {
+  app.use(require("webpack-hot-middleware")(compiler));
+  app.use(require("webpack-dev-middleware")(compiler, {
+    noInfo: true,
+    publicPath: webpackConfig.output.publicPath
+  }));
 
+  compiler.hooks.compilation.tap('html-webpack-plugin-after-emit', () => {  
+    hotMiddleware.publish({  
+      action: 'reload'  
+    });  
+  });
+}
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
 app.get('/', (req, res) => {
