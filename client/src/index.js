@@ -15,6 +15,7 @@ import {
 import Loadable from 'Utils'
 import SplitPane from 'react-split-pane'
 import socketIOClient from 'socket.io-client'
+import { hot } from 'react-hot-loader'
 
 import 'Styles/index.scss'
 
@@ -122,3 +123,5 @@ render(
   </Router>,
   document.getElementById('app')
 )
+
+export default hot(module)(App)

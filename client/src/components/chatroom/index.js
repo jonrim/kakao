@@ -231,6 +231,7 @@ export default class Chatroom extends Component {
                   icon='search'
                   name='searchInput'
                   id='chatroom-search-input'
+                  iconPosition='left'
                   placeholder='Search'
                 />
               </div>

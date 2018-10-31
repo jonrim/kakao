@@ -75,6 +75,7 @@ export default class Friends extends Component {
           icon='search'
           name='searchNameInput'
           placeholder='Search name...'
+          iconPosition='left'
           onChange={changeInputValue} 
           value={searchNameInput}
         />

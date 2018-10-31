@@ -22,6 +22,11 @@ if (process.env.NODE_ENV !== 'production') {
     publicPath: webpackConfig.output.publicPath
   }));
 
+  var hotMiddleware = require('webpack-hot-middleware')(compiler, {
+      log: () => {},
+      heartbeat: 2000
+  });
+
   compiler.hooks.compilation.tap('html-webpack-plugin-after-emit', () => {  
     hotMiddleware.publish({  
       action: 'reload'  

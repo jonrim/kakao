@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config ./webpack.config.js",
     "start": "npm-run-all --parallel watch:server watch:build",
-    "watch:build": "webpack --mode development --watch --config ./webpack.config.js",
+    "watch:build": "webpack-dev-server --hot --mode development --watch --config ./webpack.config.js",
     "watch:server": "nodemon --watch \"./server\" server -e js,html server/index.js"
   },
   "keywords": [],
@@ -63,6 +63,7 @@
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "postcss-loader": "^3.0.0",
     "precss": "^3.1.2",
+    "react-hot-loader": "^4.3.11",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.0",
     "uglifyjs-webpack-plugin": "^2.0.1",
