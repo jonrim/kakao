@@ -12,70 +12,70 @@ fsg scaffolding, keep in mind that fsg always uses the same database
 name in the environment files.
 */
 
+require('@babel/register');
 const chalk = require('chalk');
 const db = require('./server/db');
 const User = db.model('user');
 const Promise = require('sequelize').Promise;
 const chance = require('chance')(123);
-
 const numUsers = 15;
 
-const seedUsers = function () {
-    const users = [
-        {
-            username: 'sejin',
-            password: 'p',
-            name: '세진❤'
-        },
-        {
-            username: 'johnchen',
-            password: 'p',
-            firstName: 'Barack',
-            lastName: 'Obama'
-        },
-        {
-            username: 'm',
-            password: 'm',
-            email: 'm@m.com',
-            phone: '3476032811',
-            name: 'J. Rim'
-            isAdmin: true
-        },
-    ];
+const seedUsers = () => {
+  const users = [
+    {
+      username: 'sejin',
+      password: 'p',
+      name: '세진❤',
+      email: 'm@m.com',
+      phone: '0000000000',
+    },
+    {
+      username: 'johnchen',
+      password: 'p',
+      name: 'John Chen',
+      email: 'm@m.com',
+      phone: '0000000000',
+    },
+    {
+      username: 'm',
+      password: 'm',
+      name: 'J. Rim',
+      email: 'm@m.com',
+      phone: '3476032811',
+    },
+  ];
 
-    function generateRandomUser() {
-        const name = chance.word() + chance.word();
-        return {
-            username: name.toLowerCase(),
-            password: 'password',
-            firstName: chance.word(),
-            lastName: chance.word(),
+  function generateRandomUser() {
+    const name = chance.word() + ' ' + chance.word();
+    return {
+      username: chance.word(),
+      password: 'password',
+      name: name,
+      email: chance.email(),
+      phone: chance.phone()
+    };
+  }
 
-        };
-    }
+  while (users.length <= numUsers) {
+    users.push(generateRandomUser());
+  }
 
-    while (users.length <= numUsers) {
-        users.push(generateRandomUser());
-    }
+  const creatingUsers = users.map(userObj => {
+    return User.create(userObj);
+  });
 
-    const creatingUsers = users.map(userObj => {
-        return User.create(userObj);
-    });
+  console.log(creatingUsers[0])
 
-
-    return Promise.all(creatingUsers);
-
+  return Promise.all(creatingUsers);
 };
 
 db.sync({ force: true })
-    .then(function () {
-        return Promise.all([seedUsers()]);
-    })
-    .then(function () {
-        console.log(chalk.green('Seed successful!'));
-        // process.kill(0);
-    })
-    .catch(function (err) {
-        console.error(err);
-        process.kill(1);
-    });
+.then(() => seedUsers())
+.then(() => {
+    console.log(chalk.green('Seed successful!'));
+    process.kill(0);
+})
+.catch(err => {
+    console.error(err);
+    process.kill(1);
+});

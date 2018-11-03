@@ -1,0 +1,10 @@
+{
+  "username": "postgres",
+  "password": "p",
+  "database": "kakao",
+  "host": "127.0.0.1",
+  "port": "5432",
+  "dialect": "postgres",
+  "logging": false,
+  "operatorsAliases": false
+}

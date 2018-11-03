@@ -1,11 +1,11 @@
+require('@babel/register');
 const path = require('path');
 const chalk = require('chalk');
 const express = require('express');
 const webpack = require('webpack');
 const webpackConfig = require('../webpack.config');
+const db = require('./db');
 const compiler = webpack(webpackConfig);
-
-require('babel-register');
 require('dotenv').config({
   path: path.join(__dirname, './env/development.env')
 });
@@ -46,6 +46,18 @@ io.on('connection', socket => {
   })
 });
 
-server.listen(process.env.PORT, () => {
-  console.log(chalk.blue('Server started on port', chalk.magenta(process.env.PORT)));
-});
+const startServer = () => {
+
+  const PORT = process.env.PORT
+
+  server.listen(PORT, () => {
+    console.log(chalk.blue('Server started on port', chalk.magenta(PORT)))
+  })
+
+}
+
+db.sync()
+.then(startServer)
+.catch(err => console.error(chalk.red(err.stack)))
+
+module.exports = db;
