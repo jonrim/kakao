@@ -23,7 +23,7 @@ const Nav = () => (
         <span className='tooltiptext'>More</span>
       </NavLink>
       </span>
-    <img id='logo' src={ require('Images/logo.png') } />
+    <img id='logo' src='https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1541254122/logo_ism2cy.png' />
   </nav>
 )
 

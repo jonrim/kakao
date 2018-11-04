@@ -59,22 +59,22 @@ router.post('/formInfo', function(req, res, next) {
 });
 
 router.put('/changeInfo', function(req, res, next) {
-  if (req.body.photoURL || req.body.photoURL === '') {
+  if (req.body.photo || req.body.photo === '') {
     User.findOne({
       where: {
         username: req.body.username
       }
     })
     .then(user => {
-      if (user.photoURL) {
+      if (user.photo) {
         var regex = /upload\/[a-zA-z0-9]+\/([a-zA-z0-9]+)/;
-        var match = regex.exec(user.photoURL);
+        var match = regex.exec(user.photo);
         cloudinary.uploader.destroy(match[1], result => { console.log(result) });
       }
-      return user.update({photoURL: req.body.photoURL})
+      return user.update({photo: req.body.photo})
     })
     .then(user => {
-      res.json({photoURL: req.body.photoURL})
+      res.json({photo: req.body.photo})
     })
     .catch(next);
   }
