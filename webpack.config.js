@@ -29,7 +29,8 @@ module.exports = {
       'Components': path.resolve(__dirname, 'client/src/components'),
       'Utils': path.resolve(__dirname, 'client/src/utils'),
       'Styles': path.resolve(__dirname, 'client/src/styles'),
-      'Images': path.resolve(__dirname, 'client/src/images')
+      'Images': path.resolve(__dirname, 'client/src/images'),
+      'Modules': path.resolve(__dirname, 'client/src/modules')
     }
   },
   module: {

@@ -29,11 +29,17 @@
       .friend-photo {
         width: 13%;
         min-width: 40px;
-        height: 0;
-        padding-top: 13%;        
+        max-width: 100px;     
         margin: 0 15px 0 0;
         display: inline-block;
         position: relative;
+
+        /* for making height of photo scale equal to width */
+        &:before{
+          content: '';
+          padding: 50% 0;
+          display: inline-block;
+        }
       }
 
       img {
