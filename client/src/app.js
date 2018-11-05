@@ -76,7 +76,10 @@ export default class App extends Component {
           chatroom && !mobileWindow ? (
             <SplitPane split='vertical' minSize={350} defaultSize={450}>
               <div>
-                <Nav/>
+                {
+                  user &&
+                  <Nav/>
+                }
                 <Switch>
                   <Route exact path='/' render={() => (
                     user ? (
@@ -110,9 +113,19 @@ export default class App extends Component {
             />
           ) : (
             <div>
-              <Nav/>
+              {
+                user &&
+                <Nav/>
+              }
               <Switch>
-                <Route exact path='/' render={props => (
+                <Route exact path='/' render={() => (
+                  user ? (
+                    <Redirect to='/friends' />
+                  ) : (
+                    <Auth />
+                  )
+                )}/>
+                <Route path='/friends' render={props => (
                   <AsyncFriends {...props}
                     chatroom={chatroom}
                     changeFriendState={this.changeFriendState}

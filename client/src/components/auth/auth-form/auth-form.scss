@@ -1,60 +1,56 @@
-.client-login {
-  height: 100vh;
+.login {
+  height: 100%;
+  display: flex;
+  background-color: #799bd9;
 
-  .upper-background {
-    display: flex;
-    height: 33vh;
-    background-color: #ffffff;
+  .login-logo {
+    margin: auto;
+
   }
 
-  .lower-background {
-    display: flex;
-    height: 67vh;
-    background-color: #799bd9;
+  .form {
+    margin: auto;
 
-    .form {
-      margin: auto;
-
-      .field {
-        width: 300px;
-        height: 46px;
-      
-        .field-input {
-          width: 284px !important;
-          height: 24px;
-          font-size: 20px;
-          font-weight: 300;
-          text-align: left;
-          margin: 12px 8px 10px;
-
-          input {
-            color: rgba(255, 255, 255, 0.7);
-            width: 100%;
-          }
-        }
-      }
-
-      .button {
-        width: 300px;
-        height: 60px;
-        border-radius: 4px;
-        background-color: #799bd9;
-        border: solid 1px #ffffff;
+    .field {
+      width: 300px;
+      height: 46px;
+    
+      .field-input {
+        width: 284px !important;
+        height: 24px;
         font-size: 20px;
         font-weight: 300;
-        text-align: center;
-        color: #ffffff;
-      }
+        text-align: left;
+        margin: 12px 8px 10px;
 
-      .button:hover {
-        background-color: #6f92d3;
-      }
-
-      .button:active {
-        background-color: #527dcb;
+        input {
+          color: rgba(255, 255, 255, 0.7);
+          width: 100%;
+        }
       }
     }
+
+    .button {
+      width: 300px;
+      height: 60px;
+      border-radius: 4px;
+      background-color: #799bd9;
+      border: solid 1px #ffffff;
+      font-size: 20px;
+      font-weight: 300;
+      text-align: center;
+      color: #ffffff;
+    }
+
+    .button:hover {
+      background-color: #6f92d3;
+    }
+
+    .button:active {
+      background-color: #527dcb;
+    }
   }
+  
 
   .line {
     width: 300px;
