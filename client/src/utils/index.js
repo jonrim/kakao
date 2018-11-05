@@ -1,10 +1,47 @@
 import L from 'react-loadable';
 import Spinner from 'react-loader-spinner';
 
-const Loadable = opts =>
+export function postJSON(body) {
+  return {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body),
+  };
+}
+
+export function putJSON(body) {
+  return {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body),
+  };
+}
+
+export function checkStatus(response) {
+  return response.json()
+  .then(result => {
+    if (result.error_code) {
+      const error = new Error(result.message);
+      error.error_code = result.error_code
+      throw error;
+    }
+    return result;
+  });
+}
+
+export const createOptions = customOptions => ({
+  method: 'GET',
+  credentials: 'include',
+  ...customOptions
+});
+
+export function Loadable(opts) {
   L({
     loading: Spinner,
     ...opts
   });
-
-export default Loadable;
+}

@@ -1,5 +1,5 @@
 import { push } from 'connected-react-router';
-import { auth } from 'api';
+import { auth } from 'Api';
 
 export const LOAD           = 'LOAD';
 export const LOAD_SUCCESS   = 'LOAD_SUCCESS';

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {
+  Auth,
   Nav,
   Friends,
   Chats,
@@ -7,10 +8,14 @@ import {
   More,
   Chatroom
 } from 'Components'
-import Loadable from 'Utils'
+import { Loadable } from 'Utils'
 import SplitPane from 'react-split-pane'
 import socketIOClient from 'socket.io-client'
 import { Route, Switch } from 'react-router-dom'
+import {
+  isLoaded as isAuthLoaded,
+  load as loadAuth
+} from 'Modules/auth';
 
 const AsyncFriends = Loadable({
   loader: () => import(/* webpackChunkName: 'friends' */ 'Components/friends')
@@ -26,6 +31,58 @@ export default class App extends Component {
     };
     this.changeFriendState = this.changeFriendState.bind(this);
     this.changeIsMobileState = this.changeIsMobileState.bind(this);
+    this.getAuth = this.getAuth.bind(this);
+    this.requireLogin = this.requireLogin.bind(this);
+    this.requireNoUser = this.requireNoUser.bind(this);
+  }
+
+  componentDidMount() {
+    const { endpoint } = this.state;
+    const socket = socketIOClient(endpoint);
+
+    window.addEventListener('resize', this.changeIsMobileState);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.changeIsMobileState);
+  }
+
+  getAuth(nextState, replace, next) {
+    console.log('getAuth');
+    const { store } = this.props;
+    if (!isAuthLoaded(store.getState())) {
+      store
+        .dispatch(loadAuth())
+        .then(() => next());
+    } else {
+      next()
+    }
+  }
+
+  requireLogin(nextState, replace, next) {
+    const { store } = this.props;
+    function checkAuth () {
+      const { auth: { user } } = store.getState();
+      if (!user) {
+        replace('/');
+      }
+      next();
+    }
+    console.log('requireLogin');
+    if (!isAuthLoaded(store.getState())) {
+      store.dispatch(loadAuth()).then(checkAuth);
+    } else {
+      checkAuth();
+    }
+  }
+
+  requireNoUser(nextState, replace, next) {
+    const { store } = this.props;
+    const { auth: { user } } = store.getState();
+    if (user) {
+      replace('/candidates');
+    }
+    next();
   }
 
   changeFriendState(propName, friend) {
@@ -40,20 +97,8 @@ export default class App extends Component {
     else if (window.innerWidth >= 900 && mobileWindow) this.setState({mobileWindow: false});
   }
 
-  componentDidMount() {
-    const { endpoint } = this.state;
-    const socket = socketIOClient(endpoint);
-
-    window.addEventListener('resize', this.changeIsMobileState);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.changeIsMobileState);
-  }
-
   render() {
     const { chatroom, mobileWindow } = this.state;
-    const { changeFriendState } = this;
     return (
       <div style={{height: '100%'}}>
         {
@@ -61,11 +106,12 @@ export default class App extends Component {
             <SplitPane split='vertical' minSize={350} defaultSize={450}>
               <div>
                 <Nav/>
-                <Switch>
-                  <Route exact path='/' render={props => (
+                <Switch onEnter={this.getAuth}>
+                  <Route exact path='/' onEnter={this.requireNoUser} component={Auth} />
+                  <Route path='/friends' render={props => (
                     <AsyncFriends {...props}
                       chatroom={chatroom}
-                      changeFriendState={changeFriendState}
+                      changeFriendState={this.changeFriendState}
                     />
                   )}/>
                   <Route path='/chats' component={Chats} />
@@ -75,14 +121,14 @@ export default class App extends Component {
               </div>
               <Chatroom
                 chatroom={chatroom}
-                changeFriendState={changeFriendState}
+                changeFriendState={this.changeFriendState}
                 mobileWindow={mobileWindow}
               />
             </SplitPane>
           ) : chatroom && mobileWindow ? (
             <Chatroom
               chatroom={chatroom}
-              changeFriendState={changeFriendState}
+              changeFriendState={this.changeFriendState}
               mobileWindow={mobileWindow}
             />
           ) : (
@@ -92,7 +138,7 @@ export default class App extends Component {
                 <Route exact path='/' render={props => (
                   <AsyncFriends {...props}
                     chatroom={chatroom}
-                    changeFriendState={changeFriendState}
+                    changeFriendState={this.changeFriendState}
                   />
                 )}/>
                 <Route path='/chats' component={Chats} />

@@ -1,3 +1,4 @@
+export Auth from './auth'
 export Nav from './nav'
 export Friends from './friends'
 export Chats from './chats'

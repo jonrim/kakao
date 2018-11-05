@@ -57,12 +57,11 @@ app.use(bodyParser.json());
 app.use('/', require('./routes'));
 
 app.get('/bundle.js', (req, res, next) => {
-  res.sendFile(path.resolve(__dirname, '../public/bundle.js'));
+  res.sendFile(path.resolve(__dirname, '../client/dist/bundle.js'));
 });
 
 app.get('/*', (req, res, next) => {
-  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-  res.sendFile(path.resolve(__dirname, '../public/index.html'));
+  res.sendFile(path.resolve(__dirname, '../client/dist/index.html'));
 });
 
 app.use((err, req, res, next) => {

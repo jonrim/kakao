@@ -30,7 +30,8 @@ module.exports = {
       'Utils': path.resolve(__dirname, 'client/src/utils'),
       'Styles': path.resolve(__dirname, 'client/src/styles'),
       'Images': path.resolve(__dirname, 'client/src/images'),
-      'Modules': path.resolve(__dirname, 'client/src/modules')
+      'Modules': path.resolve(__dirname, 'client/src/modules'),
+      'Api': path.resolve(__dirname, 'client/src/api')
     }
   },
   module: {
