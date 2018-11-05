@@ -11,7 +11,7 @@ import {
 import { Loadable } from 'Utils'
 import SplitPane from 'react-split-pane'
 import socketIOClient from 'socket.io-client'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import {
   isLoaded as isAuthLoaded,
   load as loadAuth
@@ -32,14 +32,12 @@ export default class App extends Component {
     this.changeFriendState = this.changeFriendState.bind(this);
     this.changeIsMobileState = this.changeIsMobileState.bind(this);
     this.getAuth = this.getAuth.bind(this);
-    this.requireLogin = this.requireLogin.bind(this);
-    this.requireNoUser = this.requireNoUser.bind(this);
   }
 
   componentDidMount() {
     const { endpoint } = this.state;
     const socket = socketIOClient(endpoint);
-
+    this.getAuth();
     window.addEventListener('resize', this.changeIsMobileState);
   }
 
@@ -47,42 +45,13 @@ export default class App extends Component {
     window.removeEventListener('resize', this.changeIsMobileState);
   }
 
-  getAuth(nextState, replace, next) {
+  getAuth() {
     console.log('getAuth');
     const { store } = this.props;
     if (!isAuthLoaded(store.getState())) {
       store
         .dispatch(loadAuth())
-        .then(() => next());
-    } else {
-      next()
     }
-  }
-
-  requireLogin(nextState, replace, next) {
-    const { store } = this.props;
-    function checkAuth () {
-      const { auth: { user } } = store.getState();
-      if (!user) {
-        replace('/');
-      }
-      next();
-    }
-    console.log('requireLogin');
-    if (!isAuthLoaded(store.getState())) {
-      store.dispatch(loadAuth()).then(checkAuth);
-    } else {
-      checkAuth();
-    }
-  }
-
-  requireNoUser(nextState, replace, next) {
-    const { store } = this.props;
-    const { auth: { user } } = store.getState();
-    if (user) {
-      replace('/candidates');
-    }
-    next();
   }
 
   changeFriendState(propName, friend) {
@@ -99,6 +68,8 @@ export default class App extends Component {
 
   render() {
     const { chatroom, mobileWindow } = this.state;
+    const { store } = this.props;
+    const { auth: { user } } = store.getState();
     return (
       <div style={{height: '100%'}}>
         {
@@ -106,8 +77,14 @@ export default class App extends Component {
             <SplitPane split='vertical' minSize={350} defaultSize={450}>
               <div>
                 <Nav/>
-                <Switch onEnter={this.getAuth}>
-                  <Route exact path='/' onEnter={this.requireNoUser} component={Auth} />
+                <Switch>
+                  <Route exact path='/' render={() => (
+                    user ? (
+                      <Redirect to='/friends' />
+                    ) : (
+                      <Auth />
+                    )
+                  )}/>
                   <Route path='/friends' render={props => (
                     <AsyncFriends {...props}
                       chatroom={chatroom}

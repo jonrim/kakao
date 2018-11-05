@@ -10,7 +10,7 @@ import makeReducer from './makeReducer'
 
 export default function configureStore (history, initialState) {
 
-  const reducer = makeReducer();
+  const reducer = makeReducer(history);
 
   const middleware = [thunk, promise, routerMiddleware(history)]
   if (process.env.NODE_ENV !== 'production') {
