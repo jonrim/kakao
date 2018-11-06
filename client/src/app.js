@@ -75,7 +75,7 @@ export default class App extends Component {
         {
           chatroom && !mobileWindow ? (
             <SplitPane split='vertical' minSize={350} defaultSize={450}>
-              <div>
+              <div style={{height: '100%'}}>
                 {
                   user &&
                   <Nav/>
@@ -112,7 +112,7 @@ export default class App extends Component {
               mobileWindow={mobileWindow}
             />
           ) : (
-            <div>
+            <div style={{height: '100%'}}>
               {
                 user &&
                 <Nav/>

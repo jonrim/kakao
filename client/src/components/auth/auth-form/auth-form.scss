@@ -1,60 +1,79 @@
 .login {
   height: 100%;
-  display: flex;
-  background-color: #799bd9;
+  background-color: #FBDF00;
+  min-height: 600px;
+
+  .login-form-wrapper {
+    margin: auto;
+    width: 332px;
+    height: 100%;
+  }
 
   .login-logo {
-    margin: auto;
-
+    top: 100px;
+    position: relative;
   }
 
   .form {
     margin: auto;
+    top: 150px;
+    position: relative;
+    height: 200px;
+    width: 332px;
+
+    .fields-wrapper {
+      background-color: #fff;
+      border: solid 1px #dfc601;
+    }
 
     .field {
-      width: 300px;
+      width: 100%;
       height: 46px;
+      margin: 0 !important;
     
       .field-input {
-        width: 284px !important;
+        width: 306px !important;
         height: 24px;
         font-size: 20px;
         font-weight: 300;
         text-align: left;
-        margin: 12px 8px 10px;
+        margin: 12px;
 
         input {
-          color: rgba(255, 255, 255, 0.7);
           width: 100%;
         }
       }
     }
 
     .button {
-      width: 300px;
+      margin-top: 15px;
+      width: 100%;
       height: 60px;
-      border-radius: 4px;
-      background-color: #799bd9;
-      border: solid 1px #ffffff;
+      border-radius: 0px;
       font-size: 20px;
       font-weight: 300;
       text-align: center;
-      color: #ffffff;
+      color: #fff;
+      background-color: #333333;
     }
 
     .button:hover {
-      background-color: #6f92d3;
+      background-color: rgba(33,33,33,1);
     }
 
     .button:active {
-      background-color: #527dcb;
+      background-color: rgba(33,33,33,0.8);
     }
-  }
-  
 
-  .line {
-    width: 300px;
-    height: 1px;
-    border: solid 0.5px rgba(255, 255, 255, 0.7);
+    .field.disabled {
+      opacity: 1 !important;
+    }
+
+    .button.disabled {
+      color: #000;
+      background-color: #fff !important;
+      opacity: 1 !important;
+      border: solid 1px #dfc601;
+    }
   }
 }

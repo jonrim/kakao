@@ -43,48 +43,49 @@ export default class AuthForm extends Component {
 
     return (
       <div className='login'>
-        <img className='login-logo' src={
-          `https://res.cloudinary.com/fresh-aire-mechanical-co/i
-          mage/upload/c_scale,q_100,w_656/v1541415680/KakaoTalk_logo_Kakao_Talk_rtqtbc.png`
-        }/>
-        <Form
-          error={!!error}
-          onSubmit={this.handleSubmit}
-        >
-          <Form.Field className="field">
-            <Input
-              transparent
-              className="field-input"
-              type="text"
-              name="email"
-              placeholder="E-mail"
-              value={email}
-              onChange={this.handleChange}
-            />
-            <div className="line"/>
-          </Form.Field>
+        <div className='login-form-wrapper'>
+          <img className='login-logo' src={
+            `https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/c_scale,w_332/v1541415680/KakaoTalk_logo_Kakao_Talk_rtqtbc.png`
+          }/>
+          <Form
+            error={!!error}
+            onSubmit={this.handleSubmit}
+          >
+            <div className='fields-wrapper'>
+              <Form.Field className="field">
+                <Input
+                  transparent
+                  className="field-input"
+                  type="text"
+                  name="email"
+                  placeholder="E-mail"
+                  value={email}
+                  onChange={this.handleChange}
+                />
+              </Form.Field>
 
-          <Form.Field className="field">
-            <Input
-              transparent
-              className="field-input"
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={password}
-              onChange={this.handleChange}
+              <Form.Field className="field">
+                <Input
+                  transparent
+                  className="field-input"
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={this.handleChange}
+                />
+              </Form.Field>
+            </div>
+            <Message
+              className="error-message"
+              error
+              content={error}
             />
-            <div className="line"/>
-          </Form.Field>
-          <Message
-            className="error-message"
-            error
-            content={error}
-          />
-          <Form.Button disabled={!email || !password}>
-            {buttonLabel}
-          </Form.Button>
-        </Form>
+            <Form.Button disabled={!email || !password}>
+              {buttonLabel}
+            </Form.Button>
+          </Form>
+        </div>
       </div>
     )
   }
