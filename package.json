@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
     "body-parser": "^1.18.3",
     "chance": "^1.0.16",
@@ -42,6 +43,7 @@
     "react-split-pane": "^0.1.84",
     "react-string-replace": "^0.4.1",
     "redux": "^4.0.1",
+    "redux-saga": "^0.16.2",
     "redux-thunk": "^2.3.0",
     "semantic-ui-react": "^0.82.5",
     "sequelize": "^4.41.0",

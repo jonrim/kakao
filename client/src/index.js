@@ -1,5 +1,5 @@
 'use strict'
-
+import 'babel-polyfill'; /* for generators */
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
@@ -9,18 +9,22 @@ import { ConnectedRouter } from 'connected-react-router'
 import createBrowserHistory from 'history/createBrowserHistory'
 import { hot } from 'react-hot-loader'
 import App from './app'
+import createSagaMiddleware from 'redux-saga';
+import mySaga from 'Sagas';
 
 import 'Styles/index.scss'
 
+const sagaMiddleware = createSagaMiddleware()
 // const history = syncHistoryWithStore(browserHistory, store)
 const history = createBrowserHistory()
-const store = configureStore(history)
+const store = configureStore(history, sagaMiddleware)
 
+sagaMiddleware.run(mySaga)
 
 render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <App store={store} />
+      <App />
     </ConnectedRouter>
   </Provider>,
   document.getElementById('app')

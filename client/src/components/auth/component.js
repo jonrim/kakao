@@ -6,14 +6,15 @@ export default class Auth extends Component {
     const {login, push} = this.props;
     login(credentials)
     .then(result => {
-      push('/friends');
+      console.log(result)
+      // push('/friends');
     });
   }
 
   render () {
     return (
       <AuthForm
-        buttonLabel="SIGN IN"
+        buttonLabel="LOG IN"
         onSubmit={this.handleLogin}
         error={this.props.error}
       />

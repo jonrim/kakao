@@ -19,7 +19,9 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'client', 'dist'),
     filename: 'bundle.js',
-    publicPath: '/'
+    publicPath: '/',
+    hotUpdateChunkFilename: 'hot/hot-update.js',
+    hotUpdateMainFilename: 'hot/hot-update.json'
   },
   mode: 'development',
   resolve: {
@@ -29,9 +31,11 @@ module.exports = {
       'Components': path.resolve(__dirname, 'client/src/components'),
       'Utils': path.resolve(__dirname, 'client/src/utils'),
       'Styles': path.resolve(__dirname, 'client/src/styles'),
-      'Images': path.resolve(__dirname, 'client/src/images'),
       'Modules': path.resolve(__dirname, 'client/src/modules'),
-      'Api': path.resolve(__dirname, 'client/src/api')
+      'Api': path.resolve(__dirname, 'client/src/api'),
+      'Actions': path.resolve(__dirname, 'client/src/actions'),
+      'Constants': path.resolve(__dirname, 'client/src/constants'),
+      'Sagas': path.resolve(__dirname, 'client/src/sagas'),
     }
   },
   module: {
@@ -104,10 +108,10 @@ module.exports = {
       chunkFilename: '[id].css'
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new CopyWebpackPlugin([{
-      from: './client/src/images',
-      to: 'images'
-    }]),
+    // new CopyWebpackPlugin([{
+    //   from: './client/src/images',
+    //   to: 'images'
+    // }]),
   ],
   optimization: {
     minimizer: [

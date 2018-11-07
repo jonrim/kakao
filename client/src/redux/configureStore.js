@@ -8,11 +8,12 @@ import thunk from 'redux-thunk'
 import promise from './middleware/promise'
 import makeReducer from './makeReducer'
 
-export default function configureStore (history, initialState) {
+export default function configureStore (history, sagaMiddleware) {
 
   const reducer = makeReducer(history);
+  
 
-  const middleware = [thunk, promise, routerMiddleware(history)]
+  const middleware = [thunk, promise, routerMiddleware(history), sagaMiddleware]
   if (process.env.NODE_ENV !== 'production') {
     middleware.push(logger)
   }
@@ -21,5 +22,6 @@ export default function configureStore (history, initialState) {
     applyMiddleware(...middleware)
   )
 
-  return createStore(reducer, initialState, enhancers)
+
+  return createStore(reducer, {}, enhancers)
 }
