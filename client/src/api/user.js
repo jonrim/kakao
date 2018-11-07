@@ -4,7 +4,7 @@ import {
   putJSON,
   checkStatus,
   createOptions
-} from '../utils';
+} from 'Utils';
 
 export const requestChangeInfo = (userInfo) => {
   return fetch(`/users/changeInfo`, createOptions(putJSON(userInfo))).then(checkStatus);

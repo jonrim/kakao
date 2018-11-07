@@ -6,14 +6,16 @@ const db = require('../db');
 const User = db.model('user');
 
 router.post('/login', (req, res, next) => {
+  console.log(req.body)
   User.findOne({
     where: {
-      username: req.body.username
+      email: req.body.email
     }
   })
   .then(user => {
+    console.log(user)
     if (!user) {
-      const error = new Error('Invalid username.');
+      const error = new Error('Email not registered.');
       error.status = 400;
       throw error;
     }
@@ -23,9 +25,7 @@ router.post('/login', (req, res, next) => {
     if (user.password === passwordAttempt) {
       req.session.user = {
         id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        username: user.username,
+        name: user.name,
         email: user.email,
         phone: user.phone,
         photo: user.photo,
@@ -53,7 +53,7 @@ router.post('/signup', (req, res, next) => {
   User.findOne({
     where: {
       $or: [
-        {username: req.body.username},
+        {email: req.body.email},
         {email: req.body.email}
       ]
     }
@@ -61,10 +61,8 @@ router.post('/signup', (req, res, next) => {
   .then(user => {
     if (user) {
       var error;
-      if (user.username === req.body.username)
-        error = new Error('Username already taken.');
-      else
-        error = new Error('Email already in use.');
+      if (user.email === req.body.email)
+        error = new Error('Email already taken.');
       error.status = 400;
       throw error;
     }
@@ -73,11 +71,9 @@ router.post('/signup', (req, res, next) => {
     .then(users => {
       return User.create({
         id: users.length,
-        username: req.body.username,
-        password: req.body.password,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
         email: req.body.email,
+        password: req.body.password,
+        name: req.body.name,
         phone: req.body.phone
       });
     });
@@ -85,9 +81,7 @@ router.post('/signup', (req, res, next) => {
   .then(user => {
     req.session.user = {
       id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      username: user.username,
+      name: user.name,
       email: user.email,
       phone: user.phone
     };
@@ -108,9 +102,7 @@ router.get('/session', (req, res, next) => {
   .then(user => {
     res.json({
       id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      username: user.username,
+      name: user.name,
       email: user.email,
       phone: user.phone,
       photoURL: user.photoURL

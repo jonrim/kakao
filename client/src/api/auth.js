@@ -3,7 +3,7 @@ import {
   postJSON,
   checkStatus,
   createOptions
-} from '../utils';
+} from 'Utils';
 
 export const requestSession = () => {
   return fetch(`/auth/session`, createOptions()).then(checkStatus);

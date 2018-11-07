@@ -65,18 +65,15 @@ export default class App extends Component {
                   <Nav/>
                 }
                 <Switch>
-                  <Route exact path='/' render={() => (
+                  <Route exact path='/' render={(props) => (
                     user ? (
-                      <Redirect to='/friends' />
+                      <Friends {...props}
+                        chatroom={chatroom}
+                        changeFriendState={this.changeFriendState}
+                      />
                     ) : (
                       <Auth />
                     )
-                  )}/>
-                  <Route path='/friends' render={props => (
-                    <AsyncFriends {...props}
-                      chatroom={chatroom}
-                      changeFriendState={this.changeFriendState}
-                    />
                   )}/>
                   <Route path='/chats' component={Chats} />
                   <Route path='/find' component={Find} />

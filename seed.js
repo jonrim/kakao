@@ -23,7 +23,6 @@ const numUsers = 15;
 const seedUsers = () => {
   const users = [
     {
-      username: 'sejin',
       password: 'p',
       name: '세진❤',
       email: 'm1@m.com',
@@ -33,7 +32,6 @@ const seedUsers = () => {
       isAdmin: false
     },
     {
-      username: 'johnchen',
       password: 'p',
       name: 'John Chen',
       email: 'm2@m.com',
@@ -43,7 +41,6 @@ const seedUsers = () => {
       isAdmin: false
     },
     {
-      username: 'm',
       password: 'm',
       name: 'Jonathan Rim',
       email: 'm@m.com',
@@ -53,7 +50,6 @@ const seedUsers = () => {
       isAdmin: true
     },
     {
-      username: 'm3',
       password: 'm',
       name: 'Aaron An',
       email: 'm3@m.com',
@@ -64,7 +60,6 @@ const seedUsers = () => {
       isAdmin: false
     },
     {
-      username: 'm4',
       password: 'm',
       name: 'Justin Kim',
       email: 'm4@m.com',
@@ -74,7 +69,6 @@ const seedUsers = () => {
       isAdmin: false
     },
     {
-      username: 'm5',
       password: 'm',
       name: '이용우',
       email: 'm5@m.com',
@@ -83,7 +77,6 @@ const seedUsers = () => {
       isAdmin: false
     },
     {
-      username: 'm6',
       password: 'm',
       name: '이현호',
       email: 'm6@m.com',
@@ -92,7 +85,6 @@ const seedUsers = () => {
       isAdmin: false
     },
     {
-      username: 'm7',
       password: 'm',
       name: 'Lawrence Parsons',
       email: 'm7@m.com',
@@ -105,7 +97,6 @@ const seedUsers = () => {
   function generateRandomUser() {
     const name = chance.word() + ' ' + chance.word();
     return {
-      username: chance.word(),
       password: 'password',
       name: name,
       email: chance.email(),

@@ -3,18 +3,21 @@ import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
 import auth from 'Modules/auth';
 import component from './component';
+import { requestLogin } from 'Actions/auth';
 
-const mapStateToProps = (state) => {
+function mapStateToProps(state) {
   return {
-    error: state.auth.error
+    isFetching: state.auth.isFetching,
+    error: state.auth.error,
+    user: state.auth.user
   };
-};
+}
 
-export const mapDispatchToProps = (dispatch) => {
+function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    auth,
-    push
+    push,
+    requestLogin
   }, dispatch);
-};
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(component);

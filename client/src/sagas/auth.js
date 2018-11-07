@@ -12,7 +12,7 @@ function* requestLogin(action) {
     if (result.errorStatus) throw result;
     else {
       yield put(Actions.loginSuccess(result));
-      yield put(locationChange('/'));
+      // yield put(locationChange('/'));
     }
   } catch (error) {
     // yield call(delay, 2500);
@@ -26,7 +26,7 @@ function* requestSignUp(action) {
     if (result.errorStatus) throw result;
     else {
       yield put(Actions.signUpSuccess(result));
-      yield put(locationChange('/'));
+      // yield put(locationChange('/'));
     }
   } catch (error) {
     // yield call(delay, 2500);
@@ -43,7 +43,7 @@ function* requestSession(action) {
     }
   } catch (error) {
     yield put(Actions.sessionFailed(error));
-    yield put(locationChange('/'));
+    // yield put(locationChange('/'));
   }
 }
 
@@ -53,7 +53,7 @@ function* requestLogout(action) {
     if (result.errorStatus) throw result;
     else {
       yield put(Actions.logoutSuccess(result));
-      yield put(locationChange('/'));
+      // yield put(locationChange('/'));
     }
   } catch (error) {
     yield put(Actions.logoutFailed(result));

@@ -13,12 +13,13 @@ module.exports = function(db) {
         notEmpty: true,
       }
     },
-    username: {
+    email: {
       type: Sequelize.STRING,
       allowNull: false,
       unique: true,
       validate: {
         notEmpty: true,
+        isEmail: true
       }
     },
     password: {
@@ -26,14 +27,6 @@ module.exports = function(db) {
       allowNull: false,
       validate: {
         notEmpty: true,
-      }
-    },
-    email: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-        isEmail: true
       }
     },
     phone: {
