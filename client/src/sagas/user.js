@@ -22,9 +22,19 @@ function* requestSendEmail(action) {
   }
 }
 
+function* requestFriendsList(action) {
+  try {
+    const result = yield call(Api.requestFriendsList, action.formInfo);
+    yield put(Actions.friendsListSuccess(result));
+  } catch (error) {
+    yield put(Actions.friendsListFailed(error));
+  }
+}
+
 export default function* watchUser() {
   yield all([
     takeLatest(Consts.CHANGEINFO_REQUEST, requestChangeInfo),
-    takeLatest(Consts.SENDEMAIL_REQUEST, requestSendEmail)
+    takeLatest(Consts.SENDEMAIL_REQUEST, requestSendEmail),
+    takeLatest(Consts.FRIENDSLIST_REQUEST, requestFriendsList),
   ]);
 }

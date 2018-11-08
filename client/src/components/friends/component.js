@@ -8,18 +8,7 @@ export default class Friends extends Component {
     super(props);
 
     this.state = {
-      searchNameInput: '',
-      myProfile: [{id: 0, photo: '/images/me.jpg', name: 'Jonathan Rim', motto: '이 세상에서 제일 필오한건.. 마음이 따뜻한 사람~'}],
-      friends: [
-        {id: 1, photo: '/images/sejin.jpg', name: '세진❤', favorite: true, motto: '🥑'},
-        {id: 2, photo: '/images/justinkim.jpg', name: 'Justin Kim', favorite: false, motto: `Throwback to the good ol' days in Europe.`},
-        {id: 3, photo: '/images/lawrenceparsons.jpg', name: 'Lawrence Parsons', favorite: false, motto: 'One of the new friends I made in Costa Rica!'},
-        {id: 4, photo: '/images/johnchen.jpg', name: 'John Chen', favorite: false, motto: 'happy new years'},
-        {id: 5, photo: '/images/aaronan.jpg', name: 'Aaron An', favorite: false, motto: `"But I have trusted in your steadfast love;
-          my heart shall rejoice in your salvation." -Psalm 13:5`},
-        {id: 6, photo: '/images/yongwoolee.jpg', name: '이용우', favorite: false, motto: ''},
-        {id: 7, photo: '/images/scottlee.jpg', name: '이현호', favorite: false, motto: ''},
-      ]
+      searchNameInput: ''
     };
 
     this.changeInputValue = this.changeInputValue.bind(this);
@@ -58,8 +47,8 @@ export default class Friends extends Component {
   }
 
   render() {
-    const { friends, searchNameInput, focusedFriend } = this.state;
-    const { chatroom, changeFriendState , myProfile } = this.props;
+    const { searchNameInput, focusedFriend } = this.state;
+    const { chatroom, changeFriendState, myProfile, friends } = this.props;
     const { changeInputValue } = this;
     console.log(myProfile)
     let friendSections = [

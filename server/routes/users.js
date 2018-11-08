@@ -22,11 +22,15 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-router.get('/', Auth.assertAdmin, function (req, res) {
+router.get('/', Auth.assertAdmin, function(req, res) {
   User.all()
   .then(users => {
     res.json(users);
   });
+});
+
+router.get('/friendsList', function(req, res) {
+
 });
 
 router.post('/formInfo', function(req, res, next) {

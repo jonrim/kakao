@@ -21,7 +21,10 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         isFetching: false,
-        user: action.result
+        user: {
+          ...action.result,
+          friends: action.result.friends.map(friend => JSON.parse(friend)),
+        }
       }
     case Consts.LOGOUT_SUCCESS:
       return {
@@ -33,12 +36,8 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         user: {
-          name: action.result.name,
-          id: action.result.id,
-          email: action.result.email,
-          phone: action.result.phone,
-          photo: action.result.photo,
-          motto: action.result.motto,
+          ...action.result,
+          friends: action.result.friends.map(friend => JSON.parse(friend)),
         }
       };
     case Consts.LOGIN_FAILED:

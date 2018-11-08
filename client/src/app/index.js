@@ -5,6 +5,7 @@ import { push } from 'connected-react-router';
 import auth from 'Modules/auth';
 import { withRouter } from 'react-router-dom'
 import { requestSession } from 'Actions/auth';
+import { requestFriendsList } from 'Actions/user';
 
 const mapStateToProps = (state) => {
   return {
@@ -16,7 +17,8 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     auth,
     push,
-    requestSession
+    requestSession,
+    requestFriendsList,
   }, dispatch);
 }
 

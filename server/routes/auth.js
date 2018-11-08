@@ -6,14 +6,12 @@ const db = require('../db');
 const User = db.model('user');
 
 router.post('/login', (req, res, next) => {
-  console.log(req.body)
   User.findOne({
     where: {
       email: req.body.email
     }
   })
   .then(user => {
-    console.log(user)
     if (!user) {
       const error = new Error('Email not registered.');
       error.status = 400;
@@ -31,6 +29,7 @@ router.post('/login', (req, res, next) => {
         photo: user.photo,
         isAdmin: user.isAdmin,
         motto: user.motto,
+        friends: user.friends
       };
       
       res.json(req.session.user);
@@ -101,14 +100,7 @@ router.get('/session', (req, res, next) => {
 
   User.findById(req.session.user.id)
   .then(user => {
-    res.json({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      phone: user.phone,
-      photo: user.photo,
-      motto: user.motto,
-    })
+    res.json(user)
   })
   .catch(next);
 });

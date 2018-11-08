@@ -38,6 +38,10 @@ module.exports = function(db) {
     motto: {
       type: Sequelize.STRING
     },
+    friends: {
+      type: Sequelize.ARRAY(Sequelize.TEXT),
+      defaultValue: []
+    },
     salt: {
       type: Sequelize.STRING
     },

@@ -31,11 +31,20 @@ export default class App extends Component {
 
   componentDidMount() {
     const { endpoint } = this.state;
-    const { requestSession } = this.props;
+    const { requestSession, requestFriendsList, user } = this.props;
 
-    requestSession();
+    if (user) requestFriendsList(user);
+    if (!user) requestSession();
     // const socket = socketIOClient(endpoint);
     window.addEventListener('resize', this.changeIsMobileState);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { requestFriendsList, user } = this.props;
+    
+    if (!prevProps.user && user) {
+      requestFriendsList(user);
+    }
   }
 
   componentWillUnmount() {
@@ -97,27 +106,23 @@ export default class App extends Component {
           ) : (
             <div style={{height: '100%'}}>
               {
-                user &&
-                <Nav/>
+                user ?
+                <div>
+                  <Nav/>
+                  <Switch>
+                    <Route exact path='/' render={(props) => (
+                      <Friends {...props}
+                        chatroom={chatroom}
+                        changeFriendState={this.changeFriendState}
+                      />
+                    )}/>
+                    <Route path='/chats' component={Chats} />
+                    <Route path='/find' component={Find} />
+                    <Route path='/more' component={More} />
+                  </Switch>
+                </div> :
+                <Auth />
               }
-              <Switch>
-                <Route exact path='/' render={() => (
-                  user ? (
-                    <Redirect to='/friends' />
-                  ) : (
-                    <Auth />
-                  )
-                )}/>
-                <Route path='/friends' render={props => (
-                  <AsyncFriends {...props}
-                    chatroom={chatroom}
-                    changeFriendState={this.changeFriendState}
-                  />
-                )}/>
-                <Route path='/chats' component={Chats} />
-                <Route path='/find' component={Find} />
-                <Route path='/more' component={More} />
-              </Switch>
             </div>
           )
         }

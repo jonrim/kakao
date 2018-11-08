@@ -9,7 +9,8 @@ import './index.scss';
 
 const mapStateToProps = (state) => {
   return {
-    myProfile: [state.auth.user || {}]
+    myProfile: [state.auth.user || {}],
+    friends: state.auth.user.friends
   };
 };
 

@@ -14,7 +14,12 @@ export const requestSendEmail = (formInfo) => {
   return fetch(`/users/formInfo`, createOptions(postJSON(formInfo))).then(checkStatus);
 }
 
+export const requestFriendsList = (userInfo) => {
+  return fetch(`/users/friendsList`, createOptions(postJSON(userInfo))).then(checkStatus);
+}
+
 export default {
   requestChangeInfo,
-  requestSendEmail
+  requestSendEmail,
+  requestFriendsList
 };
