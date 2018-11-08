@@ -29,7 +29,6 @@ export default class Nav extends Component {
     Array.from(document.getElementsByClassName('main-button')).forEach(navButton => {
       let name = navButton.id.substr(0, navButton.id.indexOf('-'));
       let currentRoute = window.location.href.substr(window.location.href.lastIndexOf('/') + 1);
-      console.log(name, currentRoute)
       if (name === currentRoute || name === 'friends' && currentRoute === '') {
         navButton.classList.add('clicked');
       }

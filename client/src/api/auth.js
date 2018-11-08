@@ -10,7 +10,7 @@ export const requestSession = () => {
 }
 
 export const requestLogin = (credentials) => {
-  return fetch('/auth/login', createOptions(postJSON(credentials))).then(checkStatus);
+  return fetch(`/auth/login`, createOptions(postJSON(credentials))).then(checkStatus);
 }
 
 export const requestLogout = () => {
@@ -18,7 +18,7 @@ export const requestLogout = () => {
 }
 
 export const requestSignUp = (signUpInfo) => {
-  return fetch('/auth/signup', {
+  return fetch(`/auth/signup`, {
     headers: {
       'Content-Type': 'application/json'
     },

@@ -106,7 +106,8 @@ router.get('/session', (req, res, next) => {
       name: user.name,
       email: user.email,
       phone: user.phone,
-      photoURL: user.photoURL
+      photo: user.photo,
+      motto: user.motto,
     })
   })
   .catch(next);

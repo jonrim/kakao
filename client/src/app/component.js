@@ -31,6 +31,9 @@ export default class App extends Component {
 
   componentDidMount() {
     const { endpoint } = this.state;
+    const { requestSession } = this.props;
+
+    requestSession();
     // const socket = socketIOClient(endpoint);
     window.addEventListener('resize', this.changeIsMobileState);
   }

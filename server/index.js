@@ -11,7 +11,7 @@ require('dotenv').config({
 });
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session')
-const secrets = require('../secretsProd');
+const secrets = require('../secrets');
 const env = process.env.NODE_ENV;
 const PORT = process.env.PORT;
 

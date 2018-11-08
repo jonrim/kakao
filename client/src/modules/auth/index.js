@@ -29,8 +29,21 @@ export default function reducer(state = initialState, action) {
         isFetching: false,
         user: null
       }
+    case Consts.SESSION_SUCCESS:
+      return {
+        ...state,
+        user: {
+          name: action.result.name,
+          id: action.result.id,
+          email: action.result.email,
+          phone: action.result.phone,
+          photo: action.result.photo,
+          motto: action.result.motto,
+        }
+      };
     case Consts.LOGIN_FAILED:
     case Consts.LOGOUT_FAILED:
+    case Consts.SESSION_FAILED:
       return {
         ...state,
         isFetching: false,
