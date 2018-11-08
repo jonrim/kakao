@@ -80,13 +80,13 @@ export default class Friends extends Component {
         />
         <div className='friends-list'>
           {
-            friendSections.map(section => ( 
+            friendSections.map(section => (
               <div key={section.name}>
                 <div className='section-name'>{section.name + (section.name === 'Friends' ? ' ' + section.list.length : '')}</div>
                 <hr/>
                 {
                   section.list.sort((a,b) => a.name < b.name ? -1 : 1)
-                  .filter(friend => friend.name.toLowerCase().replace(/\s/g, '').includes(searchNameInput.toLowerCase().replace(/\s/g, '')))
+                  .filter(friend => friend.name ? friend.name.toLowerCase().replace(/\s/g, '').includes(searchNameInput.toLowerCase().replace(/\s/g, '')) : null)
                   .map(friend => (
                     <FriendWithRouter
                       key={friend.id}

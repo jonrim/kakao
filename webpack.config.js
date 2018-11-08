@@ -38,6 +38,10 @@ module.exports = {
       'Sagas': path.resolve(__dirname, 'client/src/sagas'),
     }
   },
+  /* historyApiFallback needs to be true to have routes working properly on localhost */
+  devServer: {
+    historyApiFallback: true
+  },
   module: {
     rules: [
       {
