@@ -15,57 +15,6 @@ export default class Chatroom extends Component {
       search: false,
       messageInput: '',
       filesToSend: [],
-      chatHistory: [
-        {
-          date: new Date(2018, 9, 20, 7, 30, 20, 0),
-          text: '보고시뿌 보낼려구 들어왔는데~',
-          friend: true,
-          firstMessageOfDay: true,
-          firstMessageOfMinute: true
-        },
-        {
-          date: new Date(2018, 9, 20, 7, 30, 55, 0),
-          text: '문자와있었네ㅋㅋ 잠깐 깼어요?',
-          friend: true,
-          firstMessageOfDay: false,
-          firstMessageOfMinute: false
-        },
-        {
-          date: new Date(2018, 9, 20, 7, 30, 58, 0),
-          text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
-          friend: false,
-          firstMessageOfDay: false,
-          firstMessageOfMinute: false
-        },
-        {
-          date: new Date(2018, 9, 20, 7, 31, 20, 0),
-          text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
-          friend: false,
-          firstMessageOfDay: false,
-          firstMessageOfMinute: false
-        },
-        {
-          date: new Date(2018, 9, 21, 7, 30, 20, 0),
-          text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
-          friend: false,
-          firstMessageOfDay: true,
-          firstMessageOfMinute: false
-        },
-        {
-          date: new Date(2018, 9, 21, 7, 30, 21, 0),
-          text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
-          friend: true,
-          firstMessageOfDay: false,
-          firstMessageOfMinute: true
-        },
-        {
-          date: new Date(2018, 9, 21, 7, 32, 22, 0),
-          text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
-          friend: true,
-          firstMessageOfDay: false,
-          firstMessageOfMinute: true
-        }
-      ]
     };
     this.showSearch = this.showSearch.bind(this);
     this.showMore = this.showMore.bind(this);
@@ -106,12 +55,16 @@ export default class Chatroom extends Component {
   }
 
   sameDate(a, b) {
+    a = new Date(a);
+    b = new Date(b);
     return a.getFullYear() === b.getFullYear() &&
            a.getMonth() === b.getMonth() &&
            a.getDate() === b.getDate();
   }
 
   sameMinute(a, b) {
+    a = new Date(a);
+    b = new Date(b);
     return a.getHours() === b.getHours() &&
            a.getMinutes() === b.getMinutes();
   }
@@ -127,34 +80,65 @@ export default class Chatroom extends Component {
   }
 
   send(typeOfMessage, files) {
-    const { chatHistory, messageInput } = this.state;
+    const { messageInput } = this.state;
+    const { chatHistory } = this.props;
     const { sameDate, sameMinute } = this;
     let today = new Date();
-    let latestMessage = chatHistory[chatHistory.length - 1].date;
-    let sameDay = sameDate(today, latestMessage);
-    let sameTime = sameMinute(today, latestMessage);
-    this.setState({
-      messageInput: '',
-      filesToSend: typeOfMessage === 'media' ? files : null,
-      chatHistory: typeOfMessage === 'text' ? [...chatHistory, {
-        text: messageInput,
-        date: today,
-        friend: false,
-        firstMessageOfDay: !sameDay,
-        firstMessageOfMinute: !sameDay || sameDay && !sameTime
-      }] : [...chatHistory].concat(files.map(file => {
-        return {
-          file: file,
+    if (chatHistory.length > 0) {
+      let latestMessage = chatHistory[chatHistory.length - 1].date;
+      let sameDay = sameDate(today, latestMessage);
+      let sameTime = sameMinute(today, latestMessage);
+      this.setState({
+        messageInput: '',
+        filesToSend: typeOfMessage === 'media' ? files : null,
+        chatHistory: typeOfMessage === 'text' ? [...chatHistory, {
+          text: messageInput,
           date: today,
           friend: false,
           firstMessageOfDay: !sameDay,
           firstMessageOfMinute: !sameDay || sameDay && !sameTime
-        }
-      }))
-    }, () => {
-      console.log(files)
-      this.scrollToBottom();
-    });
+        }] : [...chatHistory].concat(files.map((file, i) => {
+          return {
+            file: file,
+            date: today,
+            friend: false,
+            /* 
+              when sending multiple files, only check the first file to see if it's
+              the first message of the day/minute
+            */
+            firstMessageOfDay: i === 0 && !sameDay,
+            firstMessageOfMinute: i === 0 && (!sameDay || sameDay && !sameTime)
+          }
+        }))
+      }, () => {
+        console.log(files)
+        this.scrollToBottom();
+      });
+    }
+    else {
+      // empty chatroom
+      this.setState({
+        messageInput: '',
+        filesToSend: typeOfMessage === 'media' ? files : null,
+        chatHistory: typeOfMessage === 'text' ? [{
+          text: messageInput,
+          date: today,
+          friend: false,
+          firstMessageOfDay: true,
+          firstMessageOfMinute: true
+        }] : files.map((file, i) => {
+          return {
+            file: file,
+            date: today,
+            friend: false,
+            firstMessageOfDay: i === 0,
+            firstMessageOfMinute: i === 0
+          }
+        })
+      }, () => {
+        this.scrollToBottom();
+      });
+    }
   }
 
   onResize() {
@@ -196,7 +180,8 @@ export default class Chatroom extends Component {
 
   render() {
     const { chatroom, changeFriendState, mobileWindow } = this.props;
-    const { search, chatHistory, messageInput } = this.state;
+    const { search, messageInput } = this.state;
+    const chatHistory = chatroom.chatHistory || [];
     return (
       <Dropzone
         className='dropzone'

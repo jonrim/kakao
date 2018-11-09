@@ -90,7 +90,6 @@ router.post('/signup', (req, res, next) => {
 });
 
 router.get('/session', (req, res, next) => {
-  console.log(req.session)
   if (!req.session.user || !req.session.user.id) {
     const error = new Error('You are not logged in.');
     error.status = 400;
@@ -98,7 +97,7 @@ router.get('/session', (req, res, next) => {
     return;
   }
 
-  User.findById(req.session.user.id)
+  User.findByPk(req.session.user.id)
   .then(user => {
     res.json({
       id: user.id,

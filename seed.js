@@ -31,7 +31,7 @@ const seedUsers = () => {
       photo: 'https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1541254123/sejin_mdaurn.jpg',
       isAdmin: false,
       friends: [
-        JSON.stringify({id: 3, favorite: true, chatroom: [
+        JSON.stringify({id: 3, favorite: true, chatHistory: [
           {
             date: new Date(2018, 9, 20, 7, 30, 20, 0),
             text: '보고시뿌 보낼려구 들어왔는데~',
@@ -103,7 +103,7 @@ const seedUsers = () => {
       photo: 'https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1541254122/me_chsm06.jpg',
       isAdmin: true,
       friends: [
-        JSON.stringify({id: 2, favorite: true, chatroom: [
+        JSON.stringify({id: 2, favorite: true, chatHistory: [
           {
             date: new Date(2018, 9, 20, 7, 30, 20, 0),
             text: '보고시뿌 보낼려구 들어왔는데~',

@@ -22,7 +22,6 @@ export default class App extends Component {
     super(props);
     this.state = {
       endpoint: require('ip').address() + ':8080',
-      chatroom: {id: 1, photo: '/images/sejin.jpg', name: '세진❤', favorite: true, motto: '🥑'},
       mobileWindow: window.innerWidth < 900
     };
     this.changeFriendState = this.changeFriendState.bind(this);

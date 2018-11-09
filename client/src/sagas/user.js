@@ -24,7 +24,7 @@ function* requestSendEmail(action) {
 
 function* requestFriendsList(action) {
   try {
-    const result = yield call(Api.requestFriendsList, action.formInfo);
+    const result = yield call(Api.requestFriendsList, action.userInfo);
     yield put(Actions.friendsListSuccess(result));
   } catch (error) {
     yield put(Actions.friendsListFailed(error));

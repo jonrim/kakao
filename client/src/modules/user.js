@@ -5,7 +5,7 @@ import * as Consts from 'Constants/user';
 const initialState = {
   isFetching: false,
   error: null,
-  user: null,
+  friends: []
 };
 
 export default function reducer(state = initialState, action) {

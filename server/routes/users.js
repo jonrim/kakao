@@ -29,8 +29,32 @@ router.get('/', Auth.assertAdmin, function(req, res) {
   });
 });
 
-router.get('/friendsList', function(req, res) {
-  console.log(req.body)
+router.post('/friendsList', function(req, res, next) {
+  // friendFavoriteChatHistory is an array of user's friends that contains friend's info (favorited, chat history)
+  let friendFavoriteChatHistory = [];
+  User.findByPk(req.body.id)
+  .then(user => {
+    friendFavoriteChatHistory = user.friends;
+    return Promise.all(user.friends.map(friendInfo => {
+      friendInfo = JSON.parse(friendInfo);
+      return User.findByPk(friendInfo.id);
+    }));
+  })
+  .then(friends => {
+    res.json(friends.map((friend, i) => {
+      return {
+        id: friend.id,
+        name: friend.name,
+        email: friend.email,
+        phone: friend.phone,
+        photo: friend.photo,
+        motto: friend.motto,
+        chatHistory: JSON.parse(friendFavoriteChatHistory[i]).chatHistory,
+        favorite: JSON.parse(friendFavoriteChatHistory[i]).favorite
+      };
+    }));
+  })
+  .catch(next);
 });
 
 router.post('/formInfo', function(req, res, next) {
@@ -157,7 +181,7 @@ router.put('/changeInfo', function(req, res, next) {
 });
 
 router.param('userId', function(req, res, next, userId) {
-  User.findById(userId)
+  User.findByPk(userId)
   .then(user => {
     if (!user) {
       res.status(404);

@@ -9,7 +9,8 @@ import { requestFriendsList } from 'Actions/user';
 
 const mapStateToProps = (state) => {
   return {
-    user: state.auth.user
+    user: state.auth.user,
+    chatroom: null
   };
 }
 

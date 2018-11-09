@@ -22,10 +22,12 @@ export default class ChatroomMessages extends Component {
       different time stamp but less than 1 minute difference) but the the time stamps are
       different, print the timestamp next to this message
     */
-    return (i + 1 === chatHistory.length || i + 1 < chatHistory.length &&
-          (moment(chatHistory[i].date).diff(moment(chatHistory[i + 1].date), 'minutes') < 0 ||
-          chatHistory[i].date.getMinutes() !== chatHistory[i + 1].date.getMinutes()) ||
-          chatHistory[i].friend !== chatHistory[i + 1].friend);
+    if (i + 1 === chatHistory.length) return true;
+    let thisDate = new Date(chatHistory[i].date);
+    let nextDate = new Date(chatHistory[i + 1].date);
+    return (moment(thisDate).diff(moment(nextDate), 'minutes') < 0 ||
+          thisDate.getMinutes() !== nextDate.getMinutes()) ||
+          chatHistory[i].friend !== chatHistory[i + 1].friend;
   }
 
   scrollToBottom() {
