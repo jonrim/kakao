@@ -30,7 +30,7 @@ router.get('/', Auth.assertAdmin, function(req, res) {
 });
 
 router.get('/friendsList', function(req, res) {
-
+  console.log(req.body)
 });
 
 router.post('/formInfo', function(req, res, next) {

@@ -50,7 +50,6 @@ export default class Friends extends Component {
     const { searchNameInput, focusedFriend } = this.state;
     const { chatroom, changeFriendState, myProfile, friends } = this.props;
     const { changeInputValue } = this;
-    console.log(myProfile)
     let friendSections = [
       {name: 'My Profile', list: myProfile},
       {name: 'Favorites', list: friends.filter(friend => friend.favorite)},

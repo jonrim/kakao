@@ -37,7 +37,7 @@ export default function reducer(state = initialState, action) {
         ...state,
         user: {
           ...action.result,
-          friends: action.result.friends.map(friend => JSON.parse(friend)),
+          friends: [],
         }
       };
     case Consts.LOGIN_FAILED:

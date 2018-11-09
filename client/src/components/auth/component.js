@@ -80,7 +80,7 @@ export default class Auth extends Component {
             <Message
               className='error-message'
               error
-              content={error}
+              content={error !== 'You are not logged in.' ? error : null}
             />
             <Form.Button disabled={!email || !password}>
               { 

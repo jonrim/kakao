@@ -28,8 +28,7 @@ router.post('/login', (req, res, next) => {
         phone: user.phone,
         photo: user.photo,
         isAdmin: user.isAdmin,
-        motto: user.motto,
-        friends: user.friends
+        motto: user.motto
       };
       
       res.json(req.session.user);
@@ -91,6 +90,7 @@ router.post('/signup', (req, res, next) => {
 });
 
 router.get('/session', (req, res, next) => {
+  console.log(req.session)
   if (!req.session.user || !req.session.user.id) {
     const error = new Error('You are not logged in.');
     error.status = 400;
@@ -100,7 +100,15 @@ router.get('/session', (req, res, next) => {
 
   User.findById(req.session.user.id)
   .then(user => {
-    res.json(user)
+    res.json({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      photo: user.photo,
+      isAdmin: user.isAdmin,
+      motto: user.motto
+    })
   })
   .catch(next);
 });
