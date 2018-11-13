@@ -183,8 +183,14 @@ export default class Chatroom extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.chatroom.id !== this.props.chatroom.id) {
+    const { friends, chatroom, socket } = this.props;
+    if (prevProps.chatroom.id !== chatroom.id) {
       document.getElementById('chatroom-type-input').focus();
+      this.setState({
+        chatHistory: friends.find(friend => chatroom.id === friend.id).chatHistory || []
+      }, () => {
+        this.scrollToBottom();
+      });
     }
 
     if (prevState === this.state) {

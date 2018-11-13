@@ -57,9 +57,16 @@ router.put('/messageSend', function(req, res, next) {
     })
     .then(person => {
       // look for user in this person's friends
+      if (!person) {
+        const error = new Error('Cannot find user/friend when sending a message. User/friend ID:', pseronId);
+        error.status = 400;
+        next(error);
+      }
+
       i = person.friends.map(f => JSON.parse(f)).findIndex(f => f.id === (person.id === userId ? friendId : userId));
       let chatInfo = JSON.parse(person.friends[i]);
       
+      chatInfo.chatHistory = chatInfo.chatHistory || [];
       let chatHistory = chatInfo.chatHistory;
       let latestMessage, sameDay, sameTime;
 
@@ -118,6 +125,11 @@ router.put('/messageReceive', function(req, res, next) {
     }
   })
   .then(user => {
+    if (!user) {
+      const error = new Error('Cannot find user when trying to receive message. User ID:', req.body.id);
+      error.status = 400;
+      next(error);
+    }
     res.json(user.friends);
   })
   .catch(next);
@@ -129,6 +141,11 @@ router.post('/friendsList', function(req, res, next) {
   let friendFavoriteChatHistory = [];
   User.findByPk(req.body.id)
   .then(user => {
+    if (!user) {
+      const error = new Error('Cannot find user when trying to obtain friends list. User ID:', req.body.id);
+      error.status = 400;
+      next(error);
+    }
     friendFavoriteChatHistory = user.friends;
     return Promise.all(user.friends.map(friendInfo => {
       friendInfo = JSON.parse(friendInfo);
@@ -136,6 +153,11 @@ router.post('/friendsList', function(req, res, next) {
     }));
   })
   .then(friends => {
+    if (!friends) {
+      const error = new Error('Cannot obtain chat histories of friends for user with ID:', req.body.id);
+      error.status = 400;
+      next(error);
+    }
     res.json(friends.map((friend, i) => {
       return {
         id: friend.id,

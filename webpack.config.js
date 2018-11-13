@@ -31,7 +31,7 @@ module.exports = {
       'Components': path.resolve(__dirname, 'client/src/components'),
       'Utils': path.resolve(__dirname, 'client/src/utils'),
       'Styles': path.resolve(__dirname, 'client/src/styles'),
-      'Modules': path.resolve(__dirname, 'client/src/modules'),
+      'Reducers': path.resolve(__dirname, 'client/src/reducers'),
       'Api': path.resolve(__dirname, 'client/src/api'),
       'Actions': path.resolve(__dirname, 'client/src/actions'),
       'Constants': path.resolve(__dirname, 'client/src/constants'),

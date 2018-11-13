@@ -99,7 +99,7 @@ const seedUsers = () => {
       motto: 'happy new years',
       photo: 'https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1541254120/johnchen_hnl598.jpg',
       isAdmin: false,
-      friends: []
+      friends: [JSON.stringify({id: 3, favorite: true, chatHistory: []})]
     },
     {
       password: 'm',
@@ -168,7 +168,7 @@ const seedUsers = () => {
             read: false
           }
         ]}),
-        JSON.stringify({id: 1, chatroom: []}),
+        JSON.stringify({id: 1, favorite: true, chatroom: []}),
         JSON.stringify({id: 4, chatroom: []}),
         JSON.stringify({id: 5, chatroom: []}),
         JSON.stringify({id: 6, chatroom: []}),

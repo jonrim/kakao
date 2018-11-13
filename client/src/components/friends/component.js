@@ -2,6 +2,12 @@ import React, { Component } from 'react'
 import { Input } from 'semantic-ui-react'
 import { withRouter } from 'react-router-dom'
 import throttle from 'throttled-event-listener'
+import { FadeLoader } from 'react-spinners';
+import { css } from 'react-emotion';
+
+const loaderCSS = css`
+  margin: 30px auto;
+`;
 
 export default class Friends extends Component {
   constructor(props) {
@@ -48,7 +54,7 @@ export default class Friends extends Component {
 
   render() {
     const { searchNameInput, focusedFriend } = this.state;
-    const { chatroom, changeFriendState, myProfile, friends } = this.props;
+    const { chatroom, changeFriendState, myProfile, friends, isFetching } = this.props;
     const { changeInputValue } = this;
     let friendSections = [
       {name: 'My Profile', list: myProfile},
@@ -73,6 +79,12 @@ export default class Friends extends Component {
                 <div className='section-name'>{section.name + (section.name === 'Friends' ? ' ' + section.list.length : '')}</div>
                 <hr/>
                 {
+                  isFetching ?
+                  <FadeLoader
+                    className={loaderCSS}
+                    sizeUnit='px' 
+                    size={80}
+                  /> :
                   section.list.sort((a,b) => a.name < b.name ? -1 : 1)
                   .filter(friend => friend.name ? friend.name.toLowerCase().replace(/\s/g, '').includes(searchNameInput.toLowerCase().replace(/\s/g, '')) : null)
                   .map(friend => (

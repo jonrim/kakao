@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
-import auth from 'Modules/auth';
+import auth from 'Reducers/auth';
 import component from './component';
 import { requestLogin } from 'Actions/auth';
 import { withRouter } from 'react-router-dom'

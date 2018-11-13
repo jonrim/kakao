@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import component from './component';
 import { push } from 'connected-react-router';
-import auth from 'Modules/auth';
+import auth from 'Reducers/auth';
 import { withRouter } from 'react-router-dom'
 import { requestSession } from 'Actions/auth';
 import { requestFriendsList, requestReceiveMessages } from 'Actions/user';
