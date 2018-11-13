@@ -1,7 +1,10 @@
 .chatroom-messages {
-  padding: 15px;
   overflow-y: auto;
   flex: 1 1 auto;
+
+  .chatroom-messages-container {
+    padding: 15px;
+  }
 
   .date {
     overflow: hidden;

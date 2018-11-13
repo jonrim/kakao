@@ -181,21 +181,27 @@ export default class Chatroom extends Component {
     // window.removeEventListener('click', this.hideEmojiPickerOnClick)
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     if (prevProps.chatroom.id !== this.props.chatroom.id) {
       document.getElementById('chatroom-type-input').focus();
     }
-    if (prevProps.chatroom.chatHistory !== this.props.chatroom.chatHistory) {
-      this.forceUpdate()
-      .then(() => {
+
+    if (prevState === this.state) {
+      const { friends, chatroom } = this.props;
+      const chatHistory = friends.find(friend => chatroom.id === friend.id).chatHistory;
+      const prevChatHistory = prevProps.friends.find(friend => chatroom.id === friend.id).chatHistory;
+
+      if (prevChatHistory !== chatHistory) {
+        this.setState({ messageInput: ''});
         this.scrollToBottom();
-      });
+      }
     }
   }
 
   render() {
-    const { chatroom, changeFriendState, mobileWindow, socket } = this.props;
+    const { chatroom, changeFriendState, mobileWindow, socket, friends } = this.props;
     const { search, messageInput } = this.state;
+    const chatHistory = friends.find(friend => chatroom.id === friend.id).chatHistory || [];
     return (
       <Dropzone
         className='dropzone'
@@ -236,7 +242,7 @@ export default class Chatroom extends Component {
               </div>
             }
             <ChatroomMessages
-              chatHistory={chatroom.chatHistory || []}
+              chatHistory={chatHistory}
               chatroom={chatroom}
               socket={socket}
             />
