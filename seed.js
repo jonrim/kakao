@@ -37,49 +37,56 @@ const seedUsers = () => {
             text: '보고시뿌 보낼려구 들어왔는데~',
             friend: false,
             firstMessageOfDay: true,
-            firstMessageOfMinute: true
+            firstMessageOfMinute: true,
+            read: false
           },
           {
             date: new Date(2018, 9, 20, 7, 30, 55, 0),
             text: '문자와있었네ㅋㅋ 잠깐 깼어요?',
             friend: false,
             firstMessageOfDay: false,
-            firstMessageOfMinute: false
+            firstMessageOfMinute: false,
+            read: false
           },
           {
             date: new Date(2018, 9, 20, 7, 30, 58, 0),
             text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
             friend: true,
             firstMessageOfDay: false,
-            firstMessageOfMinute: false
+            firstMessageOfMinute: true,
+            read: false
           },
           {
             date: new Date(2018, 9, 20, 7, 31, 20, 0),
             text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
             friend: true,
             firstMessageOfDay: false,
-            firstMessageOfMinute: false
+            firstMessageOfMinute: true,
+            read: false
           },
           {
             date: new Date(2018, 9, 21, 7, 30, 20, 0),
             text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
             friend: true,
             firstMessageOfDay: true,
-            firstMessageOfMinute: false
+            firstMessageOfMinute: true,
+            read: false
           },
           {
             date: new Date(2018, 9, 21, 7, 30, 21, 0),
             text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
             friend: false,
             firstMessageOfDay: false,
-            firstMessageOfMinute: true
+            firstMessageOfMinute: true,
+            read: false
           },
           {
             date: new Date(2018, 9, 21, 7, 32, 22, 0),
             text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
             friend: false,
             firstMessageOfDay: false,
-            firstMessageOfMinute: true
+            firstMessageOfMinute: true,
+            read: false
           }
         ]})
       ]
@@ -99,7 +106,7 @@ const seedUsers = () => {
       name: 'Jonathan Rim',
       email: 'm@m.com',
       phone: '3476032811',
-      motto: '이 세상에서 제일 필오한건.. 마음이 따뜻한 사람~',
+      motto: '이 세상에서 제일 필요한건.. 마음이 따뜻한 사람~',
       photo: 'https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1541254122/me_chsm06.jpg',
       isAdmin: true,
       friends: [
@@ -109,49 +116,56 @@ const seedUsers = () => {
             text: '보고시뿌 보낼려구 들어왔는데~',
             friend: true,
             firstMessageOfDay: true,
-            firstMessageOfMinute: true
+            firstMessageOfMinute: true,
+            read: false
           },
           {
             date: new Date(2018, 9, 20, 7, 30, 55, 0),
             text: '문자와있었네ㅋㅋ 잠깐 깼어요?',
             friend: true,
             firstMessageOfDay: false,
-            firstMessageOfMinute: false
+            firstMessageOfMinute: false,
+            read: false
           },
           {
             date: new Date(2018, 9, 20, 7, 30, 58, 0),
             text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
             friend: false,
             firstMessageOfDay: false,
-            firstMessageOfMinute: false
+            firstMessageOfMinute: false,
+            read: false
           },
           {
             date: new Date(2018, 9, 20, 7, 31, 20, 0),
             text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
             friend: false,
             firstMessageOfDay: false,
-            firstMessageOfMinute: false
+            firstMessageOfMinute: false,
+            read: false
           },
           {
             date: new Date(2018, 9, 21, 7, 30, 20, 0),
             text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
             friend: false,
             firstMessageOfDay: true,
-            firstMessageOfMinute: false
+            firstMessageOfMinute: false,
+            read: false
           },
           {
             date: new Date(2018, 9, 21, 7, 30, 21, 0),
             text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
             friend: true,
             firstMessageOfDay: false,
-            firstMessageOfMinute: true
+            firstMessageOfMinute: true,
+            read: false
           },
           {
             date: new Date(2018, 9, 21, 7, 32, 22, 0),
             text: '아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데 아까 진짜 슬펐어.. 누나가 뉴욕에 있었는데  😅',
             friend: true,
             firstMessageOfDay: false,
-            firstMessageOfMinute: true
+            firstMessageOfMinute: true,
+            read: false
           }
         ]}),
         JSON.stringify({id: 1, chatroom: []}),

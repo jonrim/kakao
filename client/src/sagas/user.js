@@ -31,10 +31,20 @@ function* requestFriendsList(action) {
   }
 }
 
+function* requestSendMessage(action) {
+  try {
+    const result = yield call(Api.requestSendMessage, action.messageInfo);
+    yield put(Actions.sendMessageSuccess(result));
+  } catch (error) {
+    yield put(Actions.sendMessageFailed(error));
+  }
+}
+
 export default function* watchUser() {
   yield all([
     takeLatest(Consts.CHANGEINFO_REQUEST, requestChangeInfo),
     takeLatest(Consts.SENDEMAIL_REQUEST, requestSendEmail),
     takeLatest(Consts.FRIENDSLIST_REQUEST, requestFriendsList),
+    takeLatest(Consts.SENDMESSAGE_REQUEST, requestSendMessage),
   ]);
 }

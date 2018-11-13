@@ -29,6 +29,87 @@ router.get('/', Auth.assertAdmin, function(req, res) {
   });
 });
 
+router.put('/message', function(req, res, next) {
+  var { messages, userId, friendId } = req.body;
+  var today = Array.isArray(messages) ? messages[0].date : messages.date;
+  var i;
+
+  function sameDate(a, b) {
+    a = new Date(a);
+    b = new Date(b);
+    return a.getFullYear() === b.getFullYear() &&
+           a.getMonth() === b.getMonth() &&
+           a.getDate() === b.getDate();
+  }
+
+  function sameMinute(a, b) {
+    a = new Date(a);
+    b = new Date(b);
+    return a.getHours() === b.getHours() &&
+           a.getMinutes() === b.getMinutes();
+  }
+
+  function updateInfo(personId) {
+    return User.findOne({
+      where: {
+        id: personId
+      }
+    })
+    .then(person => {
+      // look for user in this person's friends
+      i = person.friends.map(f => JSON.parse(f)).findIndex(f => f.id === (person.id === userId ? friendId : userId));
+      let chatInfo = JSON.parse(person.friends[i]);
+      
+      let chatHistory = chatInfo.chatHistory;
+      let latestMessage, sameDay, sameTime;
+
+      if (chatHistory.length > 0) {
+        latestMessage = chatHistory[chatHistory.length - 1];
+        sameDay = sameDate(today, latestMessage.date);
+        sameTime = sameMinute(today, latestMessage.date);
+      }
+      // console.log(person.friends, i, chatInfo)
+      if (Array.isArray(messages)) {
+        chatHistory.concat(messages.map(message => {
+          message.friend = personId === friendId;
+          /* 
+            when sending multiple files, only check the first file to see if it's
+            the first message of the day/minute
+          */
+          message.firstMessageOfDay = i === 0 && (chatHistory.length === 0 || !sameDay);
+          message.firstMessageOfMinute = latestMessage && (latestMessage.friend && personId === userId ||
+                                          !latestMessage.friend && personId === friendId)
+                                         || i === 0 && (chatHistory.length === 0 || !sameDay || sameDay && !sameTime);
+          return message;
+        }));
+      }
+      else {
+        messages.friend = personId === friendId; 
+        messages.firstMessageOfDay = chatHistory.length === 0 || !sameDay;
+
+        // If this person is me (the user) and the latest message was from a friend, then this new message will be
+        // the first message of the minute (used to display photo for this message)
+        // If this person is the friend, and the latest message was from me, then also display photo
+        messages.firstMessageOfMinute = latestMessage && (latestMessage.friend && personId === userId ||
+                                          !latestMessage.friend && personId === friendId)
+                                        || chatHistory.length === 0 || !sameDay || sameDay && !sameTime;
+        chatHistory.push(messages);
+      }
+      person.friends[i] = JSON.stringify(chatInfo);
+
+      return person.update({friends: person.friends});
+    })
+    .catch(next);
+  }
+
+  updateInfo(friendId);
+  updateInfo(userId)
+  .then(user => {
+    res.json(user.friends[i]);
+  })
+  .catch(next);
+});
+
 router.post('/friendsList', function(req, res, next) {
   // friendFavoriteChatHistory is an array of user's friends that contains friend's info (favorited, chat history)
   let friendFavoriteChatHistory = [];

@@ -18,8 +18,13 @@ export const requestFriendsList = (userInfo) => {
   return fetch(`/users/friendsList`, createOptions(postJSON(userInfo))).then(checkStatus);
 }
 
+export const requestSendMessage = (messageInfo) => {
+  return fetch(`/users/message`, createOptions(putJSON(messageInfo))).then(checkStatus);
+}
+
 export default {
   requestChangeInfo,
   requestSendEmail,
-  requestFriendsList
+  requestFriendsList,
+  requestSendMessage,
 };

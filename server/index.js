@@ -88,10 +88,49 @@ app.get('/db', function (request, response) {
   });
 });
 
+// the clients hash stores the sockets
+// the users hash stores the username of the connected user and its socket.id
+var clients = {};
+var users = {};
+
 io.on('connection', socket => {
   console.log(chalk.cyan('A user connected'));
+  // var hs = socket.handshake;
+  // users[hs.session.username] = socket.id;
+  clients[socket.id] = socket;
+  // on connection, should receive all new messages
+
+  socket.on('connected', IDs => {
+    users[IDs.userId] = IDs.socketId;
+    // fetch new messages here
+
+  });
+
+  socket.on('messageSend', message => {
+    console.log(message);
+    // should still send message even if other user isn't connected
+    // first update both users' friends prop (chatroom for friend/friends)
+
+    // If the friend is currently online, emit the message to the friend right away
+    if (users[message.friendId]) {
+      console.log(users[message.friendId])
+      io.to(`${users[message.friendId]}`).emit('messageReceive', {
+        ...message,
+        userId: message.friendId,
+        friendId: message.userId
+      });
+    }
+    // if doesn't succeed, send back error message.
+    // then io.emit to only the other user
+    // on success, io.emit back to this user that it has been read. make another socket.on('messageRead')
+  })
+
   socket.on('disconnect', () => {
     console.log(chalk.cyan('A user disconnected'));
+    // delete user from clients and users hashes
+    delete clients[socket.id];
+    const userId = Object.keys(users).find(key => users[key] === socket.id);
+    delete users[userId];
   })
 });
 

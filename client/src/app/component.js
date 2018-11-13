@@ -26,15 +26,18 @@ export default class App extends Component {
     };
     this.changeFriendState = this.changeFriendState.bind(this);
     this.changeIsMobileState = this.changeIsMobileState.bind(this);
+    this.initializeSocket = this.initializeSocket.bind(this);
   }
 
   componentDidMount() {
-    const { endpoint } = this.state;
+    const { endpoint, socket } = this.state;
     const { requestSession, requestFriendsList, user } = this.props;
 
-    if (user) requestFriendsList(user);
+    if (user) {
+      requestFriendsList(user);
+      this.initializeSocket();
+    }
     if (!user) requestSession();
-    // const socket = socketIOClient(endpoint);
     window.addEventListener('resize', this.changeIsMobileState);
   }
 
@@ -43,11 +46,27 @@ export default class App extends Component {
     
     if (!prevProps.user && user) {
       requestFriendsList(user);
+      this.initializeSocket();
     }
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.changeIsMobileState);
+  }
+
+  initializeSocket() {
+    const { user } = this.props;
+    this.setState({
+      socket: socketIOClient('localhost:8080', { transport: ['websocket', 'polling', 'flashsocket'] })
+    }, () => {
+      const { socket } = this.state;
+      socket.on('connect', () => {
+        socket.emit('connected', {socketId: socket.id, userId: user.id}); 
+      })
+      socket.on('messageReceive', message => {
+        console.log(message)
+      })
+    }); 
   }
 
   changeFriendState(propName, friend) {
@@ -63,7 +82,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { chatroom, mobileWindow } = this.state;
+    const { chatroom, mobileWindow, socket } = this.state;
     const { user } = this.props;
     return (
       <div style={{height: '100%'}}>
@@ -80,6 +99,7 @@ export default class App extends Component {
                         <Friends {...props}
                           chatroom={chatroom}
                           changeFriendState={this.changeFriendState}
+                          socket={socket}
                         />
                       )}/>
                       <Route path='/chats' component={Chats} />
@@ -94,6 +114,7 @@ export default class App extends Component {
                 chatroom={chatroom}
                 changeFriendState={this.changeFriendState}
                 mobileWindow={mobileWindow}
+                socket={socket}
               />
             </SplitPane>
           ) : chatroom && mobileWindow ? (
@@ -101,6 +122,7 @@ export default class App extends Component {
               chatroom={chatroom}
               changeFriendState={this.changeFriendState}
               mobileWindow={mobileWindow}
+              socket={socket}
             />
           ) : (
             <div style={{height: '100%'}}>
@@ -113,6 +135,7 @@ export default class App extends Component {
                       <Friends {...props}
                         chatroom={chatroom}
                         changeFriendState={this.changeFriendState}
+                        socket={socket}
                       />
                     )}/>
                     <Route path='/chats' component={Chats} />

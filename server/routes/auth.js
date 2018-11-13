@@ -28,7 +28,8 @@ router.post('/login', (req, res, next) => {
         phone: user.phone,
         photo: user.photo,
         isAdmin: user.isAdmin,
-        motto: user.motto
+        motto: user.motto,
+        friends: user.friends
       };
       
       res.json(req.session.user);
@@ -106,7 +107,8 @@ router.get('/session', (req, res, next) => {
       phone: user.phone,
       photo: user.photo,
       isAdmin: user.isAdmin,
-      motto: user.motto
+      motto: user.motto,
+      friends: user.friends
     })
   })
   .catch(next);
