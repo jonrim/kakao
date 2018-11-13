@@ -15,6 +15,7 @@ export default class Chatroom extends Component {
       search: false,
       messageInput: '',
       filesToSend: [],
+      chatHistory: props.friends.find(friend => props.chatroom.id === friend.id).chatHistory || []
     };
     this.showSearch = this.showSearch.bind(this);
     this.showMore = this.showMore.bind(this);
@@ -90,9 +91,9 @@ export default class Chatroom extends Component {
         }
       })
     };
-    console.log('requestSendMessage', messageInfo)
-    requestSendMessage(messageInfo);
-    socket.emit('messageSend', messageInfo);
+    this.setState({ messageInfo }, () => {
+      requestSendMessage(messageInfo);
+    });
     // if (chatHistory.length > 0) {
     //   let latestMessage = chatHistory[chatHistory.length - 1].date;
     //   let sameDay = sameDate(today, latestMessage);
@@ -187,21 +188,33 @@ export default class Chatroom extends Component {
     }
 
     if (prevState === this.state) {
-      const { friends, chatroom } = this.props;
+      const { friends, chatroom, socket } = this.props;
+      const { messageInfo } = this.state;
       const chatHistory = friends.find(friend => chatroom.id === friend.id).chatHistory;
       const prevChatHistory = prevProps.friends.find(friend => chatroom.id === friend.id).chatHistory;
 
       if (prevChatHistory !== chatHistory) {
-        this.setState({ messageInput: ''});
-        this.scrollToBottom();
+        // Only emit if I am the user that has messageInfo ready to be sent
+        if (messageInfo) {
+          socket.emit('messageSend', messageInfo);
+          this.setState({
+            messageInput: '',
+            messageInfo: null
+          });
+        }
+        // Update the chat history regardless of whether I am the user or the friend
+        this.setState({
+          chatHistory
+        }, () => {
+          this.scrollToBottom();
+        });
       }
     }
   }
 
   render() {
     const { chatroom, changeFriendState, mobileWindow, socket, friends } = this.props;
-    const { search, messageInput } = this.state;
-    const chatHistory = friends.find(friend => chatroom.id === friend.id).chatHistory || [];
+    const { search, messageInput, chatHistory } = this.state;
     return (
       <Dropzone
         className='dropzone'

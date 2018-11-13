@@ -19,7 +19,11 @@ export const requestFriendsList = (userInfo) => {
 }
 
 export const requestSendMessage = (messageInfo) => {
-  return fetch(`/users/message`, createOptions(putJSON(messageInfo))).then(checkStatus);
+  return fetch(`/users/messageSend`, createOptions(putJSON(messageInfo))).then(checkStatus);
+}
+
+export const requestReceiveMessages = (messageInfo) => {
+  return fetch(`/users/messageReceive`, createOptions(putJSON(messageInfo))).then(checkStatus);
 }
 
 export default {
@@ -27,4 +31,5 @@ export default {
   requestSendEmail,
   requestFriendsList,
   requestSendMessage,
+  requestReceiveMessages,
 };

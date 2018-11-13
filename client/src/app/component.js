@@ -55,7 +55,7 @@ export default class App extends Component {
   }
 
   initializeSocket() {
-    const { user } = this.props;
+    const { user, requestReceiveMessages } = this.props;
     this.setState({
       socket: socketIOClient('localhost:8080', { transport: ['websocket', 'polling', 'flashsocket'] })
     }, () => {
@@ -65,6 +65,7 @@ export default class App extends Component {
       })
       socket.on('messageReceive', message => {
         console.log(message)
+        requestReceiveMessages({socketId: socket.id, userId: user.id});
       })
     }); 
   }

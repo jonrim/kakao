@@ -125,6 +125,11 @@ io.on('connection', socket => {
     // on success, io.emit back to this user that it has been read. make another socket.on('messageRead')
   })
 
+  socket.on('messageRead', message => {
+    console.log(message);
+    // after receiving the message, 
+  })
+
   socket.on('disconnect', () => {
     console.log(chalk.cyan('A user disconnected'));
     // delete user from clients and users hashes

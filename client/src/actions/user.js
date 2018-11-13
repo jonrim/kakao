@@ -15,3 +15,8 @@ export const friendsListFailed = error => ({type: Consts.FRIENDSLIST_FAILED, err
 export const requestSendMessage = messageInfo => ({type: Consts.SENDMESSAGE_REQUEST, messageInfo});
 export const sendMessageSuccess = result => ({type: Consts.SENDMESSAGE_SUCCESS, result});
 export const sendMessageFailed = error => ({type: Consts.SENDMESSAGE_FAILED, error});
+
+
+export const requestReceiveMessages = messageInfo => ({type: Consts.RECEIVEMESSAGES_REQUEST, messageInfo});
+export const receiveMessagesSuccess = result => ({type: Consts.RECEIVEMESSAGES_SUCCESS, result});
+export const receiveMessagesFailed = error => ({type: Consts.RECEIVEMESSAGES_FAILED, error});

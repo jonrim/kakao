@@ -29,7 +29,7 @@ router.get('/', Auth.assertAdmin, function(req, res) {
   });
 });
 
-router.put('/message', function(req, res, next) {
+router.put('/messageSend', function(req, res, next) {
   var { messages, userId, friendId } = req.body;
   var today = Array.isArray(messages) ? messages[0].date : messages.date;
   var i;
@@ -109,6 +109,20 @@ router.put('/message', function(req, res, next) {
   })
   .catch(next);
 });
+
+router.put('/messageReceive', function(req, res, next) {
+  var { userId } = req.body;
+  User.findOne({
+    where: {
+      id: userId
+    }
+  })
+  .then(user => {
+    res.json(user.friends);
+  })
+  .catch(next);
+})
+
 
 router.post('/friendsList', function(req, res, next) {
   // friendFavoriteChatHistory is an array of user's friends that contains friend's info (favorited, chat history)
