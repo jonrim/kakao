@@ -117,9 +117,16 @@ export default class ChatroomMessages extends Component {
                       <p style={{margin: '0', padding: '0 10px'}}>{chatroom.name}</p>
                     }
                     {
-                      displayTimeForThisMessage(i) && !chatHistory[i].friend &&
+                      !chatHistory[i].friend &&
                       <div className='date-container'>
-                        <span>{ moment(message.date).format('h:mm A') }</span>
+                        {
+                          !message.read &&
+                          <span className='unread' style={{bottom: displayTimeForThisMessage(i) ? '19px' : '4px'}}>1</span>
+                        }
+                        {
+                          displayTimeForThisMessage(i) &&
+                          <span className='time'>{ moment(message.date).format('h:mm A') }</span>
+                        }
                       </div>
                     }
                     {
@@ -150,9 +157,16 @@ export default class ChatroomMessages extends Component {
                       )
                     }
                     {
-                      displayTimeForThisMessage(i) && chatHistory[i].friend &&
+                      chatHistory[i].friend &&
                       <div className='date-container'>
-                        <span>{ moment(message.date).format('h:mm A') }</span>
+                        {
+                          !message.read &&
+                          <span className='unread' style={{bottom: displayTimeForThisMessage(i) ? '19px' : '4px'}}>1</span>
+                        }
+                        {
+                          displayTimeForThisMessage(i) && 
+                          <span className='time'>{ moment(message.date).format('h:mm A') }</span>
+                        }
                       </div>
                     }
                   </div>

@@ -84,11 +84,19 @@
   .message {
 
     .date-container {
-
-      span {
+      .unread {
+        color: #f9f05d;
         position: absolute;
         bottom: 4px;
         margin: 0 2px;
+        font-size: 14px;
+      }
+
+      .time {
+        position: absolute;
+        bottom: 4px;
+        margin: 0 2px;
+        font-size: 12px;
       }
     }
 
