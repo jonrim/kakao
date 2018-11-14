@@ -13,6 +13,7 @@ export default function reducer(state = initialState, action) {
     case Consts.FRIENDSLIST_REQUEST:
     case Consts.SENDMESSAGE_REQUEST:
     case Consts.RECEIVEMESSAGES_REQUEST:
+    case Consts.READMESSAGES_REQUEST:
       return {
         ...state,
         isFetching: true
@@ -37,6 +38,7 @@ export default function reducer(state = initialState, action) {
           }
         })
       }
+    case Consts.READMESSAGES_SUCCESS:
     case Consts.SENDMESSAGE_SUCCESS:
       let newChatHistory = JSON.parse(action.result);
       return {
@@ -55,6 +57,7 @@ export default function reducer(state = initialState, action) {
     case Consts.FRIENDSLIST_FAILED:
     case Consts.SENDMESSAGE_FAILED:
     case Consts.RECEIVEMESSAGES_FAILED:
+    case Consts.READMESSAGES_FAILED:
       return {
         ...state,
         isFetching: false,

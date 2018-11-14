@@ -16,7 +16,10 @@ export const requestSendMessage = messageInfo => ({type: Consts.SENDMESSAGE_REQU
 export const sendMessageSuccess = result => ({type: Consts.SENDMESSAGE_SUCCESS, result});
 export const sendMessageFailed = error => ({type: Consts.SENDMESSAGE_FAILED, error});
 
-
 export const requestReceiveMessages = messageInfo => ({type: Consts.RECEIVEMESSAGES_REQUEST, messageInfo});
 export const receiveMessagesSuccess = result => ({type: Consts.RECEIVEMESSAGES_SUCCESS, result});
 export const receiveMessagesFailed = error => ({type: Consts.RECEIVEMESSAGES_FAILED, error});
+
+export const requestReadMessages = messageInfo => ({type: Consts.READMESSAGES_REQUEST, messageInfo});
+export const readMessagesSuccess = result => ({type: Consts.READMESSAGES_SUCCESS, result});
+export const readMessagesFailed = error => ({type: Consts.READMESSAGES_FAILED, error});

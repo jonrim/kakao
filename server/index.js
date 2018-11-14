@@ -106,28 +106,19 @@ io.on('connection', socket => {
 
   });
 
-  socket.on('messageSend', message => {
-    console.log(message);
+  socket.on('message', message => {
     // should still send message even if other user isn't connected
     // first update both users' friends prop (chatroom for friend/friends)
 
-    // If the friend is currently online, emit the message to the friend right away
+    // If the friend is currently online, if there is a message, emit the message to the friend right away
+    // Or, after reading the messages, alert friend that the messages were read
     if (users[message.friendId]) {
-      console.log(users[message.friendId])
       io.to(`${users[message.friendId]}`).emit('messageReceive', {
         ...message,
         userId: message.friendId,
         friendId: message.userId
       });
     }
-    // if doesn't succeed, send back error message.
-    // then io.emit to only the other user
-    // on success, io.emit back to this user that it has been read. make another socket.on('messageRead')
-  })
-
-  socket.on('messageRead', message => {
-    console.log(message);
-    // after receiving the message, 
   })
 
   socket.on('disconnect', () => {

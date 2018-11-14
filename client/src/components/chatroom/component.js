@@ -26,6 +26,7 @@ export default class Chatroom extends Component {
     this.onResize = this.onResize.bind(this);
     this.addEmoji = this.addEmoji.bind(this);
     this.sendMedia = this.sendMedia.bind(this);
+    this.readMessages = this.readMessages.bind(this);
   }
 
   showSearch() {
@@ -173,9 +174,30 @@ export default class Chatroom extends Component {
   //   }
   // }
 
+  readMessages() {
+    const { requestReadMessages, user, chatroom } = this.props;
+    // Only notify that the messages were read if there were unread messages in the first place
+    let chatHistory = chatroom.chatHistory;
+    let latestFriendMessage;
+    for (let i = chatHistory.length - 1; i >= 0; i--) {
+      // find the friend's latest message and check if it's read
+      if (chatHistory[i].friend) {
+        latestFriendMessage = chatHistory[i];
+        break;
+      }
+    }
+    if (latestFriendMessage && !latestFriendMessage.read) {
+      requestReadMessages({userId: user.id, friendId: chatroom.id});
+    }
+  }
+
   componentDidMount() {
     document.getElementById('chatroom-type-input').focus();
     // window.addEventListener('click', this.hideEmojiPickerOnClick)
+
+    // update read receipts
+    this.readMessages();
+    this.scrollToBottom();
   }
 
   componentWillUnmount() {
@@ -183,9 +205,13 @@ export default class Chatroom extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { friends, chatroom, socket } = this.props;
+    const { requestReadMessages, user, friends, chatroom, socket } = this.props;
+    // if you change to a different friend's chatroom,
+    // 1. update read receipts
+    // 2. scroll back to bottom
     if (prevProps.chatroom.id !== chatroom.id) {
       document.getElementById('chatroom-type-input').focus();
+      this.readMessages();
       this.setState({
         chatHistory: friends.find(friend => chatroom.id === friend.id).chatHistory || []
       }, () => {
@@ -194,7 +220,6 @@ export default class Chatroom extends Component {
     }
 
     if (prevState === this.state) {
-      const { friends, chatroom, socket } = this.props;
       const { messageInfo } = this.state;
       const chatHistory = friends.find(friend => chatroom.id === friend.id).chatHistory;
       const prevChatHistory = prevProps.friends.find(friend => chatroom.id === friend.id).chatHistory;
@@ -202,11 +227,14 @@ export default class Chatroom extends Component {
       if (prevChatHistory !== chatHistory) {
         // Only emit if I am the user that has messageInfo ready to be sent
         if (messageInfo) {
-          socket.emit('messageSend', messageInfo);
+          socket.emit('message', messageInfo);
           this.setState({
             messageInput: '',
             messageInfo: null
           });
+        }
+        else {
+          socket.emit('message', {userId: user.id, friendId: chatroom.id});
         }
         // Update the chat history regardless of whether I am the user or the friend
         this.setState({
@@ -229,7 +257,7 @@ export default class Chatroom extends Component {
         acceptClassName='dropzone-drag'
       >
         {({ open }) => (
-          <div className='chatroom'>
+          <div className='chatroom' onFocus={this.readMessages}>
             <div className='chatroom-nav'>
               <BackButton
                 changeFriendState={changeFriendState}

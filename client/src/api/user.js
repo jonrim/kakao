@@ -26,10 +26,15 @@ export const requestReceiveMessages = (messageInfo) => {
   return fetch(`/users/messageReceive`, createOptions(putJSON(messageInfo))).then(checkStatus);
 }
 
+export const requestReadMessages = (messageInfo) => {
+  return fetch(`/users/messageRead`, createOptions(putJSON(messageInfo))).then(checkStatus);
+}
+
 export default {
   requestChangeInfo,
   requestSendEmail,
   requestFriendsList,
   requestSendMessage,
   requestReceiveMessages,
+  requestReadMessages,
 };

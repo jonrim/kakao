@@ -5,7 +5,7 @@ import auth from 'Reducers/auth';
 import component from './component';
 import { requestLogin } from 'Actions/auth';
 import { withRouter } from 'react-router-dom'
-import { requestSendMessage } from 'Actions/user';
+import { requestSendMessage, requestReadMessages } from 'Actions/user';
 
 function mapStateToProps(state) {
   return {
@@ -19,7 +19,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     push,
-    requestSendMessage
+    requestSendMessage,
+    requestReadMessages
   }, dispatch);
 }
 

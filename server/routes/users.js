@@ -58,7 +58,7 @@ router.put('/messageSend', function(req, res, next) {
     .then(person => {
       // look for user in this person's friends
       if (!person) {
-        const error = new Error('Cannot find user/friend when sending a message. User/friend ID:', pseronId);
+        const error = new Error('Cannot find user/friend when sending a message. User/friend ID:', personId);
         error.status = 400;
         next(error);
       }
@@ -102,8 +102,8 @@ router.put('/messageSend', function(req, res, next) {
                                         || chatHistory.length === 0 || !sameDay || sameDay && !sameTime;
         chatHistory.push(messages);
       }
-      person.friends[i] = JSON.stringify(chatInfo);
 
+      person.friends[i] = JSON.stringify(chatInfo);
       return person.update({friends: person.friends});
     })
     .catch(next);
@@ -126,7 +126,7 @@ router.put('/messageReceive', function(req, res, next) {
   })
   .then(user => {
     if (!user) {
-      const error = new Error('Cannot find user when trying to receive message. User ID:', req.body.id);
+      const error = new Error('Cannot find user when trying to receive message. User ID:', userId);
       error.status = 400;
       next(error);
     }
@@ -134,6 +134,54 @@ router.put('/messageReceive', function(req, res, next) {
   })
   .catch(next);
 })
+
+router.put('/messageRead', function(req, res, next) {
+  var { userId, friendId } = req.body;
+  var index;
+  function updateInfo(personId) {
+    return User.findOne({
+      where: {
+        id: personId
+      }
+    })
+    .then(person => {
+      if (!person) {
+        const error = new Error('Cannot find user/friend when trying to mark messages as read. User/friend ID:', person.id);
+        error.status = 400;
+        next(error);
+      }
+      index = person.friends.map(f => JSON.parse(f)).findIndex(f => f.id === (person.id === userId ? friendId : userId));
+      let chatInfo = JSON.parse(person.friends[index]);
+      chatInfo.chatHistory = chatInfo.chatHistory || [];
+      let chatHistory = chatInfo.chatHistory;
+      let message;
+
+      // keep checking messages (starting from the latest) and mark all of friend's 
+      // unread messages as read for both the user and the friend until a read message is reached
+
+      for (let i = chatHistory.length - 1; i >= 0; i--) {
+        message = chatHistory[i];
+        if (message.friend && personId === userId || !message.friend && personId === friendId) {
+          if (message.read) break;
+          message.read = true;
+        } 
+      }
+
+      person.friends[index] = JSON.stringify(chatInfo);
+      return person.update({friends: person.friends})
+    });
+  }
+  // mark friend's messages as read for friend
+  updateInfo(friendId);
+  // mark friend's messages as read for user
+  updateInfo(userId)
+  .then(user => {
+    res.json(user.friends[index]);
+  })
+  .catch(next);
+})
+
+
 
 
 router.post('/friendsList', function(req, res, next) {

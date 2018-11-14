@@ -49,6 +49,15 @@ function* requestReceiveMessages(action) {
   }
 }
 
+function* requestReadMessages(action) {
+  try {
+    const result = yield call(Api.requestReadMessages, action.messageInfo);
+    yield put(Actions.readMessagesSuccess(result));
+  } catch (error) {
+    yield put(Actions.readMessagesFailed(error));
+  }
+}
+
 export default function* watchUser() {
   yield all([
     takeLatest(Consts.CHANGEINFO_REQUEST, requestChangeInfo),
@@ -56,5 +65,6 @@ export default function* watchUser() {
     takeLatest(Consts.FRIENDSLIST_REQUEST, requestFriendsList),
     takeLatest(Consts.SENDMESSAGE_REQUEST, requestSendMessage),
     takeLatest(Consts.RECEIVEMESSAGES_REQUEST, requestReceiveMessages),
+    takeLatest(Consts.READMESSAGES_REQUEST, requestReadMessages),
   ]);
 }
