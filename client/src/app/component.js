@@ -61,10 +61,11 @@ export default class App extends Component {
     }, () => {
       const { socket } = this.state;
       socket.on('connect', () => {
-        socket.emit('connected', {socketId: socket.id, userId: user.id}); 
+        socket.emit('connected', {socketId: socket.id, userEmail: user.email}); 
       })
       socket.on('messageReceive', message => {
-        requestReceiveMessages({socketId: socket.id, userId: user.id});
+        console.log(message)
+        requestReceiveMessages({socketId: socket.id, userEmail: user.email});
       })
     }); 
   }

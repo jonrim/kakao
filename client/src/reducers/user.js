@@ -31,7 +31,7 @@ export default function reducer(state = initialState, action) {
         isFetching: false,
         friends: state.friends.map(friendInState => {
           // make sure same ID
-          let friendInReceivedObject = friendsWithUpdatedChatHistories.find(f => f.id === friendInState.id);
+          let friendInReceivedObject = friendsWithUpdatedChatHistories.find(f => f.email === friendInState.email);
           return {
             ...friendInState,
             chatHistory: friendInReceivedObject.chatHistory
@@ -45,7 +45,7 @@ export default function reducer(state = initialState, action) {
         ...state,
         isFetching: false,
         friends: state.friends.map(friend => {
-          if (friend.id === newChatHistory.id) {
+          if (friend.email === newChatHistory.email) {
             return {
               ...friend,
               chatHistory: newChatHistory.chatHistory

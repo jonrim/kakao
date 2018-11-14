@@ -89,7 +89,7 @@ export default class Friends extends Component {
                   .filter(friend => friend.name ? friend.name.toLowerCase().replace(/\s/g, '').includes(searchNameInput.toLowerCase().replace(/\s/g, '')) : null)
                   .map(friend => (
                     <FriendWithRouter
-                      key={friend.id}
+                      key={friend.email}
                       friend={friend}
                       changeFriendState={changeFriendState}
                     />

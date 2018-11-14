@@ -15,7 +15,7 @@ export default class Chatroom extends Component {
       search: false,
       messageInput: '',
       filesToSend: [],
-      chatHistory: props.friends.find(friend => props.chatroom.id === friend.id).chatHistory || []
+      chatHistory: props.friends.find(friend => props.chatroom.email === friend.email).chatHistory || []
     };
     this.showSearch = this.showSearch.bind(this);
     this.showMore = this.showMore.bind(this);
@@ -71,13 +71,13 @@ export default class Chatroom extends Component {
     const { friends, socket, user, chatroom, requestSendMessage } = this.props;
     const { sameDate, sameMinute } = this;
     let today = new Date();
-    let chatHistory = friends.find(friend => friend.id === chatroom.id).chatHistory || [];
+    let chatHistory = friends.find(friend => friend.email === chatroom.email).chatHistory || [];
     let latestMessage, sameDay, sameTime;
 
     let messageInfo = {
       userSocketId: socket.id,
-      userId: user.id,
-      friendId: chatroom.id,
+      userEmail: user.email,
+      friendEmail: chatroom.email,
       messages: typeOfMessage === 'text' ? {
         text: messageInput,
         date: today,
@@ -176,8 +176,8 @@ export default class Chatroom extends Component {
 
   readMessages() {
     const { requestReadMessages, user, chatroom } = this.props;
+    const { chatHistory } = this.state;
     // Only notify that the messages were read if there were unread messages in the first place
-    let chatHistory = chatroom.chatHistory;
     let latestFriendMessage;
     for (let i = chatHistory.length - 1; i >= 0; i--) {
       // find the friend's latest message and check if it's read
@@ -187,7 +187,7 @@ export default class Chatroom extends Component {
       }
     }
     if (latestFriendMessage && !latestFriendMessage.read) {
-      requestReadMessages({userId: user.id, friendId: chatroom.id});
+      requestReadMessages({userEmail: user.email, friendEmail: chatroom.email});
     }
   }
 
@@ -209,11 +209,11 @@ export default class Chatroom extends Component {
     // if you change to a different friend's chatroom,
     // 1. update read receipts
     // 2. scroll back to bottom
-    if (prevProps.chatroom.id !== chatroom.id) {
+    if (prevProps.chatroom.email !== chatroom.email) {
       document.getElementById('chatroom-type-input').focus();
       this.readMessages();
       this.setState({
-        chatHistory: friends.find(friend => chatroom.id === friend.id).chatHistory || []
+        chatHistory: friends.find(friend => chatroom.email === friend.email).chatHistory || []
       }, () => {
         this.scrollToBottom();
       });
@@ -221,28 +221,35 @@ export default class Chatroom extends Component {
 
     if (prevState === this.state) {
       const { messageInfo } = this.state;
-      const chatHistory = friends.find(friend => chatroom.id === friend.id).chatHistory;
-      const prevChatHistory = prevProps.friends.find(friend => chatroom.id === friend.id).chatHistory;
+      const chatHistory = friends.find(friend => chatroom.email === friend.email).chatHistory;
 
-      if (prevChatHistory !== chatHistory) {
-        // Only emit if I am the user that has messageInfo ready to be sent
-        if (messageInfo) {
-          socket.emit('message', messageInfo);
-          this.setState({
-            messageInput: '',
-            messageInfo: null
-          });
-        }
-        else {
-          socket.emit('message', {userId: user.id, friendId: chatroom.id});
-        }
-        // Update the chat history regardless of whether I am the user or the friend
+      // Only emit if I am the user that has messageInfo ready to be sent
+      // A message was sent
+      if (messageInfo) {
+        socket.emit('message', messageInfo);
         this.setState({
-          chatHistory
-        }, () => {
-          this.scrollToBottom();
+          messageInput: '',
+          messageInfo: null
         });
       }
+      else {
+        const prevChatHistory = prevProps.friends.find(friend => chatroom.email === friend.email).chatHistory;
+        const prevLastMessage = prevChatHistory[prevChatHistory.length - 1];
+        const currLastMessage = chatHistory[prevChatHistory.length - 1];
+        const d1 = new Date(prevLastMessage.date);
+        const d2 = new Date(currLastMessage.date);
+        // If there were any updates to the chat history...
+        if (d1.getTime() !== d2.getTime() ||
+          prevLastMessage.read !== currLastMessage.read && d1.getTime() === d2.getTime() && prevLastMessage.friend === currLastMessage.friend) {
+          socket.emit('message', {userEmail: user.email, friendEmail: chatroom.email});
+        }
+      }
+      // Update the chat history regardless of whether I am the user or the friend
+      this.setState({
+        chatHistory
+      }, () => {
+        this.scrollToBottom();
+      });
     }
   }
 

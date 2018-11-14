@@ -101,7 +101,7 @@ io.on('connection', socket => {
   // on connection, should receive all new messages
 
   socket.on('connected', IDs => {
-    users[IDs.userId] = IDs.socketId;
+    users[IDs.userEmail] = IDs.socketId;
     // fetch new messages here
 
   });
@@ -112,11 +112,11 @@ io.on('connection', socket => {
 
     // If the friend is currently online, if there is a message, emit the message to the friend right away
     // Or, after reading the messages, alert friend that the messages were read
-    if (users[message.friendId]) {
-      io.to(`${users[message.friendId]}`).emit('messageReceive', {
+    if (users[message.friendEmail]) {
+      io.to(`${users[message.friendEmail]}`).emit('messageReceive', {
         ...message,
-        userId: message.friendId,
-        friendId: message.userId
+        userEmail: message.friendEmail,
+        friendEmail: message.userEmail
       });
     }
   })

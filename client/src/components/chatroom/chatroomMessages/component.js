@@ -86,7 +86,7 @@ export default class ChatroomMessages extends Component {
                         so that I can properly position the time to be at the bottom right corner of it's container,
                         just to the left of the message 
                        */
-                      display: !displayTimeForThisMessage(i) || chatHistory[i].friend ? 'inline-block' : 'flex',
+                      display: chatHistory[i].friend ? 'inline-block' : 'flex',
                       verticalAlign: 'top',
                       marginLeft: '3px',
                       position: 'relative',

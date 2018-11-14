@@ -31,7 +31,7 @@ const seedUsers = () => {
       photo: 'https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1541254123/sejin_mdaurn.jpg',
       isAdmin: false,
       friends: [
-        JSON.stringify({id: 3, favorite: true, chatHistory: [
+        JSON.stringify({email: 'm@m.com', favorite: true, chatHistory: [
           {
             date: new Date(2018, 9, 20, 7, 30, 20, 0),
             text: '보고시뿌 보낼려구 들어왔는데~',
@@ -99,7 +99,7 @@ const seedUsers = () => {
       motto: 'happy new years',
       photo: 'https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1541254120/johnchen_hnl598.jpg',
       isAdmin: false,
-      friends: [JSON.stringify({id: 3, favorite: true, chatHistory: []})]
+      friends: [JSON.stringify({email: 'm@m.com', favorite: true, chatHistory: []})]
     },
     {
       password: 'm',
@@ -110,7 +110,7 @@ const seedUsers = () => {
       photo: 'https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1541254122/me_chsm06.jpg',
       isAdmin: true,
       friends: [
-        JSON.stringify({id: 2, favorite: true, chatHistory: [
+        JSON.stringify({email: 'm1@m.com', favorite: true, chatHistory: [
           {
             date: new Date(2018, 9, 20, 7, 30, 20, 0),
             text: '보고시뿌 보낼려구 들어왔는데~',
@@ -168,12 +168,12 @@ const seedUsers = () => {
             read: false
           }
         ]}),
-        JSON.stringify({id: 1, favorite: true, chatroom: []}),
-        JSON.stringify({id: 4, chatroom: []}),
-        JSON.stringify({id: 5, chatroom: []}),
-        JSON.stringify({id: 6, chatroom: []}),
-        JSON.stringify({id: 7, chatroom: []}),
-        JSON.stringify({id: 8, chatroom: []}),
+        JSON.stringify({email: 'm2@m.com', favorite: true, chatroom: []}),
+        JSON.stringify({email: 'm3@m.com', chatroom: []}),
+        JSON.stringify({email: 'm4@m.com', chatroom: []}),
+        JSON.stringify({email: 'm5@m.com', chatroom: []}),
+        JSON.stringify({email: 'm6@m.com', chatroom: []}),
+        JSON.stringify({email: 'm7@m.com', chatroom: []}),
       ]
     },
     {
