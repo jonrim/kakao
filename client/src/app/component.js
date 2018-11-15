@@ -83,7 +83,7 @@ export default class App extends Component {
 
   render() {
     const { chatroom, mobileWindow, socket } = this.state;
-    const { user } = this.props;
+    const { user, friends } = this.props;
     return (
       <div style={{height: '100%'}}>
         {
@@ -120,14 +120,14 @@ export default class App extends Component {
 }
 
 const NavAndViews = props => {
-  const { user, chatroom, mobileWindow, socket, changeFriendState } = props;
+  const { user, friends, chatroom, mobileWindow, socket, changeFriendState } = props;
 
   return (
     <div style={{height: '100%'}}>
       {
         user ?
         <div>
-          <Nav/>
+          <Nav friends={friends} />
           <Switch>
             <Route exact path='/' render={(props) => (
               <Friends {...props}

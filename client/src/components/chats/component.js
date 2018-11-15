@@ -111,7 +111,6 @@ const Friend = props => {
   let latestMessageText;
   if (typeof latestMessage === 'object') latestMessageText = latestMessage.text ? latestMessage.text : latestMessage.file ? 'media' : '';
   else latestMessageText = '';
-  console.log(friend.chatHistory, latestMessage)
   return (
     <div 
       className={'friend'}

@@ -15,7 +15,7 @@ export default class Chatroom extends Component {
       search: false,
       messageInput: '',
       filesToSend: [],
-      chatHistory: props.friends.find(friend => props.chatroom.email === friend.email).chatHistory || []
+      chatHistory: props.user.email === props.chatroom.email ? [] : props.friends.find(friend => props.chatroom.email === friend.email).chatHistory || []
     };
     this.showSearch = this.showSearch.bind(this);
     this.showMore = this.showMore.bind(this);
@@ -69,6 +69,8 @@ export default class Chatroom extends Component {
   send(typeOfMessage, files) {
     const { messageInput } = this.state;
     const { friends, socket, user, chatroom, requestSendMessage } = this.props;
+    // If you're in a chatroom with yourself, don't send anything
+    if (user.email === chatroom.email) return;
     const { sameDate, sameMinute } = this;
     let today = new Date();
     let chatHistory = friends.find(friend => friend.email === chatroom.email).chatHistory || [];
@@ -95,61 +97,6 @@ export default class Chatroom extends Component {
     this.setState({ messageInfo }, () => {
       requestSendMessage(messageInfo);
     });
-    // if (chatHistory.length > 0) {
-    //   let latestMessage = chatHistory[chatHistory.length - 1].date;
-    //   let sameDay = sameDate(today, latestMessage);
-    //   let sameTime = sameMinute(today, latestMessage);
-    //   this.setState({
-    //     messageInput: '',
-    //     filesToSend: typeOfMessage === 'media' ? files : null,
-    //     chatHistory: typeOfMessage === 'text' ? [...chatHistory, {
-    //       text: messageInput,
-    //       date: today,
-    //       friend: false,
-    //       firstMessageOfDay: !sameDay,
-    //       firstMessageOfMinute: !sameDay || sameDay && !sameTime
-    //     }] : [...chatHistory].concat(files.map((file, i) => {
-    //       return {
-    //         file: file,
-    //         date: today,
-    //         friend: false,
-    //         /* 
-    //           when sending multiple files, only check the first file to see if it's
-    //           the first message of the day/minute
-    //         */
-    //         firstMessageOfDay: i === 0 && !sameDay,
-    //         firstMessageOfMinute: i === 0 && (!sameDay || sameDay && !sameTime)
-    //       }
-    //     }))
-    //   }, () => {
-    //     console.log(files)
-    //     this.scrollToBottom();
-    //   });
-    // }
-    // else {
-    //   // empty chatroom
-    //   this.setState({
-    //     messageInput: '',
-    //     filesToSend: typeOfMessage === 'media' ? files : null,
-    //     chatHistory: typeOfMessage === 'text' ? [{
-    //       text: messageInput,
-    //       date: today,
-    //       friend: false,
-    //       firstMessageOfDay: true,
-    //       firstMessageOfMinute: true
-    //     }] : files.map((file, i) => {
-    //       return {
-    //         file: file,
-    //         date: today,
-    //         friend: false,
-    //         firstMessageOfDay: i === 0,
-    //         firstMessageOfMinute: i === 0
-    //       }
-    //     })
-    //   }, () => {
-    //     this.scrollToBottom();
-    //   });
-    // }
   }
 
   onResize() {
@@ -219,7 +166,7 @@ export default class Chatroom extends Component {
       });
     }
 
-    if (prevState === this.state) {
+    if (prevState === this.state && user.email !== chatroom.email) {
       const { messageInfo } = this.state;
       const chatHistory = friends.find(friend => chatroom.email === friend.email).chatHistory;
 
