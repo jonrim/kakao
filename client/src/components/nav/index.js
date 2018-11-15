@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, withRouter } from 'react-router-dom'
 
 import './index.scss'
 
@@ -51,4 +51,4 @@ function displayNumNewMessages(friends) {
   return totalNumOfNewMessages > 99 ? '99+' : totalNumOfNewMessages;
 }
 
-export default Nav
+export default withRouter(Nav)
