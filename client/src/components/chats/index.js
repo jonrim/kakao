@@ -1,14 +1,25 @@
-import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { push } from 'connected-react-router';
+import auth from 'Reducers/auth';
+import component from './component';
+import { withRouter } from 'react-router-dom'
 
-export default class Chats extends Component {
-  constructor(props) {
-    super(props);
-  }
+import './index.scss';
 
-  render() {
-    return (
-      <div>
-      </div>
-    )
-  }
-}
+const mapStateToProps = (state) => {
+  return {
+    myProfile: [state.auth.user || {}],
+    friends: state.user.friends || [],
+    isFetching: state.user.isFetchingFriendList
+  };
+};
+
+export const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    auth,
+    push
+  }, dispatch);
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(component));

@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
   return {
     myProfile: [state.auth.user || {}],
     friends: state.user.friends || [],
-    isFetching: state.user.isFetching
+    isFetching: state.user.isFetchingFriendList
   };
 };
 

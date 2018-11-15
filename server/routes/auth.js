@@ -28,8 +28,7 @@ router.post('/login', (req, res, next) => {
         phone: user.phone,
         photo: user.photo,
         isAdmin: user.isAdmin,
-        motto: user.motto,
-        friends: user.friends
+        motto: user.motto
       };
       
       res.json(req.session.user);

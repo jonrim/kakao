@@ -3,7 +3,8 @@ import { auth } from 'Api';
 import * as Consts from 'Constants/user';
 
 const initialState = {
-  isFetching: false,
+  isFetchingMessage: false,
+  isFetchingFriendList: false,
   error: null,
   friends: []
 };
@@ -11,24 +12,28 @@ const initialState = {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case Consts.FRIENDSLIST_REQUEST:
+      return {
+        ...state,
+        isFetchingFriendList: true
+      }
     case Consts.SENDMESSAGE_REQUEST:
     case Consts.RECEIVEMESSAGES_REQUEST:
     case Consts.READMESSAGES_REQUEST:
       return {
         ...state,
-        isFetching: true
+        isFetchingMessage: true
       }
     case Consts.FRIENDSLIST_SUCCESS:
       return {
         ...state,
-        isFetching: false,
+        isFetchingFriendList: false,
         friends: action.result
       }
     case Consts.RECEIVEMESSAGES_SUCCESS:
       let friendsWithUpdatedChatHistories = action.result.map(friend => JSON.parse(friend));
       return {
         ...state,
-        isFetching: false,
+        isFetchingMessage: false,
         friends: state.friends.map(friendInState => {
           // make sure same ID
           let friendInReceivedObject = friendsWithUpdatedChatHistories.find(f => f.email === friendInState.email);
@@ -43,7 +48,7 @@ export default function reducer(state = initialState, action) {
       let newChatHistory = JSON.parse(action.result);
       return {
         ...state,
-        isFetching: false,
+        isFetchingMessage: false,
         friends: state.friends.map(friend => {
           if (friend.email === newChatHistory.email) {
             return {
@@ -55,12 +60,17 @@ export default function reducer(state = initialState, action) {
         })
       }
     case Consts.FRIENDSLIST_FAILED:
+      return {
+        ...state,
+        isFetchingFriendList: false,
+        error: action.error.message
+      }
     case Consts.SENDMESSAGE_FAILED:
     case Consts.RECEIVEMESSAGES_FAILED:
     case Consts.READMESSAGES_FAILED:
       return {
         ...state,
-        isFetching: false,
+        isFetchingMessage: false,
         error: action.error.message
       }
     default:

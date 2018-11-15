@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 
 function mapStateToProps(state) {
   return {
-    isFetching: state.auth.isFetching,
+    isFetching: state.auth.isFetchingMessage,
     error: state.auth.error,
     friends: state.user.friends,
   };

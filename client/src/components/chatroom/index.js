@@ -9,7 +9,7 @@ import { requestSendMessage, requestReadMessages } from 'Actions/user';
 
 function mapStateToProps(state) {
   return {
-    isFetching: state.auth.isFetching,
+    isFetching: state.auth.isFetchingMessage,
     error: state.auth.error,
     user: state.auth.user,
     friends: state.user.friends

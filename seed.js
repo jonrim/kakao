@@ -24,7 +24,7 @@ const seedUsers = () => {
   const users = [
     {
       password: 'p',
-      name: '세진❤',
+      name: '김세진',
       email: 'm1@m.com',
       phone: '0000000000',
       motto: '🥑',
@@ -92,7 +92,7 @@ const seedUsers = () => {
       ]
     },
     {
-      password: 'p',
+      password: 'm',
       name: 'John Chen',
       email: 'm2@m.com',
       phone: '0000000000',
