@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom'
 import throttle from 'throttled-event-listener'
 import { FadeLoader } from 'react-spinners';
 import { css } from 'react-emotion';
+import moment from 'moment'
 
 const loaderCSS = css`
   margin: 30px auto;
@@ -39,11 +40,11 @@ export default class Chats extends Component {
 
   componentDidMount() {
     // Event Delegation
-    document.getElementsByClassName('friends-list')[0].addEventListener('mousedown', this.changeFriendButtonStyling);
+    document.getElementsByClassName('chats-list')[0].addEventListener('mousedown', this.changeFriendButtonStyling);
   }
 
   componentWillUnmount() {
-    document.getElementsByClassName('friends-list')[0].removeEventListener('mousedown', this.changeFriendButtonStyling);
+    document.getElementsByClassName('chats-list')[0].removeEventListener('mousedown', this.changeFriendButtonStyling);
   }
 
   changeInputValue(e) {
@@ -57,7 +58,7 @@ export default class Chats extends Component {
     const { chatroom, changeFriendState, myProfile, friends, isFetching } = this.props;
     const { changeInputValue } = this;
     return (
-      <div className='friends-wrapper'>
+      <div className='chats-wrapper'>
         <Input 
           focus
           icon='search'
@@ -67,7 +68,7 @@ export default class Chats extends Component {
           onChange={changeInputValue} 
           value={searchNameInput}
         />
-        <div className='friends-list'>
+        <div className='chats-list'>
           {
             isFetching ?
             <FadeLoader
@@ -105,9 +106,12 @@ const Friend = props => {
     changeFriendState('chatroom', friend);
   };
   let latestMessage = friend.chatHistory && friend.chatHistory.length > 0 ? 
-                        friend.chatHistory[friend.chatHistory.length - 1] : '';
-  if (typeof latestMessage === 'object') latestMessage = latestMessage.text ? latestMessage.text : latestMessage.file ? 'media' : '';
-  else latestMessage = '';
+                        friend.chatHistory[friend.chatHistory.length - 1] : null;
+  let latestMessageTime = latestMessage.date;
+  let latestMessageText;
+  if (typeof latestMessage === 'object') latestMessageText = latestMessage.text ? latestMessage.text : latestMessage.file ? 'media' : '';
+  else latestMessageText = '';
+  console.log(friend.chatHistory, latestMessage)
   return (
     <div 
       className={'friend'}
@@ -119,11 +123,46 @@ const Friend = props => {
       <div className='friend-name'>
         <p>{friend.name}</p>
       </div>
-      <div className='friend-motto'>
-        <p>{latestMessage}</p>
+      <div className='latest-message'>
+        <p>{latestMessageText}</p>
       </div>
+      <div className='date-time'>
+        <p>{displayTimeForThisMessage(latestMessageTime)}</p>
+      </div>
+      {
+        friend.chatHistory && friend.chatHistory.length > 0 && latestMessage.friend && !latestMessage.read &&
+        <div className='new-messages-number'>
+          <p>{displayNumNewMessages(friend.chatHistory)}</p>
+        </div>
+      }
     </div>
   )
 }
 
 const FriendWithRouter = withRouter(Friend)
+
+function sameDate(a, b) {
+  return a.getFullYear() === b.getFullYear() &&
+         a.getMonth() === b.getMonth() &&
+         a.getDate() === b.getDate();
+}
+
+function displayTimeForThisMessage(latestMessageTime) {
+  let now = new Date();
+  latestMessageTime = new Date(latestMessageTime);
+
+  if (sameDate(now, latestMessageTime)) return moment(latestMessageTime).format('h:mm A');
+  return moment(latestMessageTime).format('M/D/YYYY');
+}
+
+function displayNumNewMessages(chatHistory) {
+  let numNewMessages = 0, currMessage;
+  for (let i = chatHistory.length - 1; i >= 0; i--) {
+    currMessage = chatHistory[i]; 
+    if (currMessage.friend) {
+      if (currMessage.read) break;
+      numNewMessages++;
+    }
+  }
+  return numNewMessages > 99 ? '99+' : numNewMessages;
+}

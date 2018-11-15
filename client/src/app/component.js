@@ -64,7 +64,6 @@ export default class App extends Component {
         socket.emit('connected', {socketId: socket.id, userEmail: user.email}); 
       })
       socket.on('messageReceive', message => {
-        console.log(message)
         requestReceiveMessages({socketId: socket.id, userEmail: user.email});
       })
     }); 
@@ -90,27 +89,10 @@ export default class App extends Component {
         {
           chatroom && !mobileWindow ? (
             <SplitPane split='vertical' minSize={350} defaultSize={450}>
-              <div style={{height: '100%'}}>
-                {
-                  user ?
-                  <div>
-                    <Nav/>
-                    <Switch>
-                      <Route exact path='/' render={(props) => (
-                        <Friends {...props}
-                          chatroom={chatroom}
-                          changeFriendState={this.changeFriendState}
-                          socket={socket}
-                        />
-                      )}/>
-                      <Route path='/chats' component={Chats} />
-                      <Route path='/find' component={Find} />
-                      <Route path='/more' component={More} />
-                    </Switch>
-                  </div> :
-                  <Auth />
-                }
-              </div>
+              <NavAndViews
+                {...this.props} 
+                changeFriendState={this.changeFriendState}
+              />
               <Chatroom
                 chatroom={chatroom}
                 changeFriendState={this.changeFriendState}
@@ -126,30 +108,47 @@ export default class App extends Component {
               socket={socket}
             />
           ) : (
-            <div style={{height: '100%'}}>
-              {
-                user ?
-                <div>
-                  <Nav/>
-                  <Switch>
-                    <Route exact path='/' render={(props) => (
-                      <Friends {...props}
-                        chatroom={chatroom}
-                        changeFriendState={this.changeFriendState}
-                        socket={socket}
-                      />
-                    )}/>
-                    <Route path='/chats' component={Chats} />
-                    <Route path='/find' component={Find} />
-                    <Route path='/more' component={More} />
-                  </Switch>
-                </div> :
-                <Auth />
-              }
-            </div>
+            <NavAndViews
+              {...this.props} 
+              changeFriendState={this.changeFriendState}
+            />
           )
         }
       </div>
     )
   }
 }
+
+const NavAndViews = props => {
+  const { user, chatroom, mobileWindow, socket, changeFriendState } = props;
+
+  return (
+    <div style={{height: '100%'}}>
+      {
+        user ?
+        <div>
+          <Nav/>
+          <Switch>
+            <Route exact path='/' render={(props) => (
+              <Friends {...props}
+                chatroom={chatroom}
+                changeFriendState={changeFriendState}
+                socket={socket}
+              />
+            )}/>
+            <Route path='/chats' render={(props) => (
+              <Chats {...props}
+                chatroom={chatroom}
+                changeFriendState={changeFriendState}
+                socket={socket}
+              />
+            )}/>
+            <Route path='/find' component={Find} />
+            <Route path='/more' component={More} />
+          </Switch>
+        </div> :
+        <Auth />
+      }
+    </div>
+  );
+} 
