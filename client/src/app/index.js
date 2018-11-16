@@ -4,7 +4,7 @@ import component from './component';
 import { push } from 'connected-react-router';
 import auth from 'Reducers/auth';
 import { withRouter } from 'react-router-dom'
-import { requestSession } from 'Actions/auth';
+import { requestSession, requestLogout } from 'Actions/auth';
 import { requestFriendsList, requestReceiveMessages } from 'Actions/user';
 
 const mapStateToProps = (state) => {
@@ -20,7 +20,8 @@ const mapDispatchToProps = (dispatch) => {
     push,
     requestSession,
     requestFriendsList,
-    requestReceiveMessages
+    requestReceiveMessages,
+    requestLogout
   }, dispatch);
 }
 

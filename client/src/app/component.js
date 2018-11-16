@@ -27,6 +27,7 @@ export default class App extends Component {
     this.changeFriendState = this.changeFriendState.bind(this);
     this.changeIsMobileState = this.changeIsMobileState.bind(this);
     this.initializeSocket = this.initializeSocket.bind(this);
+    this.logOut = this.logOut.bind(this);
   }
 
   componentDidMount() {
@@ -81,6 +82,11 @@ export default class App extends Component {
     else if (window.innerWidth >= 900 && mobileWindow) this.setState({mobileWindow: false});
   }
 
+  logOut() {
+    const { requestLogout } = this.props;
+    requestLogout();
+  }
+
   render() {
     const { chatroom, mobileWindow, socket } = this.state;
     const { user, friends } = this.props;
@@ -92,6 +98,7 @@ export default class App extends Component {
               <NavAndViews
                 {...this.props} 
                 changeFriendState={this.changeFriendState}
+                logOut={this.logOut}
               />
               <Chatroom
                 chatroom={chatroom}
@@ -111,6 +118,7 @@ export default class App extends Component {
             <NavAndViews
               {...this.props} 
               changeFriendState={this.changeFriendState}
+              logOut={this.logOut}
             />
           )
         }
@@ -120,14 +128,14 @@ export default class App extends Component {
 }
 
 const NavAndViews = props => {
-  const { user, friends, chatroom, mobileWindow, socket, changeFriendState } = props;
+  const { user, friends, chatroom, mobileWindow, socket, changeFriendState, logOut } = props;
 
   return (
     <div style={{height: '100%'}}>
       {
         user ?
         <div>
-          <Nav friends={friends} />
+          <Nav friends={friends} logOut={logOut} />
           <Switch>
             <Route exact path='/' render={(props) => (
               <Friends {...props}
@@ -147,7 +155,7 @@ const NavAndViews = props => {
             <Route path='/more' component={More} />
           </Switch>
         </div> :
-        <Auth />
+        <Auth buttonLabel='LOG IN' />
       }
     </div>
   );

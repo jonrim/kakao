@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { NavLink, withRouter } from 'react-router-dom'
-
+import { Dropdown } from 'semantic-ui-react'
 import './index.scss'
 
 const Nav = props => {
@@ -30,7 +30,12 @@ const Nav = props => {
           <i className='fas fa-ellipsis-h' />
           <span className='tooltiptext'>More</span>
         </NavLink>
-        </span>
+      </span>
+      <Dropdown icon='content' className='dropdown-button'>
+        <Dropdown.Menu>
+          <Dropdown.Item icon='sign out' text='Log out' onClick={props.logOut} />
+        </Dropdown.Menu>
+      </Dropdown>
       <img id='logo' src='https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1541254122/logo_ism2cy.png' />
     </nav>
   )
