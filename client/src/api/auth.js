@@ -17,22 +17,14 @@ export const requestLogout = () => {
   return fetch(`/auth/logout`, createOptions()).then(checkStatus);
 }
 
-export const requestSignUp = (signUpInfo) => {
-  return fetch(`/auth/signup`, {
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    method: 'POST',
-    body: JSON.stringify(signUpInfo)
-  })
-  .then(res => res.json())
-  .then(checkStatus);
+export const requestSignup = (credentials) => {
+  return fetch(`/auth/signup`, createOptions(postJSON(credentials))).then(checkStatus);
 }
 
 export default {
   requestSession,
   requestLogin,
   requestLogout,
-  requestSignUp
+  requestSignup
 };
 

@@ -26,6 +26,26 @@
       border: solid 1px #dfc601;
     }
 
+    & > .field {
+      &:after {
+        margin-bottom: 10px;
+      }
+    }
+
+    .login-signup-toggle {
+      font-size: 15px;
+      position: relative;
+      float: left;
+      top: 36px;
+      left: 5px;
+      cursor: pointer;
+      color: rgba(0,0,0,0.6);
+
+      &:hover {
+        color: rgba(0,0,0,0.3);
+      }
+    }
+
     .field {
       width: 100%;
       height: 46px;

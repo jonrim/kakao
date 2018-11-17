@@ -20,17 +20,17 @@ function* requestLogin(action) {
   }
 }
 
-function* requestSignUp(action) {
+function* requestSignup(action) {
   try {
-    const result = yield call(Api.requestSignUp, action.signUpInfo);
+    const result = yield call(Api.requestSignup, action.signupInfo);
     if (result.errorStatus) throw result;
     else {
-      yield put(Actions.signUpSuccess(result));
+      yield put(Actions.signupSuccess(result));
       // yield put(locationChange('/'));
     }
   } catch (error) {
     // yield call(delay, 2500);
-    yield put(Actions.signUpFailed(error));
+    yield put(Actions.signupFailed(error));
   }
 }
 
@@ -63,7 +63,7 @@ function* requestLogout(action) {
 export default function* watchAuth() {
   yield all([
     takeLatest(Consts.LOGIN_REQUEST, requestLogin),
-    takeLatest(Consts.SIGN_UP_REQUEST, requestSignUp),
+    takeLatest(Consts.SIGNUP_REQUEST, requestSignup),
     takeLatest(Consts.SESSION_REQUEST, requestSession),
     takeLatest(Consts.LOGOUT_REQUEST, requestLogout)
   ]);

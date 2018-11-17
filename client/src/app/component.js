@@ -155,7 +155,7 @@ const NavAndViews = props => {
             <Route path='/more' component={More} />
           </Switch>
         </div> :
-        <Auth buttonLabel='LOG IN' />
+        <Auth />
       }
     </div>
   );

@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
 import auth from 'Reducers/auth';
 import component from './component';
-import { requestLogin } from 'Actions/auth';
+import { requestLogin, requestSignup } from 'Actions/auth';
 import { withRouter } from 'react-router-dom'
 
 function mapStateToProps(state) {
@@ -17,7 +17,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     push,
-    requestLogin
+    requestLogin,
+    requestSignup
   }, dispatch);
 }
 

@@ -12,12 +12,14 @@ export default function reducer(state = initialState, action) {
   switch (action.type) {
     case Consts.LOGIN_REQUEST:
     case Consts.LOGOUT_REQUEST:
+    case Consts.SIGNUP_REQUEST:
       return {
         ...state,
         isFetching: true,
         error: null
       }
     case Consts.LOGIN_SUCCESS:
+    case Consts.SIGNUP_SUCCESS:
       return {
         ...state,
         isFetching: false,
@@ -42,6 +44,7 @@ export default function reducer(state = initialState, action) {
     case Consts.LOGIN_FAILED:
     case Consts.LOGOUT_FAILED:
     case Consts.SESSION_FAILED:
+    case Consts.SIGNUP_FAILED:
       return {
         ...state,
         isFetching: false,

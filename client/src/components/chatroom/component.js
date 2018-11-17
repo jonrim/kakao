@@ -181,13 +181,18 @@ export default class Chatroom extends Component {
       }
       else {
         const prevChatHistory = prevProps.friends.find(friend => chatroom.email === friend.email).chatHistory;
-        const prevLastMessage = prevChatHistory[prevChatHistory.length - 1];
-        const currLastMessage = chatHistory[prevChatHistory.length - 1];
-        const d1 = new Date(prevLastMessage.date);
-        const d2 = new Date(currLastMessage.date);
-        // If there were any updates to the chat history...
-        if (d1.getTime() !== d2.getTime() ||
-          prevLastMessage.read !== currLastMessage.read && d1.getTime() === d2.getTime() && prevLastMessage.friend === currLastMessage.friend) {
+        if (prevChatHistory.length > 0) {
+          const prevLastMessage = prevChatHistory[prevChatHistory.length - 1];
+          const currLastMessage = chatHistory[prevChatHistory.length - 1];
+          const d1 = new Date(prevLastMessage.date);
+          const d2 = new Date(currLastMessage.date);
+          // If there were any updates to the chat history...
+          if (d1.getTime() !== d2.getTime() ||
+            prevLastMessage.read !== currLastMessage.read && d1.getTime() === d2.getTime() && prevLastMessage.friend === currLastMessage.friend) {
+            socket.emit('message', {userEmail: user.email, friendEmail: chatroom.email});
+          }
+        }
+        else {
           socket.emit('message', {userEmail: user.email, friendEmail: chatroom.email});
         }
       }

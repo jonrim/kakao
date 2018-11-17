@@ -25,21 +25,29 @@ export default class Auth extends Component {
     super(props)
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      name: '',
+      phone: '',
+      signUp: false
     };
   }
 
   handleSubmit = e => {
     e.preventDefault()
-    this.props.requestLogin(this.state)
+    if (this.state.signUp) this.props.requestSignup(this.state);
+    else this.props.requestLogin(this.state);
   }
 
   handleChange = e => {
     this.setState({[e.target.name]: e.target.value});
   }
 
+  toggleFormType = () => {
+    this.setState({signUp: !this.state.signUp});
+  }
+
   render () {
-    const { email, password } = this.state;
+    const { name, email, password, phone, signUp } = this.state;
     const { title, buttonLabel, buttonStyle, isFetching, error } = this.props;
 
     return (
@@ -53,18 +61,31 @@ export default class Auth extends Component {
             onSubmit={this.handleSubmit}
           >
             <div className='fields-wrapper'>
+              {
+                signUp &&
+                <Form.Field className='field'>
+                  <Input
+                    transparent
+                    className='field-input'
+                    type='text'
+                    name='name'
+                    placeholder='Name'
+                    value={name}
+                    onChange={this.handleChange}
+                  />
+                </Form.Field>
+              }
               <Form.Field className='field'>
                 <Input
                   transparent
                   className='field-input'
                   type='text'
                   name='email'
-                  placeholder='E-mail'
+                  placeholder='Email'
                   value={email}
                   onChange={this.handleChange}
                 />
               </Form.Field>
-
               <Form.Field className='field'>
                 <Input
                   transparent
@@ -76,6 +97,20 @@ export default class Auth extends Component {
                   onChange={this.handleChange}
                 />
               </Form.Field>
+              {
+                signUp &&
+                <Form.Field className='field'>
+                  <Input
+                    transparent
+                    className='field-input'
+                    type='tel'
+                    name='phone'
+                    placeholder='Phone Number'
+                    value={phone}
+                    onChange={this.handleChange}
+                  />
+                </Form.Field>
+              }
             </div>
             <Message
               className='error-message'
@@ -86,9 +121,12 @@ export default class Auth extends Component {
               { 
                 isFetching ?
                 <Spinner type='ThreeDots' color='#fff' height={30} width={30}/> :
-                <span>{buttonLabel}</span>
+                <span>{signUp ? 'Sign Up' : 'Log In'}</span>
               }
             </Form.Button>
+            <span className='login-signup-toggle' onClick={this.toggleFormType}>
+              {signUp ? 'Log In' : 'Sign Up'}
+            </span>
           </Form>
         </div>
       </div>

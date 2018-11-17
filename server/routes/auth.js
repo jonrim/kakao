@@ -4,6 +4,7 @@ const crypto = require('crypto');
 
 const db = require('../db');
 const User = db.model('user');
+const Op = require('sequelize').Op;
 
 router.post('/login', (req, res, next) => {
   User.findOne({
@@ -42,18 +43,18 @@ router.post('/login', (req, res, next) => {
 });
 
 router.post('/signup', (req, res, next) => {
-  if (req.body.password !== req.body.reenterPassword) {
-    const error = new Error('You reentered your password incorrectly.');
-    error.status = 400;
-    next(error);
-    return;
-  }
-
+  // if (req.body.password !== req.body.reenterPassword) {
+  //   const error = new Error('You reentered your password incorrectly.');
+  //   error.status = 400;
+  //   next(error);
+  //   return;
+  // }
+  console.log(req.body)
   User.findOne({
     where: {
-      $or: [
+      [Op.or]: [
         {email: req.body.email},
-        {email: req.body.email}
+        {phone: req.body.phone}
       ]
     }
   })
@@ -62,6 +63,8 @@ router.post('/signup', (req, res, next) => {
       var error;
       if (user.email === req.body.email)
         error = new Error('Email already taken.');
+      if (user.phone === req.body.phone)
+        error = new Error('Phone number already taken.');
       error.status = 400;
       throw error;
     }
