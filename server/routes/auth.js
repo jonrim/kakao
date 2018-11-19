@@ -72,7 +72,7 @@ router.post('/signup', (req, res, next) => {
     return User.findAll()
     .then(users => {
       return User.create({
-        id: users.length,
+        id: users.length + 1,
         email: req.body.email,
         password: req.body.password,
         name: req.body.name,
