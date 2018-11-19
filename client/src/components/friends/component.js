@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import { Input } from 'semantic-ui-react'
-import { withRouter } from 'react-router-dom'
 import throttle from 'throttled-event-listener'
-import { FadeLoader } from 'react-spinners';
-import { css } from 'react-emotion';
+import { FadeLoader } from 'react-spinners'
+import { css } from 'react-emotion'
 
 const loaderCSS = css`
   margin: 30px auto;
@@ -76,7 +75,15 @@ export default class Friends extends Component {
           {
             friendSections.map(section => (
               <div key={section.name}>
-                <div className='section-name'>{section.name + (section.name === 'Friends' ? ' ' + section.list.length : '')}</div>
+                <div className='section-name'>
+                  {section.name}
+                  {
+                    section.name === 'Friends' &&
+                    <span style={{'padding-left': '8px', 'font-size': '16px', 'font-weight': '900'}}>
+                      {section.list.length}
+                    </span>
+                  }
+                </div>
                 <hr/>
                 {
                   isFetching ?
@@ -88,7 +95,7 @@ export default class Friends extends Component {
                   section.list.sort((a,b) => a.name < b.name ? -1 : 1)
                   .filter(friend => friend.name ? friend.name.toLowerCase().replace(/\s/g, '').includes(searchNameInput.toLowerCase().replace(/\s/g, '')) : null)
                   .map(friend => (
-                    <FriendWithRouter
+                    <Friend
                       key={friend.email}
                       friend={friend}
                       changeFriendState={changeFriendState}
@@ -128,5 +135,3 @@ const Friend = props => {
     </div>
   )
 }
-
-const FriendWithRouter = withRouter(Friend)

@@ -4,7 +4,6 @@ import { push } from 'connected-react-router';
 import auth from 'Reducers/auth';
 import component from './component';
 import { requestLogin, requestSignup } from 'Actions/auth';
-import { withRouter } from 'react-router-dom'
 
 function mapStateToProps(state) {
   return {
@@ -22,4 +21,4 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(component));
+export default connect(mapStateToProps, mapDispatchToProps)(component);

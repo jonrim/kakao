@@ -5,10 +5,9 @@
   "main": "server/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config ./webpack.config.js",
-    "start": "npm-run-all --parallel watch:server watch:build",
-    "watch:build": "webpack-dev-server --hot --mode development --watch --config ./webpack.config.js",
-    "watch:server": "nodemon --watch \"./server\" server -e js,html server/index.js"
+    "start": "npm-run-all --parallel server build",
+    "build": "webpack-dev-server --hot --mode development --watch --config ./webpack.config.js",
+    "server": "nodemon --watch \"./server\" server -e js,html server/index.js"
   },
   "keywords": [],
   "author": "",

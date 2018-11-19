@@ -12,8 +12,6 @@ import App from './app'
 import createSagaMiddleware from 'redux-saga';
 import mySaga from 'Sagas';
 
-import 'Styles/index.scss'
-
 const sagaMiddleware = createSagaMiddleware()
 // const history = syncHistoryWithStore(browserHistory, store)
 const history = createBrowserHistory()

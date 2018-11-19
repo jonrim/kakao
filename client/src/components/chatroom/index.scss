@@ -1,7 +1,7 @@
 .chatroom {
   height: 100%;
   width: 100%;
-  background-color: #b1ecfc;
+  background-color: #B2C7D9;
   display: flex;
   flex-direction: column;
 
@@ -19,13 +19,14 @@
     border-bottom: solid 1px rgba(0,0,0,0.1);
     position: relative;
     flex: 0 1 auto;
+    background-color: #A9BDCE;
 
     .chatroom-name {
       height: 100%;
       top: 0;
       position: absolute;
       display: inline-block;
-      font-weight: 900;
+      font-weight: 700;
       padding: 0 10px;
 
       p {
@@ -35,15 +36,15 @@
       }
     }
 
-    .chatroom-photo {
-      top: -5px;
-      position: relative;
-    }
-
     .fa-search, .fa-bars {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
+    }
+
+    .fa-arrow-left {
+      position: relative;
+      top: -12px;
     }
 
     .fa-search {
@@ -93,6 +94,7 @@
         max-height: 300px;
         padding: 0;
         width: calc(100% - 72px);
+        font-size: 12px;
       }
 
       button {
@@ -156,6 +158,12 @@
 .emoji-mart {
   visibility: hidden;
   position: absolute;
+  bottom: 0;
+  left: -348px;
+  @media (max-width: 900px) {
+    bottom: 120px;
+    left: 0;
+  }
 }
 
 .visible {

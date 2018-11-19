@@ -1,6 +1,12 @@
 #app {
   min-width: 350px;
   height: 100%;
+  font-family: Arial;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid rgba(0,0,0,0.2);
 }
 
 .input {
@@ -13,12 +19,33 @@
   }
 }
 
+div.SplitPane.soloPane1.vertical {
+  & > .Pane1 {
+    width: 100% !important;
+  }
+
+  & > .Pane2 {
+    width: 0px !important;
+  }
+}
+
+.Pane2 {
+  @media (max-width: 900px) {
+    position: absolute !important;
+    height: 100%;
+  }
+}
+
 .Resizer {
   background: #000;
   opacity: .2;
   z-index: 1;
   box-sizing: border-box;
   background-clip: padding-box;
+
+  @media (max-width: 900px) {
+    display: none;
+  }
 }
 
  .Resizer.horizontal {

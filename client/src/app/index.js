@@ -1,17 +1,17 @@
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import component from './component';
-import { push } from 'connected-react-router';
-import auth from 'Reducers/auth';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import component from './component'
+import { push } from 'connected-react-router'
+import auth from 'Reducers/auth'
 import { withRouter } from 'react-router-dom'
-import { requestSession, requestLogout } from 'Actions/auth';
-import { requestFriendsList, requestReceiveMessages } from 'Actions/user';
+import { requestSession, requestLogout } from 'Actions/auth'
+import { requestFriendsList, requestReceiveMessages } from 'Actions/user'
 
 const mapStateToProps = (state) => {
   return {
     user: state.auth.user,
     friends: state.user.friends
-  };
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -22,7 +22,7 @@ const mapDispatchToProps = (dispatch) => {
     requestFriendsList,
     requestReceiveMessages,
     requestLogout
-  }, dispatch);
+  }, dispatch)
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(component));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(component))

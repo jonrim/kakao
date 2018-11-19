@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import { Input } from 'semantic-ui-react'
-import { withRouter } from 'react-router-dom'
 import throttle from 'throttled-event-listener'
-import { FadeLoader } from 'react-spinners';
-import { css } from 'react-emotion';
+import { FadeLoader } from 'react-spinners'
+import { css } from 'react-emotion'
 import moment from 'moment'
 
 const loaderCSS = css`
@@ -86,7 +85,7 @@ export default class Chats extends Component {
             })
             .filter(friend => friend.name ? friend.name.toLowerCase().replace(/\s/g, '').includes(searchNameInput.toLowerCase().replace(/\s/g, '')) : null)
             .map(friend => (
-              <FriendWithRouter
+              <Friend
                 key={friend.email}
                 friend={friend}
                 changeFriendState={changeFriendState}
@@ -137,8 +136,6 @@ const Friend = props => {
     </div>
   )
 }
-
-const FriendWithRouter = withRouter(Friend)
 
 function sameDate(a, b) {
   return a.getFullYear() === b.getFullYear() &&

@@ -221,6 +221,8 @@ const seedUsers = () => {
       email: 'm7@m.com',
       phone: '0000000000',
       photo: 'https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1541254122/lawrenceparsons_qx1a7r.jpg',
+      motto: `"But I have trusted in your steadfast love;
+          my heart shall rejoice in your salvation." -Psalm 13:5`,
       isAdmin: false,
       friends: []
     },

@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import component from './component';
-import { withRouter } from 'react-router-dom';
 
 function mapStateToProps(state) {
   return {
@@ -16,4 +15,4 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(component));
+export default connect(mapStateToProps, mapDispatchToProps)(component);

@@ -180,7 +180,7 @@ export default class Chatroom extends Component {
         });
       }
       else {
-        const prevChatHistory = prevProps.friends.find(friend => chatroom.email === friend.email).chatHistory;
+        const prevChatHistory = prevProps.friends.find(friend => chatroom.email === friend.email).chatHistory || [];
         if (prevChatHistory.length > 0) {
           const prevLastMessage = prevChatHistory[prevChatHistory.length - 1];
           const currLastMessage = chatHistory[prevChatHistory.length - 1];
@@ -206,7 +206,7 @@ export default class Chatroom extends Component {
   }
 
   render() {
-    const { chatroom, changeFriendState, mobileWindow, socket, friends } = this.props;
+    const { chatroom, changeFriendState, socket, friends } = this.props;
     const { search, messageInput, chatHistory } = this.state;
     return (
       <Dropzone
@@ -277,11 +277,7 @@ export default class Chatroom extends Component {
                 <i className="bot-button fas fa-phone" />
               </Form>
             </div>
-            <Picker set='emojione' onSelect={this.addEmoji} style={{
-              bottom: mobileWindow ? (document.getElementsByClassName('chatroom-type')[0] ?
-                document.getElementsByClassName('chatroom-type')[0].scrollHeight : 120 + 'px') : '0',
-              left: mobileWindow ? '0' : '-348px'
-            }}/>
+            <Picker set='emojione' onSelect={this.addEmoji} />
           </div>
         )}
       </Dropzone>

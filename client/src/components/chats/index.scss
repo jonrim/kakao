@@ -27,9 +27,9 @@
       }
 
       .friend-photo {
-        width: 13%;
+        width: 5%;
         min-width: 40px;
-        max-width: 100px;     
+        max-width: 60px;     
         margin: 0 15px 0 0;
         display: inline-block;
         position: relative;
@@ -37,7 +37,7 @@
         /* for making height of photo scale equal to width */
         &:before{
           content: '';
-          padding: 50% 0;
+          padding: 45% 0;
           display: inline-block;
         }
       }
@@ -70,16 +70,18 @@
       }
 
       .friend-name {
-        max-width: 30%;
+        font-size: 13px;
       }
 
       .date-time {
         right: 10px;
+        font-size: 10px;
       }
 
       .latest-message {
-        max-width: 50%;
-        top: 60%;
+        max-width: 75%;
+        top: 52%;
+        font-size: 11px;
       }
 
       .new-messages-number {

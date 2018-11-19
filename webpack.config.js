@@ -30,7 +30,6 @@ module.exports = {
     alias: {
       'Components': path.resolve(__dirname, 'client/src/components'),
       'Utils': path.resolve(__dirname, 'client/src/utils'),
-      'Styles': path.resolve(__dirname, 'client/src/styles'),
       'Reducers': path.resolve(__dirname, 'client/src/reducers'),
       'Api': path.resolve(__dirname, 'client/src/api'),
       'Actions': path.resolve(__dirname, 'client/src/actions'),
