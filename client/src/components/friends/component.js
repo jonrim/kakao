@@ -112,6 +112,7 @@ const Friend = props => {
 
   const {friend, changeChatroom} = props;
   const changeChatroomInfo = () => {
+    document.getElementsByClassName('SplitPane')[0].classList.add('chatroomOpen');
     changeChatroom(friend);
   };
 

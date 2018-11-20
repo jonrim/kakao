@@ -96,6 +96,7 @@ const Friend = props => {
   const {friend, changeChatroom} = props;
   const changeChatroomInfo = () => {
     changeChatroom(friend);
+    document.getElementsByClassName('SplitPane')[0].classList.add('chatroomOpen');
   };
   let latestMessage = friend.chatHistory && friend.chatHistory.length > 0 ? 
                         friend.chatHistory[friend.chatHistory.length - 1] : null;

@@ -60,7 +60,7 @@ export default class App extends Component {
       })
       socket.on('messageReceive', message => {
         console.log('receiving messages', message)
-        // requestReceiveMessages({socketId: socket.id, userEmail: message.userEmail, friendEmail: message.friendEmail});
+        requestReceiveMessages({socketId: socket.id, userEmail: message.userEmail, friendEmail: message.friendEmail});
       })
     }); 
   }
@@ -74,7 +74,10 @@ export default class App extends Component {
     const { socket } = this.state;
     const { user, friends, chatroom } = this.props;
     return (
-      <SplitPane className={chatroom ? '' :'soloPane1'} split='vertical' minSize={300}>
+      <SplitPane
+        split='vertical'
+        minSize={300}
+      >
         <NavAndViews
           {...this.props}
           logOut={this.logOut}

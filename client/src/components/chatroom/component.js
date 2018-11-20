@@ -276,6 +276,7 @@ const BackButton = props => {
   const { changeChatroom } = props;
   const goBack = () => {
     changeChatroom(null);
+    document.getElementsByClassName('SplitPane')[0].classList.remove('chatroomOpen');
   };
   return (
     <i 

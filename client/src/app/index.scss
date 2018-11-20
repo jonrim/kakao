@@ -19,13 +19,27 @@ hr {
   }
 }
 
-div.SplitPane.soloPane1.vertical {
+.SplitPane {
+  min-width: 350px;
+}
+
+.SplitPane:not(.chatroomOpen) {
   & > .Pane1 {
     width: 100% !important;
   }
-
   & > .Pane2 {
-    width: 0px !important;
+    width: 0 !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .SplitPane.chatroomOpen {
+    & > .Pane1 {
+      width: 0 !important;
+    }
+    & > .Pane2 {
+      width: 100% !important;
+    }
   }
 }
 

@@ -17,7 +17,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         chatroom: action.chatroomInfo,
-        chatHistory: action.chatroomInfo.chatHistory
+        chatHistory: action.chatroomInfo && action.chatroomInfo.chatHistory || null
       }
     case ConstsAuth.LOGOUT_SUCCESS:
       return {

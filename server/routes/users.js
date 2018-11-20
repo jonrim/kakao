@@ -71,7 +71,6 @@ router.put('/messageSend', function(req, res, next) {
       }
       let chatInfo = JSON.parse(person.friends[i]);
       if (person.email === userEmail) friend = chatInfo;
-      console.log(person.email, userEmail, friend)
       chatInfo.chatHistory = chatInfo.chatHistory || [];
       let chatHistory = chatInfo.chatHistory;
       let latestMessage, sameDay, sameTime;
