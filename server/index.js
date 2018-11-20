@@ -112,6 +112,7 @@ io.on('connection', socket => {
 
     // If the friend is currently online, if there is a message, emit the message to the friend right away
     // Or, after reading the messages, alert friend that the messages were read
+    console.log(message.friendEmail, users)
     if (users[message.friendEmail]) {
       io.to(`${users[message.friendEmail]}`).emit('messageReceive', {
         ...message,

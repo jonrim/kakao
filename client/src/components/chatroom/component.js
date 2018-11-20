@@ -161,7 +161,7 @@ export default class Chatroom extends Component {
       this.scrollToBottom();
     }
     // don't run this code if i'm talking to myself in my own chatroom, or if i'm changing chatrooms
-    if (prevState === this.state && prevProps !== this.props && user.email !== chatroom.email && prevProps.chatroom.email === chatroom.email) {
+    if (user.email !== chatroom.email && prevProps.chatroom.email === chatroom.email) {
       const { messageInfo } = this.state;
 
       // Only emit if I am the user that has messageInfo ready to be sent
@@ -175,19 +175,17 @@ export default class Chatroom extends Component {
       }
       else {
         const prevChatHistory = prevProps.chatHistory || [];
-        if (prevChatHistory.length > 0 && chatHistory.length > 0 && chatHistory.length > prevChatHistory.length) {
+        if (prevChatHistory.length > 0 && chatHistory.length > 0) {
           const prevLastMessage = prevChatHistory[prevChatHistory.length - 1];
           const currLastMessage = chatHistory[chatHistory.length - 1];
           const d1 = new Date(prevLastMessage.date);
           const d2 = new Date(currLastMessage.date);
           // If there were any updates to the chat history...
+          // or once friend reads messages, send back to user that they were read
           if (d1.getTime() !== d2.getTime() ||
             prevLastMessage.read !== currLastMessage.read && d1.getTime() === d2.getTime() && prevLastMessage.friend === currLastMessage.friend) {
             socket.emit('message', {userEmail: user.email, friendEmail: chatroom.email});
           }
-        }
-        else {
-          socket.emit('message', {userEmail: user.email, friendEmail: chatroom.email});
         }
       }
       this.scrollToBottom();
