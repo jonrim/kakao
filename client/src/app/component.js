@@ -25,7 +25,6 @@ export default class App extends Component {
     this.state = {
       endpoint: require('ip').address() + ':8080'
     };
-    this.changeFriendState = this.changeFriendState.bind(this);
     this.initializeSocket = this.initializeSocket.bind(this);
     this.logOut = this.logOut.bind(this);
   }
@@ -60,15 +59,9 @@ export default class App extends Component {
         socket.emit('connected', {socketId: socket.id, userEmail: user.email}); 
       })
       socket.on('messageReceive', message => {
-        requestReceiveMessages({socketId: socket.id, userEmail: user.email});
+        requestReceiveMessages({socketId: socket.id, userEmail: message.userEmail, friendEmail: message.friendEmail});
       })
     }); 
-  }
-
-  changeFriendState(propName, friend) {
-    this.setState({
-      [propName]: friend
-    });
   }
 
   logOut() {
@@ -77,20 +70,17 @@ export default class App extends Component {
   }
 
   render() {
-    const { chatroom, socket } = this.state;
-    const { user, friends } = this.props;
+    const { socket } = this.state;
+    const { user, friends, chatroom } = this.props;
     return (
       <SplitPane className={chatroom ? '' :'soloPane1'} split='vertical' minSize={300}>
         <NavAndViews
-          {...this.props} 
-          changeFriendState={this.changeFriendState}
+          {...this.props}
           logOut={this.logOut}
         />
         {
           chatroom &&
           <Chatroom
-            chatroom={chatroom}
-            changeFriendState={this.changeFriendState}
             socket={socket}
           />
         }
@@ -100,7 +90,7 @@ export default class App extends Component {
 }
 
 const NavAndViews = props => {
-  const { user, friends, chatroom, socket, changeFriendState, logOut } = props;
+  const { user, friends, chatroom, socket, logOut } = props;
 
   return (
     <div className='nav-and-views'>
@@ -112,14 +102,11 @@ const NavAndViews = props => {
             <Route exact path='/' render={(props) => (
               <Friends {...props}
                 chatroom={chatroom}
-                changeFriendState={changeFriendState}
                 socket={socket}
               />
             )}/>
             <Route path='/chats' render={(props) => (
               <Chats {...props}
-                chatroom={chatroom}
-                changeFriendState={changeFriendState}
                 socket={socket}
               />
             )}/>

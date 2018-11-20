@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { push } from 'connected-react-router';
 import auth from 'Reducers/auth';
 import component from './component';
+import { changeChatroom } from 'Actions/user';
 
 import './index.scss';
 
@@ -17,7 +18,8 @@ const mapStateToProps = (state) => {
 export const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     auth,
-    push
+    push,
+    changeChatroom
   }, dispatch);
 };
 

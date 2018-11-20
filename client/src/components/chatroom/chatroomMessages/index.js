@@ -7,6 +7,8 @@ function mapStateToProps(state) {
     isFetching: state.auth.isFetchingMessage,
     error: state.auth.error,
     friends: state.user.friends,
+    chatHistory: state.user.chatHistory || [],
+    chatroom: state.user.chatroom
   };
 }
 

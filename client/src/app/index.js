@@ -10,7 +10,8 @@ import { requestFriendsList, requestReceiveMessages } from 'Actions/user'
 const mapStateToProps = (state) => {
   return {
     user: state.auth.user,
-    friends: state.user.friends
+    friends: state.user.friends,
+    chatroom: state.user.chatroom
   }
 }
 

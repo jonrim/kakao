@@ -23,3 +23,5 @@ export const receiveMessagesFailed = error => ({type: Consts.RECEIVEMESSAGES_FAI
 export const requestReadMessages = messageInfo => ({type: Consts.READMESSAGES_REQUEST, messageInfo});
 export const readMessagesSuccess = result => ({type: Consts.READMESSAGES_SUCCESS, result});
 export const readMessagesFailed = error => ({type: Consts.READMESSAGES_FAILED, error});
+
+export const changeChatroom = chatroomInfo => ({type: Consts.CHANGECHATROOM, chatroomInfo});

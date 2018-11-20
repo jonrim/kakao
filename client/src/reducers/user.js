@@ -1,16 +1,27 @@
 import { push } from 'connected-react-router';
 import { auth } from 'Api';
 import * as Consts from 'Constants/user';
+import * as ConstsAuth from 'Constants/auth';
 
 const initialState = {
   isFetchingMessage: false,
   isFetchingFriendList: false,
   error: null,
-  friends: []
+  friends: [],
+  chatHistory: []
 };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
+    case Consts.CHANGECHATROOM:
+      return {
+        ...state,
+        chatroom: action.chatroomInfo,
+        chatHistory: action.chatroomInfo.chatHistory
+      }
+    case ConstsAuth.LOGOUT_SUCCESS:
+      return {
+      }
     case Consts.FRIENDSLIST_REQUEST:
       return {
         ...state,
@@ -30,34 +41,40 @@ export default function reducer(state = initialState, action) {
         friends: action.result
       }
     case Consts.RECEIVEMESSAGES_SUCCESS:
-      let friendsWithUpdatedChatHistories = action.result.map(friend => JSON.parse(friend));
+      let friend = JSON.parse(action.result);
+      let friends = state.friends.map(friendInState => {
+        // find the friend in 'friends', then return the newly updated friend
+        if (friendInState.email === friend.email) return {...friendInState, ...friend};
+        return friendInState;
+      });
+      console.log(friend.chatHistory)
       return {
         ...state,
         isFetchingMessage: false,
-        friends: state.friends.map(friendInState => {
-          // make sure same ID
-          let friendInReceivedObject = friendsWithUpdatedChatHistories.find(f => f.email === friendInState.email);
-          return {
-            ...friendInState,
-            chatHistory: friendInReceivedObject.chatHistory
-          }
-        })
+        friends,
+        chatHistory: friend.chatHistory,
+        chatroom: {
+          ...state.chatroom,
+          chatHistory: friend.chatHistory
+        }
       }
     case Consts.READMESSAGES_SUCCESS:
     case Consts.SENDMESSAGE_SUCCESS:
-      let newChatHistory = JSON.parse(action.result);
+      var newChatroom = action.result;
+      let updatedFriends = state.friends.map(friend => {
+        if (friend.email === newChatroom.email) {
+          return {
+            ...friend,
+            chatHistory: newChatroom.chatHistory
+          };
+        }
+        return friend;
+      });
       return {
         ...state,
         isFetchingMessage: false,
-        friends: state.friends.map(friend => {
-          if (friend.email === newChatHistory.email) {
-            return {
-              ...friend,
-              chatHistory: newChatHistory.chatHistory
-            };
-          }
-          return friend;
-        })
+        friends: updatedFriends,
+        chatHistory: newChatroom.chatHistory
       }
     case Consts.FRIENDSLIST_FAILED:
       return {

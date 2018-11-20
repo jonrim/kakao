@@ -49,7 +49,6 @@ router.post('/signup', (req, res, next) => {
   //   next(error);
   //   return;
   // }
-  console.log(req.body)
   User.findOne({
     where: {
       [Op.or]: [

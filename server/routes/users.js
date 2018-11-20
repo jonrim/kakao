@@ -32,7 +32,7 @@ router.get('/', Auth.assertAdmin, function(req, res) {
 router.put('/messageSend', function(req, res, next) {
   var { messages, userEmail, friendEmail } = req.body;
   var today = Array.isArray(messages) ? messages[0].date : messages.date;
-  var i;
+  var friend;
 
   function sameDate(a, b) {
     a = new Date(a);
@@ -49,6 +49,7 @@ router.put('/messageSend', function(req, res, next) {
            a.getMinutes() === b.getMinutes();
   }
 
+
   function updateInfo(personEmail) {
     return User.findOne({
       where: {
@@ -63,9 +64,9 @@ router.put('/messageSend', function(req, res, next) {
         next(error);
       }
 
-      i = person.friends.map(f => JSON.parse(f)).findIndex(f => f.email === (person.email === userEmail ? friendEmail : userEmail));
-      let chatInfo = JSON.parse(person.friends[i]);
-      
+      let i = person.friends.map(f => JSON.parse(f)).findIndex(f => f.email === (person.email === userEmail ? friendEmail : userEmail));
+      let chatInfo = friend = JSON.parse(person.friends[i]);
+
       chatInfo.chatHistory = chatInfo.chatHistory || [];
       let chatHistory = chatInfo.chatHistory;
       let latestMessage, sameDay, sameTime;
@@ -75,7 +76,6 @@ router.put('/messageSend', function(req, res, next) {
         sameDay = sameDate(today, latestMessage.date);
         sameTime = sameMinute(today, latestMessage.date);
       }
-      // console.log(person.friends, i, chatInfo)
       if (Array.isArray(messages)) {
         chatHistory.concat(messages.map(message => {
           message.friend = personEmail === friendEmail;
@@ -103,7 +103,7 @@ router.put('/messageSend', function(req, res, next) {
         chatHistory.push(messages);
       }
 
-      person.friends[i] = JSON.stringify(chatInfo);
+      person.friends[i] = JSON.stringify(friend);
       return person.update({friends: person.friends});
     })
     .catch(next);
@@ -112,13 +112,14 @@ router.put('/messageSend', function(req, res, next) {
   updateInfo(friendEmail);
   updateInfo(userEmail)
   .then(user => {
-    res.json(user.friends[i]);
+    res.json(friend);
   })
   .catch(next);
 });
 
 router.put('/messageReceive', function(req, res, next) {
-  var { userEmail } = req.body;
+  var { userEmail, friendEmail } = req.body;
+  console.log(userEmail, friendEmail)
   User.findOne({
     where: {
       email: userEmail
@@ -130,14 +131,14 @@ router.put('/messageReceive', function(req, res, next) {
       error.status = 400;
       next(error);
     }
-    res.json(user.friends);
+    res.json(user.friends.find(friend => JSON.parse(friend).email === friendEmail));
   })
   .catch(next);
 })
 
 router.put('/messageRead', function(req, res, next) {
   var { userEmail, friendEmail } = req.body;
-  var index;
+  var friend;
   function updateInfo(personEmail) {
     return User.findOne({
       where: {
@@ -146,12 +147,12 @@ router.put('/messageRead', function(req, res, next) {
     })
     .then(person => {
       if (!person) {
-        const error = new Error('Cannot find user/friend when trying to mark messages as read. User/friend email:', person.email);
+        const error = new Error('Cannot find user/friend when trying to mark messages as read. User/friend email:', personEmail);
         error.status = 400;
         next(error);
       }
-      index = person.friends.map(f => JSON.parse(f)).findIndex(f => f.email === (person.email === userEmail ? friendEmail : userEmail));
-      let chatInfo = JSON.parse(person.friends[index]);
+      let index = person.friends.map(f => JSON.parse(f)).findIndex(f => f.email === (person.email === userEmail ? friendEmail : userEmail));
+      let chatInfo = friend = JSON.parse(person.friends[index]);
       chatInfo.chatHistory = chatInfo.chatHistory || [];
       let chatHistory = chatInfo.chatHistory;
       let message;
@@ -176,7 +177,7 @@ router.put('/messageRead', function(req, res, next) {
   // mark friend's messages as read for user
   updateInfo(userEmail)
   .then(user => {
-    res.json(user.friends[index]);
+    res.json(friend);
   })
   .catch(next);
 })

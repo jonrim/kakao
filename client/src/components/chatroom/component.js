@@ -14,8 +14,7 @@ export default class Chatroom extends Component {
     this.state = {
       search: false,
       messageInput: '',
-      filesToSend: [],
-      chatHistory: props.user.email === props.chatroom.email ? [] : props.friends.find(friend => props.chatroom.email === friend.email).chatHistory || []
+      filesToSend: []
     };
     this.showSearch = this.showSearch.bind(this);
     this.showMore = this.showMore.bind(this);
@@ -122,8 +121,8 @@ export default class Chatroom extends Component {
   // }
 
   readMessages() {
-    const { requestReadMessages, user, chatroom } = this.props;
-    const { chatHistory } = this.state;
+    const { requestReadMessages, user, chatroom, chatHistory } = this.props;
+
     // Only notify that the messages were read if there were unread messages in the first place
     let latestFriendMessage;
     for (let i = chatHistory.length - 1; i >= 0; i--) {
@@ -152,23 +151,18 @@ export default class Chatroom extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { requestReadMessages, user, friends, chatroom, socket } = this.props;
+    const { requestReadMessages, user, friends, chatroom, socket, chatHistory } = this.props;
     // if you change to a different friend's chatroom,
     // 1. update read receipts
     // 2. scroll back to bottom
     if (prevProps.chatroom.email !== chatroom.email) {
       document.getElementById('chatroom-type-input').focus();
       this.readMessages();
-      this.setState({
-        chatHistory: friends.find(friend => chatroom.email === friend.email).chatHistory || []
-      }, () => {
-        this.scrollToBottom();
-      });
+      this.scrollToBottom();
     }
-
-    if (prevState === this.state && user.email !== chatroom.email) {
+    // don't run this code if i'm talking to myself in my own chatroom
+    if (prevState === this.state && prevProps !== this.props && user.email !== chatroom.email) {
       const { messageInfo } = this.state;
-      const chatHistory = friends.find(friend => chatroom.email === friend.email).chatHistory;
 
       // Only emit if I am the user that has messageInfo ready to be sent
       // A message was sent
@@ -180,10 +174,10 @@ export default class Chatroom extends Component {
         });
       }
       else {
-        const prevChatHistory = prevProps.friends.find(friend => chatroom.email === friend.email).chatHistory || [];
+        const prevChatHistory = prevProps.chatHistory || [];
         if (prevChatHistory.length > 0) {
           const prevLastMessage = prevChatHistory[prevChatHistory.length - 1];
-          const currLastMessage = chatHistory[prevChatHistory.length - 1];
+          const currLastMessage = chatHistory[chatHistory.length - 1];
           const d1 = new Date(prevLastMessage.date);
           const d2 = new Date(currLastMessage.date);
           // If there were any updates to the chat history...
@@ -196,18 +190,13 @@ export default class Chatroom extends Component {
           socket.emit('message', {userEmail: user.email, friendEmail: chatroom.email});
         }
       }
-      // Update the chat history regardless of whether I am the user or the friend
-      this.setState({
-        chatHistory
-      }, () => {
-        this.scrollToBottom();
-      });
+      this.scrollToBottom();
     }
   }
 
   render() {
-    const { chatroom, changeFriendState, socket, friends } = this.props;
-    const { search, messageInput, chatHistory } = this.state;
+    const { chatroom, changeChatroom, socket, friends, chatHistory } = this.props;
+    const { search, messageInput } = this.state;
     return (
       <Dropzone
         className='dropzone'
@@ -219,7 +208,7 @@ export default class Chatroom extends Component {
           <div className='chatroom' onFocus={this.readMessages}>
             <div className='chatroom-nav'>
               <BackButton
-                changeFriendState={changeFriendState}
+                changeChatroom={changeChatroom}
               />
               <img className='chatroom-photo' src={chatroom.photo}/>
               <div className='chatroom-name'>
@@ -248,8 +237,6 @@ export default class Chatroom extends Component {
               </div>
             }
             <ChatroomMessages
-              chatHistory={chatHistory}
-              chatroom={chatroom}
               socket={socket}
             />
             <div className='chatroom-type'>
@@ -286,9 +273,9 @@ export default class Chatroom extends Component {
 }
 
 const BackButton = props => {
-  const { changeFriendState } = props;
+  const { changeChatroom } = props;
   const goBack = () => {
-    changeFriendState('chatroom', null);
+    changeChatroom(null);
   };
   return (
     <i 

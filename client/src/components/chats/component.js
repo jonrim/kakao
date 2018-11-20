@@ -54,7 +54,7 @@ export default class Chats extends Component {
 
   render() {
     const { searchNameInput, focusedFriend } = this.state;
-    const { chatroom, changeFriendState, myProfile, friends, isFetching } = this.props;
+    const { chatroom, myProfile, friends, isFetching, changeChatroom } = this.props;
     const { changeInputValue } = this;
     return (
       <div className='chats-wrapper'>
@@ -88,7 +88,7 @@ export default class Chats extends Component {
               <Friend
                 key={friend.email}
                 friend={friend}
-                changeFriendState={changeFriendState}
+                changeChatroom={changeChatroom}
               />
             ))
           }
@@ -100,9 +100,9 @@ export default class Chats extends Component {
 
 const Friend = props => {
 
-  const {friend, changeFriendState} = props;
-  const changeChatroom = () => {
-    changeFriendState('chatroom', friend);
+  const {friend, changeChatroom} = props;
+  const changeChatroomInfo = () => {
+    changeChatroom(friend);
   };
   let latestMessage = friend.chatHistory && friend.chatHistory.length > 0 ? 
                         friend.chatHistory[friend.chatHistory.length - 1] : null;
@@ -113,7 +113,7 @@ const Friend = props => {
   return (
     <div 
       className={'friend'}
-      onDoubleClick={changeChatroom}
+      onDoubleClick={changeChatroomInfo}
     >
       <div className='friend-photo'>
         <img src={friend.photo} />

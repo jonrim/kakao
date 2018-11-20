@@ -53,7 +53,7 @@ export default class Friends extends Component {
 
   render() {
     const { searchNameInput, focusedFriend } = this.state;
-    const { chatroom, changeFriendState, myProfile, friends, isFetching } = this.props;
+    const { chatroom, myProfile, friends, isFetching, changeChatroom } = this.props;
     const { changeInputValue } = this;
     let friendSections = [
       {name: 'My Profile', list: myProfile},
@@ -79,7 +79,7 @@ export default class Friends extends Component {
                   {section.name}
                   {
                     section.name === 'Friends' &&
-                    <span style={{'padding-left': '8px', 'font-size': '16px', 'font-weight': '900'}}>
+                    <span style={{'paddingLeft': '8px', 'fontSize': '16px', 'fontWeight': '900'}}>
                       {section.list.length}
                     </span>
                   }
@@ -97,8 +97,8 @@ export default class Friends extends Component {
                   .map(friend => (
                     <Friend
                       key={friend.email}
+                      changeChatroom={changeChatroom}
                       friend={friend}
-                      changeFriendState={changeFriendState}
                     />
                   ))
                 }
@@ -113,15 +113,15 @@ export default class Friends extends Component {
 
 const Friend = props => {
 
-  const {friend, changeFriendState} = props;
-  const changeChatroom = () => {
-    changeFriendState('chatroom', friend);
+  const {friend, changeChatroom} = props;
+  const changeChatroomInfo = () => {
+    changeChatroom(friend);
   };
 
   return (
     <div 
       className={'friend'}
-      onDoubleClick={changeChatroom}
+      onDoubleClick={changeChatroomInfo}
     >
       <div className='friend-photo'>
         <img src={friend.photo} />
