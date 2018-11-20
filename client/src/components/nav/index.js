@@ -4,7 +4,7 @@ import { Dropdown } from 'semantic-ui-react'
 import './index.scss'
 
 const Nav = props => {
-  let numNewMessages = displayNumNewMessages(props.friends);
+  let numNewMessages = displayNumNewMessages(props.friends || []);
   return (
     <nav id='main-nav'>
       <span id='buttons'>

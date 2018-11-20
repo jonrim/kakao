@@ -59,8 +59,8 @@ export default class App extends Component {
         socket.emit('connected', {socketId: socket.id, userEmail: user.email}); 
       })
       socket.on('messageReceive', message => {
-        console.log('receiving messages', message)
-        // requestReceiveMessages({socketId: socket.id, userEmail: message.userEmail, friendEmail: message.friendEmail});
+        // console.log('receiving messages', message)
+        requestReceiveMessages({socketId: socket.id, userEmail: message.userEmail, friendEmail: message.friendEmail});
       })
     }); 
   }
