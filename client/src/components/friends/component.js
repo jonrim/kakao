@@ -21,18 +21,15 @@ export default class Friends extends Component {
   }
 
   changeFriendButtonStyling(e) {
-    let clickedFriend = e.target.closest('div.friend');
     /* 
       Have only one 'clicked friend' styling on at one time. Clicking on a different
-      friend will remove the 'clicked' class from all other friends
+      friend will remove the 'clicked' class from the currently selected friend
     */
+    let clickedFriend = e.target.closest('div.friend');
     if (clickedFriend) {
-      if (!clickedFriend.classList.contains('clicked')) {
-        Array.from(e.currentTarget.getElementsByClassName('friend')).forEach(friend => {
-          friend.classList.remove('clicked');
-        });
-      }
+      if (this.state.clickedFriend && this.state.clickedFriend !== clickedFriend) this.state.clickedFriend.classList.remove('clicked');
       clickedFriend.classList.add('clicked');
+      this.setState({clickedFriend});
     }
   }
 

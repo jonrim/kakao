@@ -161,7 +161,7 @@ export default class Chatroom extends Component {
       this.scrollToBottom();
     }
     // don't run this code if i'm talking to myself in my own chatroom
-    if (prevState === this.state && prevProps !== this.props && user.email !== chatroom.email) {
+    if (prevState === this.state && prevProps !== this.props && user.email !== chatroom.email && prevProps.chatroom.email === chatroom.email) {
       const { messageInfo } = this.state;
 
       // Only emit if I am the user that has messageInfo ready to be sent
@@ -175,7 +175,8 @@ export default class Chatroom extends Component {
       }
       else {
         const prevChatHistory = prevProps.chatHistory || [];
-        if (prevChatHistory.length > 0) {
+        if (prevChatHistory.length > 0 && chatHistory.length > 0 && chatHistory.length > prevChatHistory.length) {
+          console.log(prevChatHistory, chatHistory)
           const prevLastMessage = prevChatHistory[prevChatHistory.length - 1];
           const currLastMessage = chatHistory[chatHistory.length - 1];
           const d1 = new Date(prevLastMessage.date);
