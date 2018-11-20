@@ -7,6 +7,7 @@ import * as Consts from 'Constants/user';
 function* requestChangeInfo(action) {
   try {
     const result = yield call(Api.requestChangeInfo, action.userInfo);
+    if (result.errorStatus) throw result;
     yield put(Actions.changeInfoSuccess(result));
   } catch (error) {
     yield put(Actions.changeInfoFailed(error));
@@ -16,6 +17,7 @@ function* requestChangeInfo(action) {
 function* requestSendEmail(action) {
 	try {
     const result = yield call(Api.requestSendEmail, action.formInfo);
+    if (result.errorStatus) throw result;
     yield put(Actions.sendEmailSuccess(result));
   } catch (error) {
     yield put(Actions.sendEmailFailed(error));
@@ -25,6 +27,7 @@ function* requestSendEmail(action) {
 function* requestFriendsList(action) {
   try {
     const result = yield call(Api.requestFriendsList, action.userInfo);
+    if (result.errorStatus) throw result;
     yield put(Actions.friendsListSuccess(result));
   } catch (error) {
     yield put(Actions.friendsListFailed(error));
@@ -34,6 +37,7 @@ function* requestFriendsList(action) {
 function* requestSendMessage(action) {
   try {
     const result = yield call(Api.requestSendMessage, action.messageInfo);
+    if (result.errorStatus) throw result;
     yield put(Actions.sendMessageSuccess(result));
   } catch (error) {
     yield put(Actions.sendMessageFailed(error));
@@ -43,6 +47,7 @@ function* requestSendMessage(action) {
 function* requestReceiveMessages(action) {
   try {
     const result = yield call(Api.requestReceiveMessages, action.messageInfo);
+    if (result.errorStatus) throw result;
     yield put(Actions.receiveMessagesSuccess(result));
   } catch (error) {
     yield put(Actions.receiveMessagesFailed(error));
@@ -52,6 +57,7 @@ function* requestReceiveMessages(action) {
 function* requestReadMessages(action) {
   try {
     const result = yield call(Api.requestReadMessages, action.messageInfo);
+    if (result.errorStatus) throw result;
     yield put(Actions.readMessagesSuccess(result));
   } catch (error) {
     yield put(Actions.readMessagesFailed(error));

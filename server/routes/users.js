@@ -63,10 +63,15 @@ router.put('/messageSend', function(req, res, next) {
         error.status = 400;
         next(error);
       }
-
-      let i = person.friends.map(f => JSON.parse(f)).findIndex(f => f.email === (person.email === userEmail ? friendEmail : userEmail));
-      let chatInfo = friend = JSON.parse(person.friends[i]);
-
+      let i = person.friends.map(f => JSON.parse(f)).findIndex(f => f.email && f.email === (person.email === userEmail ? friendEmail : userEmail));
+      if (i < 0) {
+        const error = new Error('Cannot find user/friend when sending a message. User/friend email:', personEmail);
+        error.status = 400;
+        next(error);
+      }
+      let chatInfo = JSON.parse(person.friends[i]);
+      if (person.email === userEmail) friend = chatInfo;
+      console.log(person.email, userEmail, friend)
       chatInfo.chatHistory = chatInfo.chatHistory || [];
       let chatHistory = chatInfo.chatHistory;
       let latestMessage, sameDay, sameTime;
@@ -103,14 +108,14 @@ router.put('/messageSend', function(req, res, next) {
         chatHistory.push(messages);
       }
 
-      person.friends[i] = JSON.stringify(friend);
+      person.friends[i] = JSON.stringify(chatInfo);
       return person.update({friends: person.friends});
     })
     .catch(next);
   }
 
-  updateInfo(friendEmail);
-  updateInfo(userEmail)
+  updateInfo(friendEmail)
+  .then(user => updateInfo(userEmail))
   .then(user => {
     res.json(friend);
   })
@@ -119,7 +124,6 @@ router.put('/messageSend', function(req, res, next) {
 
 router.put('/messageReceive', function(req, res, next) {
   var { userEmail, friendEmail } = req.body;
-  console.log(userEmail, friendEmail)
   User.findOne({
     where: {
       email: userEmail
@@ -138,6 +142,10 @@ router.put('/messageReceive', function(req, res, next) {
 
 router.put('/messageRead', function(req, res, next) {
   var { userEmail, friendEmail } = req.body;
+  // make sure friend is the user's friend by using the if statement (person.email === userEmail) ?
+  // this is because there's a race condition where updateInfo(userEmail) and
+  // updateInfo(friendEmail) can both run and whichever runs 'if (person.email === userEmail) friend = chatInfo;'
+  // last will determine the 'friend' var's value
   var friend;
   function updateInfo(personEmail) {
     return User.findOne({
@@ -152,7 +160,10 @@ router.put('/messageRead', function(req, res, next) {
         next(error);
       }
       let index = person.friends.map(f => JSON.parse(f)).findIndex(f => f.email === (person.email === userEmail ? friendEmail : userEmail));
+      
       let chatInfo = friend = JSON.parse(person.friends[index]);
+      if (person.email === friendEmail) friend = chatInfo;
+
       chatInfo.chatHistory = chatInfo.chatHistory || [];
       let chatHistory = chatInfo.chatHistory;
       let message;
@@ -173,9 +184,9 @@ router.put('/messageRead', function(req, res, next) {
     });
   }
   // mark friend's messages as read for friend
-  updateInfo(friendEmail);
+  updateInfo(friendEmail)
+  .then(user => updateInfo(userEmail))
   // mark friend's messages as read for user
-  updateInfo(userEmail)
   .then(user => {
     res.json(friend);
   })

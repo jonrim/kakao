@@ -47,7 +47,6 @@ export default function reducer(state = initialState, action) {
         if (friendInState.email === friend.email) return {...friendInState, ...friend};
         return friendInState;
       });
-      console.log(friend.chatHistory)
       return {
         ...state,
         isFetchingMessage: false,
@@ -74,7 +73,11 @@ export default function reducer(state = initialState, action) {
         ...state,
         isFetchingMessage: false,
         friends: updatedFriends,
-        chatHistory: newChatroom.chatHistory
+        chatHistory: newChatroom.chatHistory,
+        chatroom: {
+          ...state.chatroom,
+          ...newChatroom
+        }
       }
     case Consts.FRIENDSLIST_FAILED:
       return {
