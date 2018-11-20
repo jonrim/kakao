@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Input } from 'semantic-ui-react'
-import throttle from 'throttled-event-listener'
 import { FadeLoader } from 'react-spinners'
 import { css } from 'react-emotion'
 import moment from 'moment'

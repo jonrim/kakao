@@ -71,6 +71,13 @@
 
       .friend-name {
         font-size: 13px;
+        max-width: calc(90% - 100px);
+
+        p {
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
       }
 
       .date-time {
