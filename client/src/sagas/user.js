@@ -64,6 +64,26 @@ function* requestReadMessages(action) {
   }
 }
 
+function* requestFindUser(action) {
+  try {
+    const result = yield call(Api.requestFindUser, action.userInfo);
+    if (result.errorStatus) throw result;
+    yield put(Actions.findUserSuccess(result));
+  } catch (error) {
+    yield put(Actions.findUserFailed(error));
+  }
+}
+
+function* requestFriendRequest(action) {
+  try {
+    const result = yield call(Api.requestFriendRequest, action.userInfo);
+    if (result.errorStatus) throw result;
+    yield put(Actions.friendRequestSuccess(result));
+  } catch (error) {
+    yield put(Actions.friendRequestFailed(error));
+  }
+}
+
 export default function* watchUser() {
   yield all([
     takeLatest(Consts.CHANGEINFO_REQUEST, requestChangeInfo),
@@ -72,5 +92,7 @@ export default function* watchUser() {
     takeLatest(Consts.SENDMESSAGE_REQUEST, requestSendMessage),
     takeLatest(Consts.RECEIVEMESSAGES_REQUEST, requestReceiveMessages),
     takeLatest(Consts.READMESSAGES_REQUEST, requestReadMessages),
+    takeLatest(Consts.FINDUSER_REQUEST, requestFindUser),
+    takeLatest(Consts.FRIENDREQUEST_REQUEST, requestFriendRequest),
   ]);
 }

@@ -249,7 +249,7 @@ export default class Chatroom extends Component {
                     onKeyPress={this.handleKeyPress}
                   />
                 </ReactResizeDetector>
-                <Button size='mini' onClick={this.sendMessage}>Send</Button>
+                <Button className='yellow-button' size='mini' onClick={this.sendMessage}>Send</Button>
                 <i 
                   className="bot-button far fa-smile-wink"
                   onClick={this.displayEmojis}

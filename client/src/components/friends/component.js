@@ -3,6 +3,8 @@ import { Input } from 'semantic-ui-react'
 import { FadeLoader } from 'react-spinners'
 import { css } from 'react-emotion'
 
+import './index.scss'
+
 const loaderCSS = css`
   margin: 30px auto;
 `;

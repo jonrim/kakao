@@ -5,7 +5,7 @@ import component from './component';
 function mapStateToProps(state) {
   return {
     isFetching: state.auth.isFetchingMessage,
-    error: state.auth.error,
+    error: state.auth.errorMessage,
     friends: state.user.friends,
     chatHistory: state.user.chatHistory || [],
     chatroom: state.user.chatroom

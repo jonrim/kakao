@@ -42,6 +42,10 @@ module.exports = function(db) {
       type: Sequelize.ARRAY(Sequelize.TEXT),
       defaultValue: []
     },
+    friendRequests: {
+      type: Sequelize.ARRAY(Sequelize.TEXT),
+      defaultValue: []
+    },
     salt: {
       type: Sequelize.STRING
     },

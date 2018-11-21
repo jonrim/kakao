@@ -4,6 +4,8 @@ import { FadeLoader } from 'react-spinners'
 import { css } from 'react-emotion'
 import moment from 'moment'
 
+import './index.scss'
+
 const loaderCSS = css`
   margin: 30px auto;
 `;

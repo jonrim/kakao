@@ -11,6 +11,26 @@ export function postJSON(body) {
   };
 }
 
+export function postImage(body) {
+  return {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'image/png'
+    },
+    body: body,
+  };
+}
+
+export function postVideo(body) {
+  return {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'video/mp4'
+    },
+    body: body,
+  };
+}
+
 export function putJSON(body) {
   return {
     method: 'PUT',

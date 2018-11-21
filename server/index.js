@@ -19,6 +19,9 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
+// express can put req onto req.body
+app.use(express.urlencoded({ extended: false }));
+
 app.use(cookieSession({
   secret: secrets.SESSION_SECRET,
   maxAge: 1000 * 60 * 60 * 24 * 7,
@@ -112,7 +115,6 @@ io.on('connection', socket => {
 
     // If the friend is currently online, if there is a message, emit the message to the friend right away
     // Or, after reading the messages, alert friend that the messages were read
-    console.log(message.friendEmail, users)
     if (users[message.friendEmail]) {
       io.to(`${users[message.friendEmail]}`).emit('messageReceive', {
         ...message,

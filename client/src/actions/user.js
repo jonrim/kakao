@@ -24,4 +24,12 @@ export const requestReadMessages = messageInfo => ({type: Consts.READMESSAGES_RE
 export const readMessagesSuccess = result => ({type: Consts.READMESSAGES_SUCCESS, result});
 export const readMessagesFailed = error => ({type: Consts.READMESSAGES_FAILED, error});
 
+export const requestFindUser = userInfo => ({type: Consts.FINDUSER_REQUEST, userInfo});
+export const findUserSuccess = result => ({type: Consts.FINDUSER_SUCCESS, result});
+export const findUserFailed = error => ({type: Consts.FINDUSER_FAILED, error});
+
+export const requestFriendRequest = userInfo => ({type: Consts.FRIENDREQUEST_REQUEST, userInfo});
+export const friendRequestSuccess = result => ({type: Consts.FRIENDREQUEST_SUCCESS, result});
+export const friendRequestFailed = error => ({type: Consts.FRIENDREQUEST_FAILED, error});
+
 export const changeChatroom = chatroomInfo => ({type: Consts.CHANGECHATROOM, chatroomInfo});

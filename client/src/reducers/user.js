@@ -6,7 +6,13 @@ import * as ConstsAuth from 'Constants/auth';
 const initialState = {
   isFetchingMessage: false,
   isFetchingFriendList: false,
-  error: null,
+  isFetchingUser: false,
+  isFetchingFriendRequest: false,
+  errorMessage: null,
+  errorFriendList: null,
+  errorFindingUser: null,
+  errorFriendRequest: null,
+  foundUser: null,
   friends: [],
   chatHistory: []
 };
@@ -19,20 +25,35 @@ export default function reducer(state = initialState, action) {
         chatroom: action.chatroomInfo,
         chatHistory: action.chatroomInfo && action.chatroomInfo.chatHistory || null
       }
+    // clear out state.user on logout success
     case ConstsAuth.LOGOUT_SUCCESS:
       return {
       }
     case Consts.FRIENDSLIST_REQUEST:
       return {
         ...state,
-        isFetchingFriendList: true
+        isFetchingFriendList: true,
+        errorFriendList: null,
       }
     case Consts.SENDMESSAGE_REQUEST:
     case Consts.RECEIVEMESSAGES_REQUEST:
     case Consts.READMESSAGES_REQUEST:
       return {
         ...state,
-        isFetchingMessage: true
+        isFetchingMessage: true,
+        errorMessage: null,
+      }
+    case Consts.FINDUSER_REQUEST:
+      return {
+        ...state,
+        isFetchingUser: true,
+        errorFindingUser: null
+      }
+    case Consts.FRIENDREQUEST_REQUEST:
+      return {
+        ...state,
+        isFetchingFriendRequest: true,
+        errorFriendRequest: null
       }
     case Consts.FRIENDSLIST_SUCCESS:
       return {
@@ -79,11 +100,22 @@ export default function reducer(state = initialState, action) {
           ...newChatroom
         }
       }
+    case Consts.FINDUSER_SUCCESS:
+      return {
+        ...state,
+        foundUser: action.result,
+        isFetchingUser: false
+      }
+    case Consts.FRIENDREQUEST_SUCCESS:
+      return {
+        ...state,
+        isFetchingFriendRequest: false
+      }
     case Consts.FRIENDSLIST_FAILED:
       return {
         ...state,
         isFetchingFriendList: false,
-        error: action.error.message
+        errorFriendList: action.error.message
       }
     case Consts.SENDMESSAGE_FAILED:
     case Consts.RECEIVEMESSAGES_FAILED:
@@ -91,7 +123,19 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         isFetchingMessage: false,
-        error: action.error.message
+        errorMessage: action.error.message
+      }
+    case Consts.FINDUSER_FAILED:
+      return {
+        ...state,
+        isFetchingUser: false,
+        errorFindingUser: action.error.message
+      }
+    case Consts.FRIENDREQUEST_FAILED:
+      return {
+        ...state,
+        isFetchingFriendRequest: false,
+        errorFriendRequest: action.error.message
       }
     default:
       return state

@@ -1,7 +1,5 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { push } from 'connected-react-router';
-import auth from 'Reducers/auth';
 import component from './component';
 import { requestLogin } from 'Actions/auth';
 import { requestSendMessage, requestReadMessages, changeChatroom } from 'Actions/user';
@@ -9,7 +7,7 @@ import { requestSendMessage, requestReadMessages, changeChatroom } from 'Actions
 function mapStateToProps(state) {
   return {
     isFetching: state.auth.isFetchingMessage,
-    error: state.auth.error,
+    error: state.auth.errorMessage,
     user: state.auth.user,
     friends: state.user.friends,
     chatHistory: state.user.chatHistory || [],
@@ -19,7 +17,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    push,
     requestSendMessage,
     requestReadMessages,
     changeChatroom

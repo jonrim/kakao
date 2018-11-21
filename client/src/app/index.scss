@@ -19,6 +19,20 @@ hr {
   }
 }
 
+.yellow-button {
+  color: #000 !important;
+  background-color: #f9f05d !important;
+  border: solid 1px #fbe483 !important;
+  border-radius: 1px !important;
+  
+  &:hover {
+    background-color: #f6e91e !important;
+  }
+  &:active {
+    background-color: #d6ca0a !important;
+  }
+}
+
 .SplitPane {
   min-width: 350px;
 }

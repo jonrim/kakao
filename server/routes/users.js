@@ -29,6 +29,54 @@ router.get('/', Auth.assertAdmin, function(req, res) {
   });
 });
 
+router.post('/findUser', function(req, res, next) {
+  let userID = req.body.userID;
+  User.findOne({
+    where: {
+      email: userID
+    }
+  })
+  .then(user => {
+    if (!user) {
+      const error = new Error('User does not exist.');
+      error.status = 400;
+      next(error);
+    }
+    res.json({
+      email: user.email,
+      name: user.name,
+      photo: user.photo
+    });
+  });
+});
+
+router.put('/friendRequest', function(req, res, next) {
+  let user = req.body.user;
+  let friend = req.body.friend;
+  User.findOne({
+    where: {
+      email: friend.email
+    }
+  })
+  .then(friend => {
+    if (!friend) {
+      const error = new Error('User does not exist.');
+      error.status = 400;
+      next(error);
+    }
+    // if there is no pending friend request, push to the friend's friendRequest list
+    if (friend.friendRequests.findIndex(f => f === user.email) === -1) friend.friendRequests.push(user.email);
+    return friend.update({friendRequests: friend.friendRequests});
+  })
+  .then(user => {
+    res.json({
+      email: user.email,
+      name: user.name,
+      photo: user.photo
+    });
+  });
+});
+
 router.put('/messageSend', function(req, res, next) {
   var { messages, userEmail, friendEmail } = req.body;
   var today = Array.isArray(messages) ? messages[0].date : messages.date;
@@ -137,7 +185,7 @@ router.put('/messageReceive', function(req, res, next) {
     res.json(user.friends.find(friend => JSON.parse(friend).email === friendEmail));
   })
   .catch(next);
-})
+});
 
 router.put('/messageRead', function(req, res, next) {
   var { userEmail, friendEmail } = req.body;
@@ -190,8 +238,7 @@ router.put('/messageRead', function(req, res, next) {
     res.json(friend);
   })
   .catch(next);
-})
-
+});
 
 
 
