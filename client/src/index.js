@@ -9,8 +9,8 @@ import { ConnectedRouter } from 'connected-react-router'
 import createBrowserHistory from 'history/createBrowserHistory'
 import { hot } from 'react-hot-loader'
 import App from './app'
-import createSagaMiddleware from 'redux-saga';
-import mySaga from 'Sagas';
+import createSagaMiddleware from 'redux-saga'
+import mySaga from 'Sagas'
 
 const sagaMiddleware = createSagaMiddleware()
 // const history = syncHistoryWithStore(browserHistory, store)

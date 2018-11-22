@@ -85,6 +85,12 @@ module.exports = {
             options: {
               sourceMap: true
             }
+          },
+          {
+            loader: 'sass-resources-loader',
+            options: {
+              resources: ['./client/src/mixins.scss']
+            }
           }
         ]
       },

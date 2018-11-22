@@ -35,14 +35,66 @@ hr {
 
 .SplitPane {
   min-width: 350px;
-}
 
-.SplitPane:not(.chatroomOpen) {
-  & > .Pane1 {
-    width: 100% !important;
+  &:not(.chatroomOpen) {
+    & > .Pane1 {
+      width: 100% !important;
+    }
+    & > .Pane2 {
+      width: 0 !important;
+    }
   }
-  & > .Pane2 {
-    width: 0 !important;
+
+  .Pane2 {
+    @media (max-width: 900px) {
+      position: absolute !important;
+      height: 100%;
+    }
+  }
+
+  .Resizer {
+    background: #000;
+    opacity: .2;
+    z-index: 1;
+    box-sizing: border-box;
+    background-clip: padding-box;
+
+    @media (max-width: 900px) {
+      display: none;
+    }
+  }
+
+   .Resizer.horizontal {
+    height: 11px;
+    margin: -5px 0;
+    border-top: 5px solid rgba(255, 255, 255, 0);
+    border-bottom: 5px solid rgba(255, 255, 255, 0);
+    cursor: row-resize;
+    width: 100%;
+  }
+
+  .Resizer.horizontal:hover {
+    border-top: 5px solid rgba(0, 0, 0, 0.5);
+    border-bottom: 5px solid rgba(0, 0, 0, 0.5);
+  }
+
+  .Resizer.vertical {
+    width: 11px;
+    margin: 0 -5px;
+    border-left: 5px solid rgba(255, 255, 255, 0);
+    border-right: 5px solid rgba(255, 255, 255, 0);
+    cursor: col-resize;
+  }
+
+  .Resizer.vertical:hover {
+    border-left: 5px solid rgba(0, 0, 0, 0.5);
+    border-right: 5px solid rgba(0, 0, 0, 0.5);
+  }
+  .Resizer.disabled {
+    cursor: not-allowed;
+  }
+  .Resizer.disabled:hover {
+    border-color: transparent;
   }
 }
 
@@ -55,56 +107,4 @@ hr {
       width: 100% !important;
     }
   }
-}
-
-.Pane2 {
-  @media (max-width: 900px) {
-    position: absolute !important;
-    height: 100%;
-  }
-}
-
-.Resizer {
-  background: #000;
-  opacity: .2;
-  z-index: 1;
-  box-sizing: border-box;
-  background-clip: padding-box;
-
-  @media (max-width: 900px) {
-    display: none;
-  }
-}
-
- .Resizer.horizontal {
-  height: 11px;
-  margin: -5px 0;
-  border-top: 5px solid rgba(255, 255, 255, 0);
-  border-bottom: 5px solid rgba(255, 255, 255, 0);
-  cursor: row-resize;
-  width: 100%;
-}
-
-.Resizer.horizontal:hover {
-  border-top: 5px solid rgba(0, 0, 0, 0.5);
-  border-bottom: 5px solid rgba(0, 0, 0, 0.5);
-}
-
-.Resizer.vertical {
-  width: 11px;
-  margin: 0 -5px;
-  border-left: 5px solid rgba(255, 255, 255, 0);
-  border-right: 5px solid rgba(255, 255, 255, 0);
-  cursor: col-resize;
-}
-
-.Resizer.vertical:hover {
-  border-left: 5px solid rgba(0, 0, 0, 0.5);
-  border-right: 5px solid rgba(0, 0, 0, 0.5);
-}
-.Resizer.disabled {
-  cursor: not-allowed;
-}
-.Resizer.disabled:hover {
-  border-color: transparent;
 }
