@@ -124,6 +124,16 @@ io.on('connection', socket => {
     }
   })
 
+  socket.on('friendRequest', userInfo => {
+    if (users[userInfo.friendEmail]) {
+      io.to(`${users[userInfo.friendEmail]}`).emit('friendRequest', {
+        ...userInfo,
+        userEmail: userInfo.friendEmail,
+        friendEmail: userInfo.userEmail
+      });
+    } 
+  })
+
   socket.on('disconnect', () => {
     console.log(chalk.cyan('A user disconnected'));
     // delete user from clients and users hashes

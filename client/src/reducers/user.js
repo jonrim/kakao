@@ -8,11 +8,14 @@ const initialState = {
   isFetchingFriendList: false,
   isFetchingUser: false,
   isFetchingFriendRequest: false,
+  isFetchingPendingFriendRequests: false,
   errorMessage: null,
   errorFriendList: null,
   errorFindingUser: null,
   errorFriendRequest: null,
+  errorPendingFriendRequests: null,
   foundUser: null,
+  pendingFriendRequests: [],
   friends: [],
   chatHistory: []
 };
@@ -54,6 +57,12 @@ export default function reducer(state = initialState, action) {
         ...state,
         isFetchingFriendRequest: true,
         errorFriendRequest: null
+      }
+    case Consts.PENDINGFRIENDREQUESTS_REQUEST:
+      return {
+        ...state,
+        isFetchingPendingFriendRequests: true,
+        errorPendingFriendRequests: null
       }
     case Consts.FRIENDSLIST_SUCCESS:
       return {
@@ -111,6 +120,12 @@ export default function reducer(state = initialState, action) {
         ...state,
         isFetchingFriendRequest: false
       }
+    case Consts.PENDINGFRIENDREQUESTS_SUCCESS:
+      return {
+        ...state,
+        isFetchingPendingFriendRequests: false,
+        pendingFriendRequests: action.result.map(pendingFriend => JSON.parse(pendingFriend))
+      }
     case Consts.FRIENDSLIST_FAILED:
       return {
         ...state,
@@ -136,6 +151,12 @@ export default function reducer(state = initialState, action) {
         ...state,
         isFetchingFriendRequest: false,
         errorFriendRequest: action.error.message
+      }
+    case Consts.PENDINGFRIENDREQUESTS_FAILED:
+      return {
+        ...state,
+        isFetchingPendingFriendRequests: false,
+        errorPendingFriendRequests: action.error.message
       }
     default:
       return state

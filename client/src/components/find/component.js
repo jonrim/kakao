@@ -34,8 +34,11 @@ export default class Find extends Component {
   }
 
   addFriend() {
-    const { requestFriendRequest, user, foundUser, errorFriendRequest } = this.props;
+    const { requestFriendRequest, user, foundUser, errorFriendRequest, socket } = this.props;
+
     requestFriendRequest({user, friend: foundUser});
+    socket.emit('friendRequest', {userEmail: user.email, friendEmail: foundUser.email});
+
     let notification = document.getElementById('notification');
     notification.classList.add('active');
     setTimeout(() => {

@@ -65,7 +65,7 @@ router.put('/friendRequest', function(req, res, next) {
       next(error);
     }
     // if there is no pending friend request, push to the friend's friendRequest list
-    if (friend.friendRequests.findIndex(f => f === user.email) === -1) friend.friendRequests.push(user.email);
+    if (friend.friendRequests.findIndex(f => f.email === user.email) === -1) friend.friendRequests.push(JSON.stringify(user));
     return friend.update({friendRequests: friend.friendRequests});
   })
   .then(user => {
@@ -74,6 +74,23 @@ router.put('/friendRequest', function(req, res, next) {
       name: user.name,
       photo: user.photo
     });
+  });
+});
+
+router.post('/pendingFriendRequests', function(req, res, next) {
+  let email = req.body.email;
+  User.findOne({
+    where: {
+      email
+    }
+  })
+  .then(user => {
+    if (!user) {
+      const error = new Error('User does not exist.');
+      error.status = 400;
+      next(error);
+    }
+    res.json(user.friendRequests);
   });
 });
 

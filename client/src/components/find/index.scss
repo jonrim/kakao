@@ -79,6 +79,18 @@
   }
 }
 
+#notification.active {
+  animation: showNotification 0.25s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
+}
+
+#notification.inactive {
+  animation: hideNotification 0.25s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
+}
+
 @include keyframes(showNotification) {
   from { bottom: -60px; }
   to   { bottom: 10px;  }
@@ -87,16 +99,4 @@
 @include keyframes(hideNotification) {
   from { bottom: 10px;  }
   to   { bottom: -60px; }
-}
-
-.active {
-  animation: showNotification 0.25s;
-  animation-fill-mode: forwards;
-  animation-timing-function: ease-in;
-}
-
-.inactive {
-  animation: hideNotification 0.25s;
-  animation-fill-mode: forwards;
-  animation-timing-function: ease-in;
 }

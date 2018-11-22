@@ -119,7 +119,7 @@ const Friend = props => {
 
   return (
     <div 
-      className={'friend'}
+      className='friend'
       onDoubleClick={changeChatroomInfo}
     >
       <div className='friend-photo'>

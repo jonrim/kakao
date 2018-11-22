@@ -32,4 +32,8 @@ export const requestFriendRequest = userInfo => ({type: Consts.FRIENDREQUEST_REQ
 export const friendRequestSuccess = result => ({type: Consts.FRIENDREQUEST_SUCCESS, result});
 export const friendRequestFailed = error => ({type: Consts.FRIENDREQUEST_FAILED, error});
 
+export const requestPendingFriendRequests = userInfo => ({type: Consts.PENDINGFRIENDREQUESTS_REQUEST, userInfo});
+export const pendingFriendRequestsSuccess = result => ({type: Consts.PENDINGFRIENDREQUESTS_SUCCESS, result});
+export const pendingFriendRequestsFailed = error => ({type: Consts.PENDINGFRIENDREQUESTS_FAILED, error});
+
 export const changeChatroom = chatroomInfo => ({type: Consts.CHANGECHATROOM, chatroomInfo});

@@ -2,6 +2,78 @@
   min-width: 350px;
   height: 100%;
   font-family: Arial;
+
+}
+
+.modal {
+  min-height: 400px;
+  .pending-friend {
+    position: relative;
+    padding: 5px 10px;
+    margin: 0 -10px;
+    user-select: none;
+
+    &:not(.clicked):hover {
+      background-color: #e6e6e6;
+    }
+
+    .pending-friend-photo {
+      width: 5%;
+      min-width: 40px;
+      max-width: 60px;     
+      margin: 0 15px 0 0;
+      display: inline-block;
+      position: relative;
+
+      /* for making height of photo scale equal to width */
+      &:before{
+        content: '';
+        padding: 45% 0;
+        display: inline-block;
+      }
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-radius: 50%;
+      object-fit: cover;
+      vertical-align: top;
+    } 
+
+    .pending-friend-name, .pending-friend-motto {
+      height: 100%;
+      position: absolute;
+      top: 0;
+    }
+
+    .pending-friend-name {
+      font-weight: 700;
+      font-size: 11px;
+      display: inline-block;
+      max-width: 25%;
+    }
+
+    .pending-friend-motto {
+      color: darkgray;
+      right: 10px;
+      max-width: 50%;
+      font-size: 10px;
+    }
+
+    p {
+      position: relative;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      line-height: 1.2em;
+      max-height: 2.4em;
+      overflow: hidden;
+    }
+  }
 }
 
 hr {

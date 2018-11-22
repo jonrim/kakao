@@ -12,6 +12,7 @@ import { Loadable } from 'Utils'
 import SplitPane from 'react-split-pane'
 import socketIOClient from 'socket.io-client'
 import { Route, Switch, Link } from 'react-router-dom'
+import { Modal } from 'semantic-ui-react'
 
 import './index.scss'
 
@@ -23,34 +24,38 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      endpoint: require('ip').address() + ':8080'
+      endpoint: require('ip').address() + ':8080',
+      friendRequestsModal: false
     };
     this.initializeSocket = this.initializeSocket.bind(this);
     this.logOut = this.logOut.bind(this);
+    this.toggleFriendRequestsModal = this.toggleFriendRequestsModal.bind(this);
   }
 
   componentDidMount() {
     const { endpoint, socket } = this.state;
-    const { requestSession, requestFriendsList, user } = this.props;
+    const { requestSession, requestFriendsList, requestPendingFriendRequests, user } = this.props;
 
     if (user) {
       requestFriendsList(user);
+      requestPendingFriendRequests(user);
       this.initializeSocket();
     }
     if (!user) requestSession();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { requestFriendsList, user } = this.props;
+    const { requestFriendsList, requestPendingFriendRequests, user } = this.props;
     
     if (!prevProps.user && user) {
       requestFriendsList(user);
+      requestPendingFriendRequests(user);
       this.initializeSocket();
     }
   }
 
   initializeSocket() {
-    const { user, requestReceiveMessages } = this.props;
+    const { user, requestReceiveMessages, requestPendingFriendRequests } = this.props;
     this.setState({
       socket: socketIOClient('localhost:8080', { transport: ['websocket', 'polling', 'flashsocket'] })
     }, () => {
@@ -62,6 +67,9 @@ export default class App extends Component {
         // console.log('receiving messages', message)
         requestReceiveMessages({socketId: socket.id, userEmail: message.userEmail, friendEmail: message.friendEmail});
       })
+      socket.on('friendRequest', userInfo => {
+        requestPendingFriendRequests({socketId: socket.id, email: userInfo.userEmail});
+      })
     }); 
   }
 
@@ -70,52 +78,83 @@ export default class App extends Component {
     requestLogout();
   }
 
+  toggleFriendRequestsModal() {
+    this.setState({
+      friendRequestsModal: !this.state.friendRequestsModal
+    });
+  }
+
   render() {
-    const { socket } = this.state;
-    const { user, friends, chatroom } = this.props;
+    const { socket, friendRequestsModal } = this.state;
+    const { user, friends, chatroom, pendingFriendRequests } = this.props;
     return (
-      <SplitPane
-        split='vertical'
-        minSize={300}
-        resizerStyle={{display: chatroom ? 'inherit' : 'none'}}
-      >
-        <NavAndViews
-          {...this.props}
-          logOut={this.logOut}
-        />
-        {
-          chatroom &&
-          <Chatroom
-            socket={socket}
+      <div>
+        <SplitPane
+          split='vertical'
+          minSize={300}
+          resizerStyle={{display: chatroom ? 'inherit' : 'none'}}
+        >
+          <NavAndViews
+            {...this.state}
+            {...this.props}
+            logOut={this.logOut}
+            toggleFriendRequestsModal={this.toggleFriendRequestsModal}
           />
-        }
-      </SplitPane>
+          {
+            chatroom &&
+            <Chatroom
+              socket={socket}
+            />
+          }
+        </SplitPane>
+        <Modal
+          open={friendRequestsModal}
+          onClose={this.toggleFriendRequestsModal}
+          dimmer='blurring'
+        >
+          <Modal.Header>Pending Friend Requests</Modal.Header>
+          <Modal.Content>
+            {
+              pendingFriendRequests.map((pendingFriend, i) => (
+                <div className='pending-friend' key={i}>
+                  <div className='pending-friend-photo'>
+                    <img src={pendingFriend.photo} />
+                  </div>
+                  <div className='pending-friend-name'>
+                    <p>{pendingFriend.name}</p>
+                  </div>
+                  <div className='pending-friend-motto'>
+                    <p>{pendingFriend.motto}</p>
+                  </div>
+                </div>
+              ))
+            }
+          </Modal.Content>
+        </Modal>
+      </div>
     )
   }
 }
 
 const NavAndViews = props => {
-  const { user, friends, chatroom, socket, logOut } = props;
+  const { user, friends, chatroom, socket, logOut, toggleFriendRequestsModal } = props;
 
   return (
     <div className='nav-and-views'>
       {
         user ?
         <div>
-          <Nav friends={friends} logOut={logOut} />
+          <Nav friends={friends} logOut={logOut} toggleFriendRequestsModal={toggleFriendRequestsModal} />
           <Switch>
             <Route exact path='/' render={(props) => (
-              <Friends {...props}
-                chatroom={chatroom}
-                socket={socket}
-              />
+              <Friends {...props} socket={socket} />
             )}/>
             <Route path='/chats' render={(props) => (
-              <Chats {...props}
-                socket={socket}
-              />
+              <Chats {...props} socket={socket} />
             )}/>
-            <Route path='/find' component={Find} />
+            <Route path='/find' render={(props) => (
+              <Find {...props} socket={socket} />
+            )}/>
             <Route path='/more' component={More} />
           </Switch>
         </div> :

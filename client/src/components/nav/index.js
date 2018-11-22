@@ -47,6 +47,8 @@ class Nav extends Component {
         </span>
         <Dropdown icon='content' className='dropdown-button' style={{right: this.state.navWidth < 400 ? '20px' : '160px'}}>
           <Dropdown.Menu>
+            <Dropdown.Item icon='users' text='Friend Requests' onClick={this.props.toggleFriendRequestsModal} />
+            <Dropdown.Divider />
             <Dropdown.Item icon='sign out' text='Log out' onClick={this.props.logOut} />
           </Dropdown.Menu>
         </Dropdown>
