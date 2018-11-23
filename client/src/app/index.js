@@ -6,15 +6,17 @@ import { requestSession, requestLogout } from 'Actions/auth'
 import { 
   requestFriendsList,
   requestReceiveMessages,
-  requestPendingFriendRequests
+  requestPendingFriendRequests,
+  requestManageFriendRequest
 } from 'Actions/user'
 
 const mapStateToProps = (state) => {
   return {
     user: state.auth.user,
-    friends: state.user.friends,
+    friends: state.user.friends || [],
     chatroom: state.user.chatroom,
-    pendingFriendRequests: state.user.pendingFriendRequests || []
+    pendingFriendRequests: state.user.pendingFriendRequests || [],
+    errorManageFriendRequest: state.user.errorManageFriendRequest
   }
 }
 
@@ -24,7 +26,8 @@ const mapDispatchToProps = (dispatch) => {
     requestFriendsList,
     requestReceiveMessages,
     requestPendingFriendRequests,
-    requestLogout
+    requestLogout,
+    requestManageFriendRequest,
   }, dispatch)
 }
 

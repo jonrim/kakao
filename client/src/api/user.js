@@ -43,6 +43,10 @@ export const requestPendingFriendRequests = (userInfo) => {
   return fetch(`/users/pendingFriendRequests`, createOptions(postJSON(userInfo))).then(checkStatus);
 }
 
+export const requestManageFriendRequest = (userInfo) => {
+  return fetch(`/users/manageFriendRequest`, createOptions(putJSON(userInfo))).then(checkStatus);
+}
+
 export default {
   requestChangeInfo,
   requestSendEmail,

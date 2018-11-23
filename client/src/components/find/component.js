@@ -37,7 +37,7 @@ export default class Find extends Component {
     const { requestFriendRequest, user, foundUser, errorFriendRequest, socket } = this.props;
 
     requestFriendRequest({user, friend: foundUser});
-    socket.emit('friendRequest', {userEmail: user.email, friendEmail: foundUser.email});
+    socket.emit('sentFriendRequest', {userEmail: user.email, friendEmail: foundUser.email});
 
     let notification = document.getElementById('notification');
     notification.classList.add('active');
@@ -89,7 +89,7 @@ export default class Find extends Component {
                 <Button 
                   className='yellow-button'
                   size='mini'
-                  disabled={foundUser.email === user.email /* || friends.findIndex(friend => friend.email === foundUser.email) > -1 */}
+                  disabled={foundUser.email === user.email || friends.findIndex(friend => friend.email === foundUser.email) > -1}
                   onClick={this.addFriend}
                 >
                   Add Friend

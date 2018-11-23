@@ -29,6 +29,53 @@ router.get('/', Auth.assertAdmin, function(req, res) {
   });
 });
 
+// used for user to fetch all friends
+router.post('/friendsList', function(req, res, next) {
+  // friendFavoriteChatHistory is an array of user's friends that contains friend's info (favorited, chat history)
+  let friendFavoriteChatHistory = [];
+  User.findOne({
+    where: {
+      email: req.body.email
+    }
+  })
+  .then(user => {
+    if (!user) {
+      const error = new Error('Cannot find user when trying to obtain friends list. User email:', req.body.email);
+      error.status = 400;
+      next(error);
+    }
+    friendFavoriteChatHistory = user.friends;
+    return Promise.all(user.friends.map(friendInfo => {
+      friendInfo = JSON.parse(friendInfo);
+      return User.findOne({
+        where: {
+          email: friendInfo.email
+        }
+      });
+    }));
+  })
+  .then(friends => {
+    if (!friends) {
+      const error = new Error('Cannot obtain chat histories of friends for user with email:', req.body.email);
+      error.status = 400;
+      next(error);
+    }
+    res.json(friends.map((friend, i) => {
+      return {
+        name: friend.name,
+        email: friend.email,
+        phone: friend.phone,
+        photo: friend.photo,
+        motto: friend.motto,
+        chatHistory: JSON.parse(friendFavoriteChatHistory[i]).chatHistory,
+        favorite: JSON.parse(friendFavoriteChatHistory[i]).favorite
+      };
+    }));
+  })
+  .catch(next);
+});
+
+// used for when user wants to search for a friend (to make a friend request)
 router.post('/findUser', function(req, res, next) {
   let userID = req.body.userID;
   User.findOne({
@@ -50,6 +97,9 @@ router.post('/findUser', function(req, res, next) {
   });
 });
 
+/*------------------------------- ROUTES FOR FRIEND REQUESTS ---------------------------------*/
+
+// used for when user wants to send a friend request to a friend
 router.put('/friendRequest', function(req, res, next) {
   let user = req.body.user;
   let friend = req.body.friend;
@@ -77,6 +127,98 @@ router.put('/friendRequest', function(req, res, next) {
   });
 });
 
+// used for when user wants to accept or reject a pending friend request
+router.put('/manageFriendRequest', function(req, res, next) {
+  let { user, action, pendingFriend } = req.body;
+  let updatedUser;
+  User.findOne({
+    where: {
+      email: user.email
+    }
+  })
+  .then(user => {
+    if (!user) {
+      const error = new Error('User does not exist.');
+      error.status = 400;
+      next(error);
+    }
+
+    // first remove the pending friend request from the user's list of friend requests
+    let i = user.friendRequests.findIndex(f => f.email === pendingFriend.email);
+    user.friendRequests.splice(i, 1);
+
+    // then add the new friend to user's friend list if accepted
+    if (action === 'accept') {
+      // don't want to push in the friend's friends when using spread operator, so list all the other props instead
+      user.friends.push(JSON.stringify({
+        name: pendingFriend.name, 
+        email: pendingFriend.email, 
+        photo: pendingFriend.photo, 
+        phone: pendingFriend.phone, 
+        motto: pendingFriend.motto, 
+        favorite: false, 
+        chatroom: []
+      }));
+    }
+    updatedUser = user;
+    return user.update({friendRequests: user.friendRequests, friends: user.friends});
+  })
+  .then(_user => {
+    return User.findOne({
+      where: {
+        email: pendingFriend.email
+      }
+    })
+  })
+  .then(friend => {
+    if (!friend) {
+      const error = new Error('Pending Friend does not exist.');
+      error.status = 400;
+      next(error);
+    }
+    // now update the friend's Friend List if the user accepted
+    if (action === 'accept') {
+      // don't want to push in the user's friends when using spread operator, so list all the other props instead
+      friend.friends.push(JSON.stringify({
+        name: user.name, 
+        email: user.email, 
+        photo: user.photo, 
+        phone: user.phone, 
+        motto: user.motto, 
+        favorite: false, 
+        chatroom: []
+      }));
+      friend.update({friends: friend.friends});
+    }
+    // before sending the result back to the user, first populate friends with their info again
+    return Promise.all(updatedUser.friends.map(friendInfo => {
+      friendInfo = JSON.parse(friendInfo);
+      return User.findOne({
+        where: {
+          email: friendInfo.email
+        }
+      });
+    }));
+  })
+  .then(friends => {
+    res.json({
+      friends: action === 'reject' ? friends : friends.map((friend, i) => {
+        return {
+          name: friend.name,
+          email: friend.email,
+          phone: friend.phone,
+          photo: friend.photo,
+          motto: friend.motto,
+          chatHistory: JSON.parse(updatedUser.friends[i]).chatHistory,
+          favorite: JSON.parse(updatedUser.friends[i]).favorite
+        };
+      }),
+      friendRequests: updatedUser.friendRequests
+    });
+  });
+});
+
+// used for user to fetch all pending friend requests
 router.post('/pendingFriendRequests', function(req, res, next) {
   let email = req.body.email;
   User.findOne({
@@ -94,6 +236,9 @@ router.post('/pendingFriendRequests', function(req, res, next) {
   });
 });
 
+/*------------------------------- ROUTES FOR MESSAGING ---------------------------------*/
+
+// used for when user sends a message to a friend
 router.put('/messageSend', function(req, res, next) {
   var { messages, userEmail, friendEmail } = req.body;
   var today = Array.isArray(messages) ? messages[0].date : messages.date;
@@ -186,6 +331,7 @@ router.put('/messageSend', function(req, res, next) {
   .catch(next);
 });
 
+// used for when user receives a friend's messages
 router.put('/messageReceive', function(req, res, next) {
   var { userEmail, friendEmail } = req.body;
   User.findOne({
@@ -204,6 +350,7 @@ router.put('/messageReceive', function(req, res, next) {
   .catch(next);
 });
 
+// used for when user reads a friend's messages
 router.put('/messageRead', function(req, res, next) {
   var { userEmail, friendEmail } = req.body;
   // make sure friend is the user's friend by using the if statement (person.email === userEmail) ?
@@ -253,53 +400,6 @@ router.put('/messageRead', function(req, res, next) {
   // mark friend's messages as read for user
   .then(user => {
     res.json(friend);
-  })
-  .catch(next);
-});
-
-
-
-router.post('/friendsList', function(req, res, next) {
-  // friendFavoriteChatHistory is an array of user's friends that contains friend's info (favorited, chat history)
-  let friendFavoriteChatHistory = [];
-  User.findOne({
-    where: {
-      email: req.body.email
-    }
-  })
-  .then(user => {
-    if (!user) {
-      const error = new Error('Cannot find user when trying to obtain friends list. User email:', req.body.email);
-      error.status = 400;
-      next(error);
-    }
-    friendFavoriteChatHistory = user.friends;
-    return Promise.all(user.friends.map(friendInfo => {
-      friendInfo = JSON.parse(friendInfo);
-      return User.findOne({
-        where: {
-          email: friendInfo.email
-        }
-      });
-    }));
-  })
-  .then(friends => {
-    if (!friends) {
-      const error = new Error('Cannot obtain chat histories of friends for user with email:', req.body.email);
-      error.status = 400;
-      next(error);
-    }
-    res.json(friends.map((friend, i) => {
-      return {
-        name: friend.name,
-        email: friend.email,
-        phone: friend.phone,
-        photo: friend.photo,
-        motto: friend.motto,
-        chatHistory: JSON.parse(friendFavoriteChatHistory[i]).chatHistory,
-        favorite: JSON.parse(friendFavoriteChatHistory[i]).favorite
-      };
-    }));
   })
   .catch(next);
 });

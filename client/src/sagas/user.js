@@ -94,6 +94,16 @@ function* requestPendingFriendRequests(action) {
   }
 }
 
+function* requestManageFriendRequest(action) {
+  try {
+    const result = yield call(Api.requestManageFriendRequest, action.userInfo);
+    if (result.errorStatus) throw result;
+    yield put(Actions.manageFriendRequestSuccess(result));
+  } catch (error) {
+    yield put(Actions.manageFriendRequestFailed(error));
+  }
+}
+
 export default function* watchUser() {
   yield all([
     takeLatest(Consts.CHANGEINFO_REQUEST, requestChangeInfo),
@@ -105,5 +115,6 @@ export default function* watchUser() {
     takeLatest(Consts.FINDUSER_REQUEST, requestFindUser),
     takeLatest(Consts.FRIENDREQUEST_REQUEST, requestFriendRequest),
     takeLatest(Consts.PENDINGFRIENDREQUESTS_REQUEST, requestPendingFriendRequests),
+    takeLatest(Consts.MANAGEFRIENDREQUEST_REQUEST, requestManageFriendRequest),
   ]);
 }

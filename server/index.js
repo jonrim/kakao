@@ -124,9 +124,19 @@ io.on('connection', socket => {
     }
   })
 
-  socket.on('friendRequest', userInfo => {
+  socket.on('sentFriendRequest', userInfo => {
     if (users[userInfo.friendEmail]) {
-      io.to(`${users[userInfo.friendEmail]}`).emit('friendRequest', {
+      io.to(`${users[userInfo.friendEmail]}`).emit('sentFriendRequest', {
+        ...userInfo,
+        userEmail: userInfo.friendEmail,
+        friendEmail: userInfo.userEmail
+      });
+    } 
+  })
+
+  socket.on('acceptedFriendRequest', userInfo => {
+    if (users[userInfo.friendEmail]) {
+      io.to(`${users[userInfo.friendEmail]}`).emit('acceptedFriendRequest', {
         ...userInfo,
         userEmail: userInfo.friendEmail,
         friendEmail: userInfo.userEmail

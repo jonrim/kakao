@@ -78,9 +78,9 @@ export default class Chats extends Component {
               return d1 > d2 ? -1 : 1
             })
             .filter(friend => friend.name ? friend.name.toLowerCase().replace(/\s/g, '').includes(searchNameInput.toLowerCase().replace(/\s/g, '')) : null)
-            .map(friend => (
+            .map((friend, i) => (
               <Friend
-                key={friend.email}
+                key={friend.email + i}
                 friend={friend}
                 changeChatroom={changeChatroom}
               />

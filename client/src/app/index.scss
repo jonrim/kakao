@@ -5,25 +5,74 @@
 
 }
 
-.modal {
+.ui.modal {
   min-height: 400px;
+  min-width: 300px;
+
+  .header {
+    font-size: 13px !important;
+  }
+
+  & > .content {
+    max-height: 50vh;
+    overflow: auto;
+    padding-top: 0 !important;
+
+    @media only screen and (max-width: 767px) {
+      padding-top: 0 !important;
+    }
+  }
+
   .pending-friend {
     position: relative;
-    padding: 5px 10px;
+    padding: 10px;
     margin: 0 -10px;
     user-select: none;
+    border-bottom: 1px solid rgba(0,0,0,.2);
 
     &:not(.clicked):hover {
       background-color: #e6e6e6;
+    }
+
+    .accept-reject {
+      i {
+        font-size: 25px;
+        cursor: pointer;
+      }
+
+      .accept {
+        color: #6ffc22;
+
+        &:hover {
+          color: #54e802;
+        }
+
+        &:active {
+          color: #3eac02;
+        }
+      }
+
+      .reject {
+        color: #fc4131;
+
+        &:hover {
+          color: #fd2917;
+        }
+
+        &:active {
+          color: #c11001;
+        }
+      }
     }
 
     .pending-friend-photo {
       width: 5%;
       min-width: 40px;
       max-width: 60px;     
-      margin: 0 15px 0 0;
       display: inline-block;
       position: relative;
+      margin-right: 10px;
+      padding: 10px;
 
       /* for making height of photo scale equal to width */
       &:before{
@@ -44,17 +93,21 @@
       vertical-align: top;
     } 
 
-    .pending-friend-name, .pending-friend-motto {
+    .pending-friend-name, .pending-friend-email, .pending-friend-motto {
       height: 100%;
       position: absolute;
       top: 0;
+      font-size: 11px;
+      display: inline-block;
     }
 
     .pending-friend-name {
       font-weight: 700;
-      font-size: 11px;
-      display: inline-block;
-      max-width: 25%;
+      top: -10px;
+    }
+
+    .pending-friend-email {
+      top: 10px;
     }
 
     .pending-friend-motto {

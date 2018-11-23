@@ -12,7 +12,8 @@ import { Loadable } from 'Utils'
 import SplitPane from 'react-split-pane'
 import socketIOClient from 'socket.io-client'
 import { Route, Switch, Link } from 'react-router-dom'
-import { Modal } from 'semantic-ui-react'
+import { Modal, Icon, Message } from 'semantic-ui-react'
+import ReactResizeDetector from 'react-resize-detector'
 
 import './index.scss'
 
@@ -25,11 +26,13 @@ export default class App extends Component {
     super(props);
     this.state = {
       endpoint: require('ip').address() + ':8080',
-      friendRequestsModal: false
+      friendRequestsModal: false,
+      navWidth: 700
     };
     this.initializeSocket = this.initializeSocket.bind(this);
     this.logOut = this.logOut.bind(this);
     this.toggleFriendRequestsModal = this.toggleFriendRequestsModal.bind(this);
+    this.onResize = this.onResize.bind(this);
   }
 
   componentDidMount() {
@@ -55,7 +58,7 @@ export default class App extends Component {
   }
 
   initializeSocket() {
-    const { user, requestReceiveMessages, requestPendingFriendRequests } = this.props;
+    const { user, requestReceiveMessages, requestPendingFriendRequests, requestFriendsList } = this.props;
     this.setState({
       socket: socketIOClient('localhost:8080', { transport: ['websocket', 'polling', 'flashsocket'] })
     }, () => {
@@ -67,8 +70,11 @@ export default class App extends Component {
         // console.log('receiving messages', message)
         requestReceiveMessages({socketId: socket.id, userEmail: message.userEmail, friendEmail: message.friendEmail});
       })
-      socket.on('friendRequest', userInfo => {
-        requestPendingFriendRequests({socketId: socket.id, email: userInfo.userEmail});
+      socket.on('sentFriendRequest', userInfo => {
+        requestPendingFriendRequests(user);
+      })
+      socket.on('acceptedFriendRequest', userInfo => {
+        requestFriendsList(user);
       })
     }); 
   }
@@ -84,9 +90,13 @@ export default class App extends Component {
     });
   }
 
+  onResize(navWidth) {
+    this.setState({navWidth});
+  }
+
   render() {
-    const { socket, friendRequestsModal } = this.state;
-    const { user, friends, chatroom, pendingFriendRequests } = this.props;
+    const { socket, friendRequestsModal, navWidth } = this.state;
+    const { user, friends, chatroom, pendingFriendRequests, requestManageFriendRequest, errorManageFriendRequest } = this.props;
     return (
       <div>
         <SplitPane
@@ -97,8 +107,7 @@ export default class App extends Component {
           <NavAndViews
             {...this.state}
             {...this.props}
-            logOut={this.logOut}
-            toggleFriendRequestsModal={this.toggleFriendRequestsModal}
+            {...this}
           />
           {
             chatroom &&
@@ -115,17 +124,51 @@ export default class App extends Component {
           <Modal.Header>Pending Friend Requests</Modal.Header>
           <Modal.Content>
             {
+              errorManageFriendRequest &&
+              <Message negative style={{margin: '10px -15px'}}>{ errorManageFriendRequest }</Message>
+            }
+            {
               pendingFriendRequests.map((pendingFriend, i) => (
                 <div className='pending-friend' key={i}>
-                  <div className='pending-friend-photo'>
-                    <img src={pendingFriend.photo} />
+                  <div 
+                    className='accept-reject'
+                    style={{
+                      paddingLeft: navWidth <= 550 ? '20px' : '10px'
+                    }}
+                  >
+                    <Icon className='accept' name='check circle' onClick={() => {
+                      requestManageFriendRequest({user: user, action: 'accept', pendingFriend});
+                      socket.emit('acceptedFriendRequest', {userEmail: user.email, friendEmail: pendingFriend.email});
+                    }} />
+                    <Icon className='reject' name='times circle' onClick={() => requestManageFriendRequest({user: user, action: 'reject', pendingFriend})} />
                   </div>
-                  <div className='pending-friend-name'>
-                    <p>{pendingFriend.name}</p>
+                  <div
+                    style={{
+                      paddingLeft: navWidth <= 550 ? '20px' : '0',
+                      position: 'absolute',
+                      width: navWidth <= 550 ? '70%' : '50%',
+                      display: 'inline-block',
+                      overflow: 'hidden',
+                      left: '100px',
+                      top: '5px'
+                    }}
+                  >
+                    <div className='pending-friend-photo'>
+                      <img src={pendingFriend.photo} />
+                    </div>
+                    <div className='pending-friend-name'>
+                      <p>{pendingFriend.name}</p>
+                    </div>
+                    <div className='pending-friend-email'>
+                      <p>{pendingFriend.email}</p>
+                    </div>
                   </div>
-                  <div className='pending-friend-motto'>
-                    <p>{pendingFriend.motto}</p>
-                  </div>
+                  {
+                    navWidth > 550 &&
+                    <div className='pending-friend-motto'>
+                      <p>{pendingFriend.motto}</p>
+                    </div>
+                  }
                 </div>
               ))
             }
@@ -137,14 +180,19 @@ export default class App extends Component {
 }
 
 const NavAndViews = props => {
-  const { user, friends, chatroom, socket, logOut, toggleFriendRequestsModal } = props;
+  const { user, friends, chatroom, socket, logOut, toggleFriendRequestsModal, onResize, navWidth } = props;
 
   return (
     <div className='nav-and-views'>
       {
         user ?
         <div>
-          <Nav friends={friends} logOut={logOut} toggleFriendRequestsModal={toggleFriendRequestsModal} />
+          <Nav 
+            friends={friends} 
+            logOut={logOut} 
+            toggleFriendRequestsModal={toggleFriendRequestsModal}
+            navWidth={navWidth}
+          />
           <Switch>
             <Route exact path='/' render={(props) => (
               <Friends {...props} socket={socket} />
@@ -160,6 +208,7 @@ const NavAndViews = props => {
         </div> :
         <Auth />
       }
+      <ReactResizeDetector handleWidth onResize={onResize}/>
     </div>
   );
 } 

@@ -58,6 +58,7 @@ export default class Friends extends Component {
       {name: 'Favorites', list: friends.filter(friend => friend.favorite)},
       {name: 'Friends', list: friends}
     ];
+    console.log(friends)
     return (
       <div className='friends-wrapper'>
         <Input 
@@ -77,7 +78,7 @@ export default class Friends extends Component {
                   {section.name}
                   {
                     section.name === 'Friends' &&
-                    <span style={{'paddingLeft': '8px', 'fontSize': '16px', 'fontWeight': '900'}}>
+                    <span style={{paddingLeft: '8px', fontSize: '16px', fontWeight: '900'}}>
                       {section.list.length}
                     </span>
                   }
@@ -92,9 +93,9 @@ export default class Friends extends Component {
                   /> :
                   section.list.sort((a,b) => a.name < b.name ? -1 : 1)
                   .filter(friend => friend.name ? friend.name.toLowerCase().replace(/\s/g, '').includes(searchNameInput.toLowerCase().replace(/\s/g, '')) : null)
-                  .map(friend => (
+                  .map((friend, i) => (
                     <Friend
-                      key={friend.email}
+                      key={friend.email + i}
                       changeChatroom={changeChatroom}
                       friend={friend}
                     />
