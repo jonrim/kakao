@@ -29,6 +29,7 @@
     "pg": "^7.6.0",
     "prop-types": "^15.6.2",
     "react": "^16.5.1",
+    "react-contextmenu": "^2.10.0",
     "react-dom": "^16.5.1",
     "react-dropzone": "^6.2.4",
     "react-emotion": "^9.2.12",

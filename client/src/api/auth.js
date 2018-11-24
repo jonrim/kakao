@@ -25,6 +25,6 @@ export default {
   requestSession,
   requestLogin,
   requestLogout,
-  requestSignup
+  requestSignup,
 };
 

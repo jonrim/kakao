@@ -10,12 +10,14 @@ const initialState = {
   isFetchingFriendRequest: false,
   isFetchingPendingFriendRequests: false,
   isFetchingManageFriendRequest: false,
+  isFetchingChangeInfo: false,
   errorMessage: null,
   errorFriendList: null,
   errorFindingUser: null,
   errorFriendRequest: null,
   errorPendingFriendRequests: null,
   errorManageFriendRequest: null,
+  errorChangeInfo: false,
   foundUser: null,
   pendingFriendRequests: [],
   friends: [],
@@ -39,6 +41,12 @@ export default function reducer(state = initialState, action) {
         ...state,
         isFetchingFriendList: true,
         errorFriendList: null,
+      }
+    case Consts.CHANGEINFO_REQUEST:
+      return {
+        ...state,
+        isFetchingChangeInfo: true,
+        errorChangeInfo: null,
       }
     case Consts.SENDMESSAGE_REQUEST:
     case Consts.RECEIVEMESSAGES_REQUEST:
@@ -77,6 +85,18 @@ export default function reducer(state = initialState, action) {
         ...state,
         isFetchingFriendList: false,
         friends: action.result
+      }
+    case Consts.CHANGEINFO_SUCCESS:
+      if (action.result.favorite) {
+        return {
+          ...state,
+          isFetchingChangeInfo: false,
+          friends: action.result.friends
+        }
+      }
+      return {
+        ...state,
+        isFetchingChangeInfo: false,
       }
     case Consts.RECEIVEMESSAGES_SUCCESS:
       let friend = JSON.parse(action.result);
@@ -146,6 +166,12 @@ export default function reducer(state = initialState, action) {
         ...state,
         isFetchingFriendList: false,
         errorFriendList: action.error.message
+      }
+    case Consts.CHANGEINFO_FAILED:
+      return {
+        ...state,
+        isFetchingChangeInfo: false,
+        errorChangeInfo: action.error.message
       }
     case Consts.SENDMESSAGE_FAILED:
     case Consts.RECEIVEMESSAGES_FAILED:

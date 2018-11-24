@@ -138,7 +138,8 @@ export default class App extends Component {
                   >
                     <Icon className='accept' name='check circle' onClick={() => {
                       requestManageFriendRequest({user: user, action: 'accept', pendingFriend});
-                      socket.emit('acceptedFriendRequest', {userEmail: user.email, friendEmail: pendingFriend.email});
+                      // need to find a way to get the above request's results first before emitting to socket
+                      // socket.emit('acceptedFriendRequest', {userEmail: user.email, friendEmail: pendingFriend.email});
                     }} />
                     <Icon className='reject' name='times circle' onClick={() => requestManageFriendRequest({user: user, action: 'reject', pendingFriend})} />
                   </div>

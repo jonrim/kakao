@@ -1,11 +1,11 @@
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import component from './component'
-import { changeChatroom } from 'Actions/user'
+import { changeChatroom, requestChangeInfo } from 'Actions/user'
 
 const mapStateToProps = (state) => {
   return {
-    myProfile: [state.auth.user || {}],
+    user: state.auth.user || {},
     friends: state.user.friends || [],
     isFetching: state.user.isFetchingFriendList
   }
@@ -13,7 +13,8 @@ const mapStateToProps = (state) => {
 
 export const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    changeChatroom
+    changeChatroom,
+    requestChangeInfo,
   }, dispatch)
 }
 

@@ -13,6 +13,7 @@ export default function reducer(state = initialState, action) {
     case Consts.LOGIN_REQUEST:
     case Consts.LOGOUT_REQUEST:
     case Consts.SIGNUP_REQUEST:
+    case Consts.SESSION_REQUEST:
       return {
         ...state,
         isFetching: true,
@@ -20,13 +21,6 @@ export default function reducer(state = initialState, action) {
       }
     case Consts.LOGIN_SUCCESS:
     case Consts.SIGNUP_SUCCESS:
-      return {
-        ...state,
-        isFetching: false,
-        user: {
-          ...action.result
-        }
-      }
     case Consts.LOGOUT_SUCCESS:
       return {
         ...state,
@@ -40,7 +34,7 @@ export default function reducer(state = initialState, action) {
           ...action.result,
           friends: [],
         }
-      };
+      }
     case Consts.LOGIN_FAILED:
     case Consts.LOGOUT_FAILED:
     case Consts.SESSION_FAILED:

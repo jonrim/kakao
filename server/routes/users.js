@@ -434,6 +434,29 @@ router.post('/formInfo', function(req, res, next) {
 });
 
 router.put('/changeInfo', function(req, res, next) {
+  const { user, friends, friend, favorite } = req.body;
+  if (favorite) {
+    User.findOne({
+      where: {
+        email: user.email
+      }
+    })
+    .then(user => {
+      // user.friends stores the 'favorite' info (it stores favorite, chatHistory)
+      // therefore update user.friends first, then update 'friends' from req.body and
+      // send back 'friends'
+      let indexInUserFriends = user.friends.map(f => JSON.parse(f)).findIndex(f => f.email === friend.email);
+      let indexInFriends = friends.findIndex(f => f.email === friend.email);
+      let foundFriend = JSON.parse(user.friends[indexInUserFriends]);
+      // update 'friends' as well since it has the fetched friend list (populated with info)
+      foundFriend.favorite = friends[indexInFriends].favorite = favorite === 'add';
+      user.friends[indexInUserFriends] = JSON.stringify(foundFriend);
+      user.update({friends: user.friends});
+      res.json({favorite, friends});
+    })
+    .catch(next);
+    return;
+  }
   if (req.body.photo || req.body.photo === '') {
     User.findOne({
       where: {

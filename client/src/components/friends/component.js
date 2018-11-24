@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Input } from 'semantic-ui-react'
 import { FadeLoader } from 'react-spinners'
 import { css } from 'react-emotion'
+import { ContextMenu, MenuItem, ContextMenuTrigger, connectMenu } from 'react-contextmenu'
 
 import './index.scss'
 
@@ -19,6 +21,7 @@ export default class Friends extends Component {
 
     this.changeInputValue = this.changeInputValue.bind(this);
     this.changeFriendButtonStyling = this.changeFriendButtonStyling.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   changeFriendButtonStyling(e) {
@@ -49,16 +52,27 @@ export default class Friends extends Component {
     });
   }
 
+  handleClick(e, data) {
+    const { chat, voice, video, favorite, viewProfile, friend } = data;
+    const { changeChatroom, requestChangeInfo, user, friends } = this.props;
+    if (chat) {
+      document.getElementsByClassName('SplitPane')[0].classList.add('chatroomOpen');
+      changeChatroom(friend);
+    }
+    if (favorite) {
+      requestChangeInfo({user, friends, friend, favorite});
+    }
+  }
+
   render() {
     const { searchNameInput, focusedFriend } = this.state;
-    const { chatroom, myProfile, friends, isFetching, changeChatroom } = this.props;
+    const { chatroom, user, friends, isFetching, changeChatroom } = this.props;
     const { changeInputValue } = this;
     let friendSections = [
-      {name: 'My Profile', list: myProfile},
+      {name: 'My Profile', list: [user]},
       {name: 'Favorites', list: friends.filter(friend => friend.favorite)},
       {name: 'Friends', list: friends}
     ];
-    console.log(friends)
     return (
       <div className='friends-wrapper'>
         <Input 
@@ -94,21 +108,62 @@ export default class Friends extends Component {
                   section.list.sort((a,b) => a.name < b.name ? -1 : 1)
                   .filter(friend => friend.name ? friend.name.toLowerCase().replace(/\s/g, '').includes(searchNameInput.toLowerCase().replace(/\s/g, '')) : null)
                   .map((friend, i) => (
-                    <Friend
-                      key={friend.email + i}
-                      changeChatroom={changeChatroom}
-                      friend={friend}
-                    />
+                    <ContextMenuTrigger key={friend.email + i} id='right-click-menu' friend={friend} collect={props => props} onItemClick={this.handleClick}>
+                      <Friend
+                        changeChatroom={changeChatroom}
+                        friend={friend}
+                      />
+                    </ContextMenuTrigger>
                   ))
                 }
               </div>
             ))
           }
+          <ConnectedMenu />
         </div>
       </div>
     )
   }
 }
+
+const DynamicMenu = props => {
+  const { id, trigger } = props;
+  const friend = trigger ? trigger.friend : null;
+  const handleClick = trigger ? trigger.onItemClick : null;
+  return (
+    <ContextMenu id={id} style={{display: trigger ? 'inherit': 'none'}}>
+      <MenuItem data={{chat: true}} onClick={handleClick}>
+        Chat
+      </MenuItem>
+      <MenuItem data={{voice: true}} onClick={handleClick}>
+        Voice Call
+      </MenuItem>
+      <MenuItem data={{video: true}} onClick={handleClick}>
+        Video Call
+      </MenuItem>
+      <MenuItem divider />
+      <MenuItem data={{favorite: friend && friend.favorite ? 'remove' : 'add'}} onClick={handleClick}>
+        { 
+          friend && friend.favorite ?
+          <span>Remove from Favorites</span> :
+          <span>Add To Favorites</span>
+        }
+      </MenuItem> 
+      <MenuItem data={{viewProfile: true}} onClick={handleClick}>
+        View Profile
+      </MenuItem>   
+    </ContextMenu>
+  )
+}
+
+DynamicMenu.propTypes = {
+  trigger: PropTypes.shape({
+    friend: PropTypes.object.isRequired,
+    onItemClick: PropTypes.func.isRequired
+  }).isRequired
+};
+
+const ConnectedMenu = connectMenu('right-click-menu')(DynamicMenu);
 
 const Friend = props => {
 
