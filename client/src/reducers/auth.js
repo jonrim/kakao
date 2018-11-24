@@ -3,9 +3,6 @@ import { auth } from 'Api';
 import * as Consts from 'Constants/auth';
 
 const initialState = {
-  isFetching: false,
-  error: null,
-  user: null,
 };
 
 export default function reducer(state = initialState, action) {
@@ -21,6 +18,11 @@ export default function reducer(state = initialState, action) {
       }
     case Consts.LOGIN_SUCCESS:
     case Consts.SIGNUP_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        user: action.result
+      }
     case Consts.LOGOUT_SUCCESS:
       return {
         ...state,

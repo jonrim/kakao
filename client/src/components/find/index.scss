@@ -21,32 +21,6 @@
     width: 30%;
     min-width: 50px;
     max-width: 200px;
-    display: inline-block;
-    position: relative;
-
-    /* for making height of photo scale equal to width */
-    &:before {
-      content: '';
-      padding: 50% 0;
-      display: inline-block;
-    }
-
-    .tv-border {
-      width: 100%;
-      height: 100%;
-      border-radius: 50% / 20%;
-      overflow: hidden;
-      position: absolute;
-      top: 0;
-      left: 0;
-
-      img {
-        object-fit: cover;
-        width: 100%;
-        height: 100%;
-        border-radius: 20% / 50%;
-      }
-    }
   }
 
   .find-name {

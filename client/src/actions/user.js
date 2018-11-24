@@ -41,3 +41,4 @@ export const manageFriendRequestSuccess = result => ({type: Consts.MANAGEFRIENDR
 export const manageFriendRequestFailed = error => ({type: Consts.MANAGEFRIENDREQUEST_FAILED, error});
 
 export const changeChatroom = chatroomInfo => ({type: Consts.CHANGECHATROOM, chatroomInfo});
+export const viewUserProfile = profileInfo => ({type: Consts.VIEWUSERPROFILE, profileInfo});

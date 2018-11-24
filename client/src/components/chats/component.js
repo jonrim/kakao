@@ -110,7 +110,7 @@ const Friend = props => {
       className={'friend'}
       onDoubleClick={changeChatroomInfo}
     >
-      <div className='friend-photo'>
+      <div className='friend-photo photo'>
         <img src={friend.photo} />
       </div>
       <div className='friend-name'>

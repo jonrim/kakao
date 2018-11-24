@@ -2,7 +2,6 @@
   min-width: 350px;
   height: 100%;
   font-family: Arial;
-
 }
 
 .ui.modal {
@@ -66,20 +65,8 @@
     }
 
     .pending-friend-photo {
-      width: 5%;
-      min-width: 40px;
-      max-width: 60px;     
-      display: inline-block;
-      position: relative;
       margin-right: 10px;
       padding: 10px;
-
-      /* for making height of photo scale equal to width */
-      &:before{
-        content: '';
-        padding: 45% 0;
-        display: inline-block;
-      }
     }
 
     img {
@@ -158,10 +145,50 @@ hr {
   }
 }
 
+.photo {
+  width: 5%;
+  min-width: 40px;
+  max-width: 60px;     
+  display: inline-block;
+  position: relative;
+
+  /* for making height of photo scale equal to width */
+  &:before{
+    content: '';
+    padding: 45% 0;
+    display: inline-block;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    object-fit: cover;
+    vertical-align: top;
+  } 
+}
+
+.tv-border {
+  width: 100%;
+  height: 100%;
+  border-radius: 50% / 20%;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  img {
+    border-radius: 20% / 50%;
+  }
+}
+
 .SplitPane {
   min-width: 350px;
 
-  &:not(.chatroomOpen) {
+  &:not(.chatroomOpen):not(.profileOpen) {
     & > .Pane1 {
       width: 100% !important;
     }
@@ -189,20 +216,6 @@ hr {
     }
   }
 
-   .Resizer.horizontal {
-    height: 11px;
-    margin: -5px 0;
-    border-top: 5px solid rgba(255, 255, 255, 0);
-    border-bottom: 5px solid rgba(255, 255, 255, 0);
-    cursor: row-resize;
-    width: 100%;
-  }
-
-  .Resizer.horizontal:hover {
-    border-top: 5px solid rgba(0, 0, 0, 0.5);
-    border-bottom: 5px solid rgba(0, 0, 0, 0.5);
-  }
-
   .Resizer.vertical {
     width: 11px;
     margin: 0 -5px;
@@ -224,7 +237,7 @@ hr {
 }
 
 @media (max-width: 900px) {
-  .SplitPane.chatroomOpen {
+  .SplitPane.chatroomOpen, .SplitPane.profileOpen {
     & > .Pane1 {
       width: 0 !important;
     }

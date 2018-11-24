@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { Input } from 'semantic-ui-react'
 import { FadeLoader } from 'react-spinners'
 import { css } from 'react-emotion'
@@ -54,13 +53,15 @@ export default class Friends extends Component {
 
   handleClick(e, data) {
     const { chat, voice, video, favorite, viewProfile, friend } = data;
-    const { changeChatroom, requestChangeInfo, user, friends } = this.props;
+    const { changeChatroom, requestChangeInfo, user, friends, viewUserProfile } = this.props;
     if (chat) {
       document.getElementsByClassName('SplitPane')[0].classList.add('chatroomOpen');
       changeChatroom(friend);
     }
-    if (favorite) {
-      requestChangeInfo({user, friends, friend, favorite});
+    if (favorite) requestChangeInfo({user, friends, friend, favorite});
+    if (viewProfile) {
+      document.getElementsByClassName('SplitPane')[0].classList.add('profileOpen');
+      viewUserProfile(friend);
     }
   }
 
@@ -156,13 +157,6 @@ const DynamicMenu = props => {
   )
 }
 
-DynamicMenu.propTypes = {
-  trigger: PropTypes.shape({
-    friend: PropTypes.object.isRequired,
-    onItemClick: PropTypes.func.isRequired
-  }).isRequired
-};
-
 const ConnectedMenu = connectMenu('right-click-menu')(DynamicMenu);
 
 const Friend = props => {
@@ -178,7 +172,7 @@ const Friend = props => {
       className='friend'
       onDoubleClick={changeChatroomInfo}
     >
-      <div className='friend-photo'>
+      <div className='friend-photo photo'>
         <img src={friend.photo} />
       </div>
       <div className='friend-name'>

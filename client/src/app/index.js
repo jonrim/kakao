@@ -15,6 +15,7 @@ const mapStateToProps = (state) => {
     user: state.auth.user,
     friends: state.user.friends || [],
     chatroom: state.user.chatroom,
+    profile: state.user.profile,
     pendingFriendRequests: state.user.pendingFriendRequests || [],
     errorManageFriendRequest: state.user.errorManageFriendRequest
   }

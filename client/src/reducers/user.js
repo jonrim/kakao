@@ -4,21 +4,6 @@ import * as Consts from 'Constants/user';
 import * as ConstsAuth from 'Constants/auth';
 
 const initialState = {
-  isFetchingMessage: false,
-  isFetchingFriendList: false,
-  isFetchingUser: false,
-  isFetchingFriendRequest: false,
-  isFetchingPendingFriendRequests: false,
-  isFetchingManageFriendRequest: false,
-  isFetchingChangeInfo: false,
-  errorMessage: null,
-  errorFriendList: null,
-  errorFindingUser: null,
-  errorFriendRequest: null,
-  errorPendingFriendRequests: null,
-  errorManageFriendRequest: null,
-  errorChangeInfo: false,
-  foundUser: null,
   pendingFriendRequests: [],
   friends: [],
   chatHistory: []
@@ -31,6 +16,11 @@ export default function reducer(state = initialState, action) {
         ...state,
         chatroom: action.chatroomInfo,
         chatHistory: action.chatroomInfo && action.chatroomInfo.chatHistory || null
+      }
+    case Consts.VIEWUSERPROFILE:
+      return {
+        ...state,
+        profile: action.profileInfo
       }
     // clear out state.user on logout success
     case ConstsAuth.LOGOUT_SUCCESS:

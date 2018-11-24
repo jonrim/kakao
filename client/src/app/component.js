@@ -6,7 +6,8 @@ import {
   Chats,
   Find,
   More,
-  Chatroom
+  Chatroom,
+  UserProfile,
 } from 'Components'
 import { Loadable } from 'Utils'
 import SplitPane from 'react-split-pane'
@@ -48,12 +49,16 @@ export default class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { requestFriendsList, requestPendingFriendRequests, user } = this.props;
+    const { requestFriendsList, requestPendingFriendRequests, user, pendingFriendRequests } = this.props;
     
     if (!prevProps.user && user) {
       requestFriendsList(user);
       requestPendingFriendRequests(user);
       this.initializeSocket();
+    }
+
+    if (prevProps.pendingFriendRequests.length !== pendingFriendRequests.length && pendingFriendRequests.length === 0) {
+      this.toggleFriendRequestsModal();
     }
   }
 
@@ -96,7 +101,7 @@ export default class App extends Component {
 
   render() {
     const { socket, friendRequestsModal, navWidth } = this.state;
-    const { user, friends, chatroom, pendingFriendRequests, requestManageFriendRequest, errorManageFriendRequest } = this.props;
+    const { user, friends, chatroom, profile, pendingFriendRequests, requestManageFriendRequest, errorManageFriendRequest } = this.props;
     return (
       <div>
         <SplitPane
@@ -110,10 +115,13 @@ export default class App extends Component {
             {...this}
           />
           {
-            chatroom &&
-            <Chatroom
-              socket={socket}
-            />
+            profile ? 
+            <UserProfile /> : (
+              chatroom &&
+              <Chatroom
+                socket={socket}
+              />
+            )
           }
         </SplitPane>
         <Modal
@@ -154,7 +162,7 @@ export default class App extends Component {
                       top: '5px'
                     }}
                   >
-                    <div className='pending-friend-photo'>
+                    <div className='pending-friend-photo photo'>
                       <img src={pendingFriend.photo} />
                     </div>
                     <div className='pending-friend-name'>

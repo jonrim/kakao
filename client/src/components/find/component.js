@@ -77,7 +77,7 @@ export default class Find extends Component {
               <p>{errorFindingUser}</p> :
               foundUser ?
               <div className='find-user'>
-                <div className='find-photo'>
+                <div className='find-photo photo'>
                   <div className='tv-border'>
                     <img src={
                       foundUser.photo ? foundUser.photo : 
