@@ -104,6 +104,14 @@ module.exports = {
             loader: 'image-webpack-loader?${JSON.stringify(query)}'
           }
         ]
+      },
+      {
+        test: /\.(woff2|woff|ttf|eot|svg|otf)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: [
+          {
+            loader: 'url-loader?limit=100&name=fonts/[name].[ext]'
+          }
+        ]
       }
     ]
   },

@@ -107,7 +107,8 @@ export default class App extends Component {
         <SplitPane
           split='vertical'
           minSize={300}
-          resizerStyle={{display: chatroom ? 'inherit' : 'none'}}
+          pane1Style={{maxWidth: chatroom || profile ? '67%' : 'inherit'}}
+          resizerStyle={{display: chatroom || profile ? 'inherit' : 'none'}}
         >
           <NavAndViews
             {...this.state}

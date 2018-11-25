@@ -1,7 +1,36 @@
 .user-profile {
   position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 
-  .tv-border {
-    width: 30%;
+  .background {
+    width: 100%;
+    object-fit: cover;
+    height: 67%;
+    position: relative;
+
+    .background-photo {
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+
+      img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        opacity: 0.6;
+      }
+    }
+
+    .motto {
+      position: absolute;
+      left: 50%;
+      top: 35%;
+      color: #fff;
+      transform: translate(-50%,-50%);
+      text-align: center;
+      font-family: 'Candara';
+    }
   }
 }

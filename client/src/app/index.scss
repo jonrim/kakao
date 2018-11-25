@@ -1,7 +1,7 @@
 #app {
   min-width: 350px;
   height: 100%;
-  font-family: Arial;
+  font-family: Arial, sans-serif;
 }
 
 .ui.modal {
@@ -198,6 +198,8 @@ hr {
   }
 
   .Pane2 {
+    overflow: hidden; 
+    
     @media (max-width: 900px) {
       position: absolute !important;
       height: 100%;
