@@ -16,16 +16,14 @@ export default class UserProfile extends Component {
           <div className='background-photo'>
               <img src='https://i.redd.it/enmir0135l6y.jpg' />
           </div>
-          <div className='motto'>
-            { profile.motto }
-          </div>
+          <div className='motto'>{profile.motto}</div>
           <div className='photo'>
             <div className='tv-border'>
               <img src={profile.photo} />
             </div>
           </div>
         </div>
-        {profile.name}
+        <div className='name'>{profile.name}</div>
       </div>
     )
   }

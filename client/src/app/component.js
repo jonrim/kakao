@@ -28,12 +28,12 @@ export default class App extends Component {
     this.state = {
       endpoint: require('ip').address() + ':8080',
       friendRequestsModal: false,
-      navWidth: 700
     };
     this.initializeSocket = this.initializeSocket.bind(this);
     this.logOut = this.logOut.bind(this);
     this.toggleFriendRequestsModal = this.toggleFriendRequestsModal.bind(this);
-    this.onResize = this.onResize.bind(this);
+    this.onNavResize = this.onNavResize.bind(this);
+    this.onWindowResize = this.onWindowResize.bind(this);
   }
 
   componentDidMount() {
@@ -95,20 +95,27 @@ export default class App extends Component {
     });
   }
 
-  onResize(navWidth) {
+  onNavResize(navWidth) {
     this.setState({navWidth});
   }
 
+  onWindowResize(windowWidth) {
+    this.setState({windowWidth});
+  }
+
   render() {
-    const { socket, friendRequestsModal, navWidth } = this.state;
+    const { socket, friendRequestsModal, navWidth, windowWidth } = this.state;
     const { user, friends, chatroom, profile, pendingFriendRequests, requestManageFriendRequest, errorManageFriendRequest } = this.props;
     return (
       <div>
         <SplitPane
           split='vertical'
           minSize={300}
-          pane1Style={{maxWidth: chatroom || profile ? '67%' : 'inherit'}}
-          resizerStyle={{display: chatroom || profile ? 'inherit' : 'none'}}
+          pane1Style={{
+            maxWidth: chatroom || profile ? '67%' : 'inherit',
+            display: (chatroom || profile) && windowWidth <= 900 ? 'none': 'block' 
+          }}
+          resizerStyle={{display: (chatroom || profile) && windowWidth >= 900 ? 'inherit' : 'none'}}
         >
           <NavAndViews
             {...this.state}
@@ -125,6 +132,7 @@ export default class App extends Component {
             )
           }
         </SplitPane>
+        <ReactResizeDetector handleWidth onResize={this.onWindowResize}/>
         <Modal
           open={friendRequestsModal}
           onClose={this.toggleFriendRequestsModal}
@@ -190,7 +198,7 @@ export default class App extends Component {
 }
 
 const NavAndViews = props => {
-  const { user, friends, chatroom, socket, logOut, toggleFriendRequestsModal, onResize, navWidth } = props;
+  const { user, friends, chatroom, socket, logOut, toggleFriendRequestsModal, onNavResize, navWidth } = props;
 
   return (
     <div className='nav-and-views'>
@@ -218,7 +226,7 @@ const NavAndViews = props => {
         </div> :
         <Auth />
       }
-      <ReactResizeDetector handleWidth onResize={onResize}/>
+      <ReactResizeDetector handleWidth onResize={onNavResize}/>
     </div>
   );
 } 
