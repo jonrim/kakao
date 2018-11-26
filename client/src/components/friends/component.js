@@ -55,8 +55,11 @@ export default class Friends extends Component {
     const { chat, voice, video, favorite, viewProfile, friend } = data;
     const { changeChatroom, requestChangeInfo, user, friends, viewUserProfile } = this.props;
     if (chat) {
-      document.getElementsByClassName('SplitPane')[0].classList.add('chatroomOpen');
+      let classList = document.getElementsByClassName('SplitPane')[0].classList;
+      classList.remove('profileOpen');
+      classList.add('chatroomOpen');
       changeChatroom(friend);
+      viewUserProfile(null);
     }
     if (favorite) requestChangeInfo({user, friends, friend, favorite});
     if (viewProfile) {
@@ -67,8 +70,8 @@ export default class Friends extends Component {
 
   render() {
     const { searchNameInput, focusedFriend } = this.state;
-    const { chatroom, user, friends, isFetching, changeChatroom } = this.props;
-    const { changeInputValue } = this;
+    const { chatroom, user, friends, isFetching, changeChatroom, viewUserProfile } = this.props;
+    const { changeInputValue, handleClick } = this;
     let friendSections = [
       {name: 'My Profile', list: [user]},
       {name: 'Favorites', list: friends.filter(friend => friend.favorite)},
@@ -109,9 +112,9 @@ export default class Friends extends Component {
                   section.list.sort((a,b) => a.name < b.name ? -1 : 1)
                   .filter(friend => friend.name && friend.name.toLowerCase().replace(/\s/g, '').includes(searchNameInput.toLowerCase().replace(/\s/g, '')))
                   .map((friend, i) => (
-                    <ContextMenuTrigger key={friend.email + i} id='right-click-menu' friend={friend} collect={props => props} onItemClick={this.handleClick}>
+                    <ContextMenuTrigger key={friend.email + i} id='right-click-menu' friend={friend} collect={props => props} onItemClick={handleClick}>
                       <Friend
-                        changeChatroom={changeChatroom}
+                        handleClick={handleClick}
                         friend={friend}
                       />
                     </ContextMenuTrigger>
@@ -160,23 +163,18 @@ const DynamicMenu = props => {
 const ConnectedMenu = connectMenu('right-click-menu')(DynamicMenu);
 
 const Friend = props => {
-
-  const {friend, changeChatroom} = props;
-  const changeChatroomInfo = () => {
-    document.getElementsByClassName('SplitPane')[0].classList.add('chatroomOpen');
-    changeChatroom(friend);
-  };
+  const {friend, handleClick} = props;
 
   return (
     <div 
       className='friend'
-      onDoubleClick={changeChatroomInfo}
+      onDoubleClick={e => handleClick(e, {chat: true, friend})}
     >
       <div className='friend-photo photo'>
         <img src={friend.photo} />
       </div>
       <div className='friend-name'>
-        <p>{friend.name}</p>
+        <p>{friend.tempName || friend.name}</p>
       </div>
       <div className='friend-motto'>
         <p>{friend.motto}</p>

@@ -88,6 +88,17 @@ export default function reducer(state = initialState, action) {
           }
         }
       }
+      if (action.result.newFriendName) {
+        return {
+          ...state,
+          isFetchingChangeInfo: false,
+          friends: action.result.friends,
+          profile: state.profile && {
+            ...state.profile,
+            tempName: action.result.newFriendName
+          }
+        }
+      }
       return {
         ...state,
         isFetchingChangeInfo: false,

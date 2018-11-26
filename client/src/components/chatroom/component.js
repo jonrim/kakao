@@ -193,7 +193,7 @@ export default class Chatroom extends Component {
   }
 
   render() {
-    const { chatroom, changeChatroom, socket, friends, chatHistory } = this.props;
+    const { chatroom, changeChatroom, socket, friends, chatHistory, viewUserProfile } = this.props;
     const { search, messageInput } = this.state;
     return (
       <Dropzone
@@ -208,9 +208,9 @@ export default class Chatroom extends Component {
               <BackButton
                 changeChatroom={changeChatroom}
               />
-              <img className='chatroom-photo' src={chatroom.photo}/>
+              <img className='chatroom-photo' src={chatroom.photo} onClick={() => viewUserProfile(chatroom)} />
               <div className='chatroom-name'>
-                <p>{chatroom.name}</p>
+                <p>{chatroom.tempName || chatroom.name}</p>
               </div>
               <i
                 className='button fas fa-search'

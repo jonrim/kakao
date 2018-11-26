@@ -98,7 +98,7 @@ export default class ChatroomMessages extends Component {
                     }}>
                     {
                       message.friend && message.firstMessageOfMinute &&
-                      <p style={{margin: '0', padding: '0 10px'}}>{chatroom.name}</p>
+                      <p style={{margin: '0', padding: '0 10px'}}>{chatroom.tempName || chatroom.name}</p>
                     }
                     {
                       !chatHistory[i].friend &&

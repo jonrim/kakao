@@ -63,6 +63,7 @@ router.post('/friendsList', function(req, res, next) {
     res.json(friends.map((friend, i) => {
       return {
         name: friend.name,
+        tempName: JSON.parse(friendFavoriteChatHistory[i]).tempName,
         email: friend.email,
         phone: friend.phone,
         photo: friend.photo,
@@ -434,8 +435,8 @@ router.post('/formInfo', function(req, res, next) {
 });
 
 router.put('/changeInfo', function(req, res, next) {
-  const { user, friends, friend, favorite } = req.body;
-  if (favorite) {
+  const { user, friends, friend, favorite, newFriendName } = req.body;
+  if (favorite || newFriendName) {
     User.findOne({
       where: {
         email: user.email
@@ -449,10 +450,14 @@ router.put('/changeInfo', function(req, res, next) {
       let indexInFriends = friends.findIndex(f => f.email === friend.email);
       let foundFriend = JSON.parse(user.friends[indexInUserFriends]);
       // update 'friends' as well since it has the fetched friend list (populated with info)
-      foundFriend.favorite = friends[indexInFriends].favorite = favorite === 'add';
+      if (favorite) foundFriend.favorite = friends[indexInFriends].favorite = favorite === 'add';
+      if (newFriendName) foundFriend.tempName = friends[indexInFriends].tempName = newFriendName;
+
       user.friends[indexInUserFriends] = JSON.stringify(foundFriend);
       user.update({friends: user.friends});
-      res.json({favorite, friends});
+
+      if (favorite) res.json({favorite, friends});
+      if (newFriendName) res.json({newFriendName, friends});
     })
     .catch(next);
     return;

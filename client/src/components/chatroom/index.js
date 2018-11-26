@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import component from './component';
 import { requestLogin } from 'Actions/auth';
-import { requestSendMessage, requestReadMessages, changeChatroom } from 'Actions/user';
+import { requestSendMessage, requestReadMessages, changeChatroom, viewUserProfile } from 'Actions/user';
 
 function mapStateToProps(state) {
   return {
@@ -19,6 +19,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     requestSendMessage,
     requestReadMessages,
+    viewUserProfile,
     changeChatroom
   }, dispatch);
 }

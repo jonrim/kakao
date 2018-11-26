@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Input, Button } from 'semantic-ui-react'
+import { Form, Button } from 'semantic-ui-react'
 import { FadeLoader } from 'react-spinners'
 import { css } from 'react-emotion'
 

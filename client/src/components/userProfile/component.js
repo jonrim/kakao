@@ -1,14 +1,42 @@
 import React, { Component } from 'react'
-import { Button, Grid } from 'semantic-ui-react'
+import { Button, Grid, Form } from 'semantic-ui-react'
 
 import './index.scss'
 
 export default class UserProfile extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      name: props.profile.tempName || props.profile.name,
+      showEditNameInput: false
+    };
+    this.toggleEditNameInput = this.toggleEditNameInput.bind(this);
+    this.editName = this.editName.bind(this);
+    this.submitEditedName = this.submitEditedName.bind(this);
+  }
+
+  toggleEditNameInput(cancel) {
+    this.setState({
+      name: cancel ? this.props.profile.tempName || this.props.profile.name : this.state.name,
+      showEditNameInput: !this.state.showEditNameInput
+    });
+  }
+
+  editName(e) {
+    this.setState({name: e.target.value});
+  }
+
+  submitEditedName() {
+    const { name } = this.state;
+    const { user, profile, requestChangeInfo, friends } = this.props;
+    requestChangeInfo({user, friend: profile, newFriendName: name, friends});
+    this.toggleEditNameInput();
   }
 
   render() {
+    const { toggleEditNameInput } = this;
+    const { name, showEditNameInput } = this.state;
     const { user, profile, chatroom, friends, viewUserProfile, changeChatroom, requestChangeInfo } = this.props;
     return (
       <div className='user-profile'>
@@ -25,26 +53,45 @@ export default class UserProfile extends Component {
             </div>
           </div>
         </div>
-        <div className='name'>{profile.name}</div>
-        <Grid columns={chatroom ? 1 : 4}>
-          {
-            !chatroom &&
-            <Grid.Column />
-          }
-          {
-            !chatroom &&
-            <Grid.Column>
-              <ChatButton {...this.props} />
-            </Grid.Column>
-          }
-          <Grid.Column>
-            <FreeCallButton {...this.props} />
-          </Grid.Column>
-          {
-            !chatroom &&
-            <Grid.Column />
-          }
-        </Grid>
+        {
+          showEditNameInput ?
+          <div className='bottom-section'>
+            <div className='edit-name'>
+              <Form onSubmit={this.submitEditedName}>
+                <Form.Input focus className='edit-name-input' value={name} onChange={this.editName} />
+                <i className='fas fa-check' onClick={this.submitEditedName} />
+                <i className='fas fa-times' onClick={() => toggleEditNameInput('cancel')} />
+              </Form>
+              <p style={{margin: '10px 0 5px'}}>Name set by friend:</p>
+              <p style={{margin: '0px 4px'}}>{profile.name}</p>
+            </div>
+          </div> :
+          <div className='bottom-section'>
+            <div className='name'>
+              <span>{name || profile.name}</span>
+              <EditNameButton {...this.props} {...this} />
+            </div>
+            <Grid columns={chatroom ? 1 : 4}>
+              {
+                !chatroom &&
+                <Grid.Column />
+              }
+              {
+                !chatroom &&
+                <Grid.Column>
+                  <ChatButton {...this.props} />
+                </Grid.Column>
+              }
+              <Grid.Column>
+                <FreeCallButton {...this.props} />
+              </Grid.Column>
+              {
+                !chatroom &&
+                <Grid.Column />
+              }
+            </Grid>
+          </div>
+        }
       </div>
     )
   }
@@ -60,6 +107,16 @@ const BackButton = props => {
     <i 
       className='button fas fa-times back-button'
       onClick={goBack}
+    />
+  )
+}
+
+const EditNameButton = props => {
+  const { requestChangeInfo, toggleEditNameInput } = props;
+  return (
+    <i 
+      className='button fas fa-pencil-alt edit-name-button'
+      onClick={toggleEditNameInput}
     />
   )
 }
