@@ -107,7 +107,7 @@ export default class Friends extends Component {
                     size={80}
                   /> :
                   section.list.sort((a,b) => a.name < b.name ? -1 : 1)
-                  .filter(friend => friend.name ? friend.name.toLowerCase().replace(/\s/g, '').includes(searchNameInput.toLowerCase().replace(/\s/g, '')) : null)
+                  .filter(friend => friend.name && friend.name.toLowerCase().replace(/\s/g, '').includes(searchNameInput.toLowerCase().replace(/\s/g, '')))
                   .map((friend, i) => (
                     <ContextMenuTrigger key={friend.email + i} id='right-click-menu' friend={friend} collect={props => props} onItemClick={this.handleClick}>
                       <Friend
@@ -129,8 +129,8 @@ export default class Friends extends Component {
 
 const DynamicMenu = props => {
   const { id, trigger } = props;
-  const friend = trigger ? trigger.friend : null;
-  const handleClick = trigger ? trigger.onItemClick : null;
+  const friend = trigger && trigger.friend;
+  const handleClick = trigger && trigger.onItemClick;
   return (
     <ContextMenu id={id} style={{display: trigger ? 'inherit': 'none'}}>
       <MenuItem data={{chat: true}} onClick={handleClick}>

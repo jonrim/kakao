@@ -77,7 +77,7 @@ export default class Chats extends Component {
               let d2 = new Date(bLatestMessage.date);
               return d1 > d2 ? -1 : 1
             })
-            .filter(friend => friend.name ? friend.name.toLowerCase().replace(/\s/g, '').includes(searchNameInput.toLowerCase().replace(/\s/g, '')) : null)
+            .filter(friend => friend.name && friend.name.toLowerCase().replace(/\s/g, '').includes(searchNameInput.toLowerCase().replace(/\s/g, '')))
             .map((friend, i) => (
               <Friend
                 key={friend.email + i}
@@ -99,8 +99,8 @@ const Friend = props => {
     changeChatroom(friend);
     document.getElementsByClassName('SplitPane')[0].classList.add('chatroomOpen');
   };
-  let latestMessage = friend.chatHistory && friend.chatHistory.length > 0 ? 
-                        friend.chatHistory[friend.chatHistory.length - 1] : null;
+  let latestMessage = friend.chatHistory && friend.chatHistory.length > 0 &&
+                        friend.chatHistory[friend.chatHistory.length - 1];
   let latestMessageTime = latestMessage.date;
   let latestMessageText;
   if (typeof latestMessage === 'object') latestMessageText = latestMessage.text ? latestMessage.text : latestMessage.file ? 'media' : '';

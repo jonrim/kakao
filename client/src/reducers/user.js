@@ -81,7 +81,11 @@ export default function reducer(state = initialState, action) {
         return {
           ...state,
           isFetchingChangeInfo: false,
-          friends: action.result.friends
+          friends: action.result.friends,
+          profile: state.profile && {
+            ...state.profile,
+            favorite: action.result.favorite === 'add'
+          }
         }
       }
       return {
