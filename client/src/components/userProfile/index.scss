@@ -22,47 +22,7 @@
     height: 67%;
     position: relative;
 
-    .back-button {
-      cursor: pointer;
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 20px;
-      z-index: 1;
-      color: #fff;
-      background-color: rgba(255,255,255,0.3);
-      padding: 7px 10px;
-      border-radius: 50%;
-
-      &:hover {
-        background-color: rgba(255,255,255,0.4);
-      }
-
-      &:active {
-        background-color: rgba(255,255,255,0.7);
-      }
-    }
-
-    .favorite-button {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      font-size: 26px;
-      color: rgba(255,255,255,0.7);
-      z-index: 1;
-      cursor: pointer;
-
-      .fa-star {
-        position: absolute;
-        font-size: 16px;
-        top: 4px;
-        left: 4px;
-      }
-
-      &.favorite {
-        color: #faed29;
-      }
-    }
+    
 
     .background-photo {
       width: 100%;
@@ -92,6 +52,75 @@
       transform: translate(-50%,-50%);
       text-align: center;
       font-family: 'Candara';
+    }
+  }
+
+  .button {
+    cursor: pointer;
+    position: absolute;
+    z-index: 1;
+    border-radius: 50%;
+  }
+
+  .back-button {
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    color: #fff;
+    background-color: rgba(255,255,255,0.3);
+    padding: 7px 10px;
+
+    &:hover {
+      background-color: rgba(255,255,255,0.4);
+    }
+
+    &:active {
+      background-color: rgba(255,255,255,0.7);
+    }
+  }
+
+  .favorite-button {
+    bottom: 10px;
+    right: 10px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    border: 2px solid rgba(255,255,255,0.7);
+    padding: 4px;
+
+    &.favorite {
+      color: #faed29;
+      border-color: #faed29;
+    }
+  }
+
+  .call-button, .chat-button {
+    left: 50%;
+    bottom: calc(33% - 160px);
+    position: absolute;
+    transform: translateX(-50%);
+
+    i {
+      font-size: 36px;
+      padding: 10px;
+
+      &:hover {
+        background-color: rgba(0,0,0,0.4);
+      }
+
+      &:active {
+        background-color: rgba(0,0,0,0.7);
+      }
+    }
+
+    p {
+      position: relative;
+      top: 60px;
+    }
+  }
+
+  .call-button {
+    i {
+      transform: rotate(100deg);
     }
   }
 }

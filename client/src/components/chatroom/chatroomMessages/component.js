@@ -36,7 +36,7 @@ export default class ChatroomMessages extends Component {
   }
 
   render() {
-    const { chatroom, chatHistory } = this.props;
+    const { chatroom, chatHistory, viewUserProfile } = this.props;
     const { displayTimeForThisMessage } = this;
     return (
       <div className='chatroom-messages'>
@@ -73,7 +73,11 @@ export default class ChatroomMessages extends Component {
                     <div style={{width: '40px', display: 'inline-block'}}>
                     {
                       message.firstMessageOfMinute &&
-                      <img className='chatroom-photo' src={chatroom.photo}/>
+                      <img 
+                        className='chatroom-photo'
+                        src={chatroom.photo}
+                        onClick={() => viewUserProfile(chatroom)}
+                      />
                     }
                     </div>
                   }

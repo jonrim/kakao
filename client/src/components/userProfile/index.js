@@ -7,7 +7,8 @@ const mapStateToProps = (state) => {
   return {
     user: state.auth.user || {},
     friends: state.user.friends || [],
-    profile: state.user.profile
+    profile: state.user.profile,
+    chatroom: state.user.chatroom,
   }
 }
 
@@ -15,6 +16,7 @@ export const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     viewUserProfile,
     requestChangeInfo,
+    changeChatroom,
   }, dispatch)
 }
 
