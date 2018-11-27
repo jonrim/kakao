@@ -112,7 +112,7 @@ export default class Friends extends Component {
                   section.list.sort((a,b) => a.name < b.name ? -1 : 1)
                   .filter(friend => friend.name && friend.name.toLowerCase().replace(/\s/g, '').includes(searchNameInput.toLowerCase().replace(/\s/g, '')))
                   .map((friend, i) => (
-                    <ContextMenuTrigger key={friend.email + i} id='right-click-menu' friend={friend} collect={props => props} onItemClick={handleClick}>
+                    <ContextMenuTrigger key={friend.email + i} id='right-click-menu' user={user} friend={friend} collect={props => props} onItemClick={handleClick}>
                       <Friend
                         handleClick={handleClick}
                         friend={friend}
@@ -132,6 +132,7 @@ export default class Friends extends Component {
 
 const DynamicMenu = props => {
   const { id, trigger } = props;
+  const user = trigger && trigger.user;
   const friend = trigger && trigger.friend;
   const handleClick = trigger && trigger.onItemClick;
   return (
@@ -139,20 +140,25 @@ const DynamicMenu = props => {
       <MenuItem data={{chat: true}} onClick={handleClick}>
         Chat
       </MenuItem>
-      <MenuItem data={{voice: true}} onClick={handleClick}>
-        Voice Call
-      </MenuItem>
-      <MenuItem data={{video: true}} onClick={handleClick}>
-        Video Call
-      </MenuItem>
-      <MenuItem divider />
-      <MenuItem data={{favorite: friend && friend.favorite ? 'remove' : 'add'}} onClick={handleClick}>
-        { 
-          friend && friend.favorite ?
-          <span>Remove from Favorites</span> :
-          <span>Add To Favorites</span>
-        }
-      </MenuItem> 
+      {
+        user && friend && user.email !== friend.email &&
+        <div>
+          <MenuItem data={{voice: true}} onClick={handleClick}>
+            Voice Call
+          </MenuItem>
+          <MenuItem data={{video: true}} onClick={handleClick}>
+            Video Call
+          </MenuItem>
+          <MenuItem divider />
+          <MenuItem data={{favorite: friend && friend.favorite ? 'remove' : 'add'}} onClick={handleClick}>
+            { 
+              friend.favorite ?
+              <span>Remove from Favorites</span> :
+              <span>Add To Favorites</span>
+            }
+          </MenuItem> 
+        </div>
+      }
       <MenuItem data={{viewProfile: true}} onClick={handleClick}>
         View Profile
       </MenuItem>   
@@ -171,7 +177,10 @@ const Friend = props => {
       onDoubleClick={e => handleClick(e, {chat: true, friend})}
     >
       <div className='friend-photo photo'>
-        <img src={friend.photo} />
+        <img src={
+          friend.photo ? friend.photo : 
+          'https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1542834528/34AD2_tbfqai.jpg'
+        }/>
       </div>
       <div className='friend-name'>
         <p>{friend.tempName || friend.name}</p>

@@ -208,7 +208,12 @@ export default class Chatroom extends Component {
               <BackButton
                 changeChatroom={changeChatroom}
               />
-              <img className='chatroom-photo' src={chatroom.photo} onClick={() => viewUserProfile(chatroom)} />
+              <img
+                className='chatroom-photo' 
+                src={chatroom.photo ? chatroom.photo : 
+                      'https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1542834528/34AD2_tbfqai.jpg'}
+                onClick={() => viewUserProfile(chatroom)}
+              />
               <div className='chatroom-name'>
                 <p>{chatroom.tempName || chatroom.name}</p>
               </div>

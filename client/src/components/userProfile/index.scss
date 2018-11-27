@@ -25,7 +25,7 @@
     .background-photo {
       width: 100%;
       height: 100%;
-      background-color: rgba(0,0,0,0.7);;
+      background-color: rgba(0,0,0,0.6);
 
       img {
         object-fit: cover;
@@ -33,13 +33,81 @@
         height: 100%;
         opacity: 0.6;
       }
+
+      .delete-background-photo {
+        border-radius: 10px;
+        font-size: 10px;
+        position: absolute;
+        left: 5px;
+        bottom: 5px;
+      }
+
+      .editable-photo {
+        cursor: pointer;
+        background-color: rgba(0,0,0,0.6);
+
+        &:hover {
+          background-color: rgba(0,0,0,0.4);
+        }
+
+        &:active {
+          background-color: rgba(0,0,0,0.3);
+        }
+
+        input {
+          width: 100%;
+        }
+      }
     }
 
     .photo {
       width: 200px;
+      height: 200px;
       max-width: unset;
       min-width: unset;
       bottom: 0;
+
+      .editable-photo {
+        cursor: pointer;
+        background-color: white;
+        border-radius: 20% / 50%;
+
+        input {
+          width: 100%;
+        }
+      }
+
+      #uploadedImg {
+        width: 100%;
+        height: 100%;
+
+        &:hover {
+          opacity: 0.7;
+        }
+
+        &:active {
+          opacity: 0.5;
+        }
+      }
+        
+
+      .delete-photo {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1;
+        font-size: 30px;
+        cursor: pointer;
+        color: red;
+
+        &:hover {
+          opacity: 0.7;
+        }
+
+        &:active {
+          opacity: 0.5;
+        }
+      }
     }
 
     .motto, .edit-motto {
@@ -92,6 +160,16 @@
 
       .fa-times {
         right: 15px;
+      }
+    }
+  }
+
+  .bottom-section {
+    .grid {
+      margin: 0 !important;
+
+      .column {
+        padding: 0 !important;
       }
     }
   }

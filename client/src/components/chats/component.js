@@ -111,7 +111,8 @@ const Friend = props => {
       onDoubleClick={changeChatroomInfo}
     >
       <div className='friend-photo photo'>
-        <img src={friend.photo} />
+        <img src={friend.photo ? friend.photo : 
+                  'https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1542834528/34AD2_tbfqai.jpg'} />
       </div>
       <div className='friend-name'>
         <p>{friend.name}</p>

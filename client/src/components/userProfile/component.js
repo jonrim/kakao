@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Grid, Form } from 'semantic-ui-react'
 import request from 'superagent'
+import Dropzone from 'react-dropzone'
 
 import './index.scss'
 
@@ -21,7 +22,6 @@ export default class UserProfile extends Component {
     this.editInfo = this.editInfo.bind(this);
     this.submitEditedName = this.submitEditedName.bind(this);
     this.submitEditedMotto = this.submitEditedMotto.bind(this);
-    this.onImageDrop = this.onImageDrop.bind(this);
     this.handleImageUpload = this.handleImageUpload.bind(this);
     this.deletePhoto = this.deletePhoto.bind(this);
   }
@@ -73,15 +73,8 @@ export default class UserProfile extends Component {
     this.toggleEditMottoInput();
   }
 
-  onImageDrop(files) {
-    this.setState({
-      uploadedFile: files[0]
-    })
-
-    this.handleImageUpload(files[0]);
-  }
-
-  handleImageUpload(file) {
+  handleImageUpload(files, backgroundOrProfile) {
+    let file = files[0];
     let upload = request.post(CLOUDINARY_UPLOAD_URL)
                         .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
                         .field('file', file);
@@ -91,18 +84,17 @@ export default class UserProfile extends Component {
       let photoURL = response.body.secure_url;
       if (photoURL && photoURL !== '') {
         this.setState({uploadedFileCloudinaryUrl: photoURL});
-        requestChangeInfo({user, newInfo: {photo: photoURL}});
+        let newInfo = backgroundOrProfile === 'profilePhoto' ? {photo: photoURL} : {backgroundPhoto: photoURL};
+        requestChangeInfo({user, newInfo});
       }
     });
   }
 
-  deletePhoto() {
-    const { requestChangeInfo, username } = this.props;
-    this.setState({
-      uploadedFileCloudinaryUrl: '',
-      deletedPhoto: true
-    });
-    requestChangeInfo({user, newInfo: {photo: ''}});
+  deletePhoto(backgroundOrProfile) {
+    const { requestChangeInfo, user } = this.props;
+    this.setState({uploadedFileCloudinaryUrl: ''});
+    let newInfo = backgroundOrProfile === 'profilePhoto' ? {photo: ''} : {backgroundPhoto: ''};
+    requestChangeInfo({user, newInfo});
   }
 
   componentDidUpdate(prevProps) {
@@ -114,26 +106,30 @@ export default class UserProfile extends Component {
         showEditMottoInput: false,
       });
     }
-    if (this.state.uploadedFileCloudinaryUrl !== user.photo) {
-      if (this.state.deletedPhoto) this.setState({deletedPhoto: false});
-      else this.setState({uploadedFileCloudinaryUrl: user.photoURL});
+    if (user && this.state.uploadedFileCloudinaryUrl !== user.photo) {
+      this.setState({uploadedFileCloudinaryUrl: user.photo});
     }
   }
 
   render() {
-    const { toggleEditNameInput, toggleEditMottoInput, editInfo } = this;
-    const { name, motto, showEditNameInput, showEditMottoInput } = this.state;
+    const { toggleEditNameInput, toggleEditMottoInput, editInfo, deletePhoto } = this;
+    const { name, motto, showEditNameInput, showEditMottoInput, uploadedFileCloudinaryUrl } = this.state;
     const { user, profile, chatroom, friends, viewUserProfile, changeChatroom, requestChangeInfo } = this.props;
+    const showingMyProfile = user.email === profile.email;
     return (
       <div className='user-profile'>
         <div className='background'>
           <BackButton viewUserProfile={viewUserProfile} />
           {
-            user.email !== profile.email &&
+            !showingMyProfile &&
             <FavoriteButton {...this.props} />
           }
           <div className='background-photo'>
-              <img src={profile.backgroundPhoto} />
+            {
+              showingMyProfile ?
+              <BackgroundPhoto {...this.props} {...this.state} {...this} /> :
+              profile.backgroundPhoto && <img src={profile.backgroundPhoto} />
+            }
           </div>
           <div 
             className='motto'
@@ -155,7 +151,7 @@ export default class UserProfile extends Component {
               <div>
                 <div className='motto-text'>{profile.motto}</div>
                 {
-                  user.email === profile.email &&
+                  showingMyProfile &&
                   <EditButton 
                     {...this.props}
                     toggleEditMottoInput={toggleEditMottoInput}
@@ -166,8 +162,17 @@ export default class UserProfile extends Component {
           </div>
           <div className='photo'>
             <div className='tv-border'>
-              <img src={profile.photo} />
+              {
+                showingMyProfile ?
+                <ProfilePhoto {...this.props} {...this.state} {...this} /> :
+                <img src={profile.photo ? profile.photo : 
+                          'https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1542834528/34AD2_tbfqai.jpg'} />
+              }
             </div>
+            {
+              showingMyProfile && uploadedFileCloudinaryUrl &&
+              <i className='fas fa-times delete-photo' onClick={() => deletePhoto('profilePhoto')} />
+            }
           </div>
         </div>
         {
@@ -184,7 +189,7 @@ export default class UserProfile extends Component {
                 {...this.props}
               />
               {
-                user.email !== profile.email &&
+                !showingMyProfile &&
                 <div>
                   <p style={{margin: '10px 0 5px'}}>Name set by friend:</p>
                   <p style={{margin: '0px 4px'}}>{profile.name}</p>
@@ -224,6 +229,49 @@ export default class UserProfile extends Component {
       </div>
     )
   }
+}
+
+const BackgroundPhoto = props => {
+  const { profile, uploadedFileCloudinaryUrl, handleImageUpload, deletePhoto } = props;
+  return (
+    <div style={{height: '100%'}}>
+      <Dropzone
+        className='dropzone editable-photo'
+        multiple={false}
+        accept='image/*'
+        onDrop={(files) => handleImageUpload(files, 'backgroundPhoto')}
+      >      
+        {
+          profile.backgroundPhoto &&
+          <img src={profile.backgroundPhoto} />
+        }
+      </Dropzone>
+      {
+        profile.backgroundPhoto &&
+        <Button color='red' className='delete-background-photo' onClick={() => deletePhoto('backgroundPhoto')}>
+          Delete Background Photo
+        </Button>
+      }
+    </div>
+  )
+}
+
+const ProfilePhoto = props => {
+  const { profile, uploadedFileCloudinaryUrl, handleImageUpload } = props;
+  return (
+    <Dropzone
+      className='dropzone editable-photo'
+      multiple={false}
+      accept='image/*'
+      onDrop={(files) => handleImageUpload(files, 'profilePhoto')}
+    >
+      <img 
+        id='uploadedImg' 
+        src={uploadedFileCloudinaryUrl || 
+          'https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1542834528/34AD2_tbfqai.jpg'}
+      />
+    </Dropzone>
+  )
 }
 
 const EditInput = props => {

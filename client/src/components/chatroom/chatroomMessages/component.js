@@ -75,7 +75,8 @@ export default class ChatroomMessages extends Component {
                       message.firstMessageOfMinute &&
                       <img 
                         className='chatroom-photo'
-                        src={chatroom.photo}
+                        src={chatroom.photo ? chatroom.photo : 
+                            'https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1542834528/34AD2_tbfqai.jpg'}
                         onClick={() => viewUserProfile(chatroom)}
                       />
                     }
