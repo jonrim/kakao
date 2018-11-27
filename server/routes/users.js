@@ -1,10 +1,11 @@
 'use strict';
-var router = require('express').Router();
-var db = require('../db');
-var User = db.model('user');
-var Auth = require('../configure/auth-middleware');
-var cloudinary = require('cloudinary');
-var secrets = require('../../secretsProd');
+const router = require('express').Router();
+const db = require('../db');
+const User = db.model('user');
+const Auth = require('../configure/auth-middleware');
+const cloudinary = require('cloudinary');
+const secrets = process.env.NODE_ENV === 'production' ? require('../../secretsProd') : require('../../secrets');
+
 cloudinary.config({ 
   cloud_name: secrets.CLOUDINARY_CLOUD_NAME, 
   api_key: secrets.CLOUDINARY_API_KEY, 
@@ -439,15 +440,20 @@ router.post('/formInfo', function(req, res, next) {
 });
 
 router.put('/changeInfo', function(req, res, next) {
-  const { user, friends, friend, favorite, newFriendName, changingMyInfo, newInfo } = req.body;
+  const { user, friends, friend, favorite, newFriendName, newInfo } = req.body;
   // If I'm changing my own info (name, motto, photo, background photo, etc.)
-  if (changingMyInfo) {
+  if (newInfo) {
     User.findOne({
       where: {
         email: user.email
       }
     })
     .then(user => {
+      if ((newInfo.photo || newInfo.photo === '') && user.photo) {
+        var regex = /upload\/[a-zA-z0-9]+\/([a-zA-z0-9]+)/;
+        var match = regex.exec(user.photo);
+        cloudinary.uploader.destroy(match[1], result => { console.log(result) });
+      }
       let newUser = {
         ...user.dataValues,
         ...newInfo
@@ -487,25 +493,6 @@ router.put('/changeInfo', function(req, res, next) {
     })
     .catch(next);
     return;
-  }
-  if (req.body.photo || req.body.photo === '') {
-    User.findOne({
-      where: {
-        username: req.body.username
-      }
-    })
-    .then(user => {
-      if (user.photo) {
-        var regex = /upload\/[a-zA-z0-9]+\/([a-zA-z0-9]+)/;
-        var match = regex.exec(user.photo);
-        cloudinary.uploader.destroy(match[1], result => { console.log(result) });
-      }
-      return user.update({photo: req.body.photo})
-    })
-    .then(user => {
-      res.json({photo: req.body.photo})
-    })
-    .catch(next);
   }
   if (req.body.newEmail !== req.body.reenterNewEmail) {
     const error = new Error('You reentered your new email incorrectly.');

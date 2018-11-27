@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
 import { Button, Grid, Form } from 'semantic-ui-react'
+import request from 'superagent'
 
 import './index.scss'
+
+var CLOUDINARY_UPLOAD_PRESET = 'hstdvlir';
+var CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/fresh-aire-mechanical-co/upload';
 
 export default class UserProfile extends Component {
   constructor(props) {
@@ -10,14 +14,16 @@ export default class UserProfile extends Component {
     this.state = {
       name: props.profile.tempName || props.profile.name,
       motto: props.profile.motto,
-      showEditNameInput: false,
-      showEditMottoInput: false,
+      uploadedFileCloudinaryUrl: props.user.photo || '',
     };
     this.toggleEditNameInput = this.toggleEditNameInput.bind(this);
     this.toggleEditMottoInput = this.toggleEditMottoInput.bind(this);
     this.editInfo = this.editInfo.bind(this);
     this.submitEditedName = this.submitEditedName.bind(this);
     this.submitEditedMotto = this.submitEditedMotto.bind(this);
+    this.onImageDrop = this.onImageDrop.bind(this);
+    this.handleImageUpload = this.handleImageUpload.bind(this);
+    this.deletePhoto = this.deletePhoto.bind(this);
   }
 
   toggleEditNameInput(cancel) {
@@ -51,7 +57,7 @@ export default class UserProfile extends Component {
     const { user, profile, requestChangeInfo, friends } = this.props;
     // Editing my own name 
     if (user.email === profile.email) {
-      requestChangeInfo({user, newInfo: {name}, changingMyInfo: true});
+      requestChangeInfo({user, newInfo: {name}});
     }
     else {
       requestChangeInfo({user, friend: profile, newFriendName: name, friends});
@@ -63,18 +69,54 @@ export default class UserProfile extends Component {
     const { motto } = this.state;
     const { user, requestChangeInfo } = this.props;
     // Editing my own motto 
-    requestChangeInfo({user, newInfo: {motto}, changingMyInfo: true});
+    requestChangeInfo({user, newInfo: {motto}});
     this.toggleEditMottoInput();
   }
 
+  onImageDrop(files) {
+    this.setState({
+      uploadedFile: files[0]
+    })
+
+    this.handleImageUpload(files[0]);
+  }
+
+  handleImageUpload(file) {
+    let upload = request.post(CLOUDINARY_UPLOAD_URL)
+                        .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
+                        .field('file', file);
+    const { requestChangeInfo, user } = this.props;
+    upload.end((err, response) => {
+      if (err) console.error(err);
+      let photoURL = response.body.secure_url;
+      if (photoURL && photoURL !== '') {
+        this.setState({uploadedFileCloudinaryUrl: photoURL});
+        requestChangeInfo({user, newInfo: {photo: photoURL}});
+      }
+    });
+  }
+
+  deletePhoto() {
+    const { requestChangeInfo, username } = this.props;
+    this.setState({
+      uploadedFileCloudinaryUrl: '',
+      deletedPhoto: true
+    });
+    requestChangeInfo({user, newInfo: {photo: ''}});
+  }
+
   componentDidUpdate(prevProps) {
-    const { profile } = this.props;
+    const { profile, user } = this.props;
     if (prevProps.profile.email !== profile.email) {
       this.setState({
         name: profile.tempName || profile.name,
         showEditNameInput: false,
         showEditMottoInput: false,
       });
+    }
+    if (this.state.uploadedFileCloudinaryUrl !== user.photo) {
+      if (this.state.deletedPhoto) this.setState({deletedPhoto: false});
+      else this.setState({uploadedFileCloudinaryUrl: user.photoURL});
     }
   }
 
