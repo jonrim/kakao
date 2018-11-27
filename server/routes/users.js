@@ -7,9 +7,9 @@ const cloudinary = require('cloudinary');
 const secrets = process.env.NODE_ENV === 'production' ? require('../../secretsProd') : require('../../secrets');
 
 cloudinary.config({ 
-  cloud_name: secrets.CLOUDINARY_CLOUD_NAME, 
-  api_key: secrets.CLOUDINARY_API_KEY, 
-  api_secret: secrets.CLOUDINARY_API_SECRET
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
 const nodemailer = require('nodemailer');

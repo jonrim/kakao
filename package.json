@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@okta/okta-react": "^1.1.4",
     "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
     "body-parser": "^1.18.3",
@@ -53,6 +54,8 @@
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1",
     "superagent": "^4.0.0",
+    "twilio": "^3.24.0",
+    "twilio-video": "^2.0.0-beta3",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
