@@ -67,6 +67,7 @@ router.post('/friendsList', function(req, res, next) {
         email: friend.email,
         phone: friend.phone,
         photo: friend.photo,
+        backgroundPhoto: friend.backgroundPhoto,
         motto: friend.motto,
         chatHistory: JSON.parse(friendFavoriteChatHistory[i]).chatHistory,
         favorite: JSON.parse(friendFavoriteChatHistory[i]).favorite
@@ -154,7 +155,8 @@ router.put('/manageFriendRequest', function(req, res, next) {
       user.friends.push(JSON.stringify({
         name: pendingFriend.name, 
         email: pendingFriend.email, 
-        photo: pendingFriend.photo, 
+        photo: pendingFriend.photo,
+        backgroundPhoto: pendingFriend.backgroundPhoto,
         phone: pendingFriend.phone, 
         motto: pendingFriend.motto, 
         favorite: false, 
@@ -184,6 +186,7 @@ router.put('/manageFriendRequest', function(req, res, next) {
         name: user.name, 
         email: user.email, 
         photo: user.photo, 
+        backgroundPhoto: user.backgroundPhoto, 
         phone: user.phone, 
         motto: user.motto, 
         favorite: false, 
@@ -209,6 +212,7 @@ router.put('/manageFriendRequest', function(req, res, next) {
           email: friend.email,
           phone: friend.phone,
           photo: friend.photo,
+          backgroundPhoto: friend.backgroundPhoto,
           motto: friend.motto,
           chatHistory: JSON.parse(updatedUser.friends[i]).chatHistory,
           favorite: JSON.parse(updatedUser.friends[i]).favorite
@@ -435,7 +439,28 @@ router.post('/formInfo', function(req, res, next) {
 });
 
 router.put('/changeInfo', function(req, res, next) {
-  const { user, friends, friend, favorite, newFriendName } = req.body;
+  const { user, friends, friend, favorite, newFriendName, changingMyInfo, newInfo } = req.body;
+  // If I'm changing my own info (name, motto, photo, background photo, etc.)
+  if (changingMyInfo) {
+    User.findOne({
+      where: {
+        email: user.email
+      }
+    })
+    .then(user => {
+      let newUser = {
+        ...user.dataValues,
+        ...newInfo
+      };
+      return user.update(newUser);
+    })
+    .then(user => {
+      res.json({changedMyInfo: true, user});
+    })
+    .catch(next);
+    return;
+  }
+  // If I'm favoriting/unfavoriting a friend or changing a friend's name...
   if (favorite || newFriendName) {
     User.findOne({
       where: {
@@ -454,8 +479,9 @@ router.put('/changeInfo', function(req, res, next) {
       if (newFriendName) foundFriend.tempName = friends[indexInFriends].tempName = newFriendName;
 
       user.friends[indexInUserFriends] = JSON.stringify(foundFriend);
-      user.update({friends: user.friends});
-
+      return user.update({friends: user.friends});
+    })
+    .then(user => {
       if (favorite) res.json({favorite, friends});
       if (newFriendName) res.json({newFriendName, friends});
     })

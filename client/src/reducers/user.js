@@ -99,6 +99,16 @@ export default function reducer(state = initialState, action) {
           }
         }
       }
+      if (action.result.changedMyInfo) {
+        return {
+          ...state,
+          isFetchingChangeInfo: false,
+          profile: state.profile && {
+            ...state.profile,
+            ...action.result.user
+          }
+        }
+      }
       return {
         ...state,
         isFetchingChangeInfo: false,

@@ -29,6 +29,7 @@ const seedUsers = () => {
       phone: '0000000000',
       motto: '🥑',
       photo: 'https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1541254123/sejin_mdaurn.jpg',
+      backgroundPhoto: 'http://2.bp.blogspot.com/-WjWL3hpOTho/VlJKXjiYR9I/AAAAAAAAh48/6awsYhIHY6w/s1600/Beach-HD%2B%25282%2529.jpg',
       isAdmin: false,
       friends: [
         JSON.stringify({email: 'm@m.com', favorite: true, chatHistory: [
@@ -98,6 +99,7 @@ const seedUsers = () => {
       phone: '0000000000',
       motto: 'happy new years',
       photo: 'https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1541254120/johnchen_hnl598.jpg',
+      backgroundPhoto: 'https://ak2.picdn.net/shutterstock/videos/5517722/thumb/1.jpg',
       isAdmin: false,
       friends: [JSON.stringify({email: 'm@m.com', favorite: true, chatHistory: []})]
     },
@@ -108,6 +110,7 @@ const seedUsers = () => {
       phone: '3476032811',
       motto: '이 세상에서 제일 필요한건.. 마음이 따뜻한 사람~',
       photo: 'https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1541254122/me_chsm06.jpg',
+      backgroundPhoto: 'https://i.redd.it/enmir0135l6y.jpg',
       isAdmin: true,
       friends: [
         JSON.stringify({email: 'm1@m.com', favorite: true, chatHistory: [

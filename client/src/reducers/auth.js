@@ -1,6 +1,7 @@
 import { push } from 'connected-react-router';
 import { auth } from 'Api';
 import * as Consts from 'Constants/auth';
+import * as ConstsUser from 'Constants/user';
 
 const initialState = {
 };
@@ -37,6 +38,14 @@ export default function reducer(state = initialState, action) {
           friends: [],
         }
       }
+    case ConstsUser.CHANGEINFO_SUCCESS:
+      if (action.result.changedMyInfo) {
+        return {
+          ...state,
+          user: action.result.user
+        }
+      }
+      return state;
     case Consts.LOGIN_FAILED:
     case Consts.LOGOUT_FAILED:
     case Consts.SESSION_FAILED:

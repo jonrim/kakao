@@ -28,6 +28,7 @@ router.post('/login', (req, res, next) => {
         email: user.email,
         phone: user.phone,
         photo: user.photo,
+        backgroundPhoto: user.backgroundPhoto,
         isAdmin: user.isAdmin,
         motto: user.motto
       };
@@ -107,6 +108,7 @@ router.get('/session', (req, res, next) => {
       email: user.email,
       phone: user.phone,
       photo: user.photo,
+      backgroundPhoto: user.backgroundPhoto,
       isAdmin: user.isAdmin,
       motto: user.motto,
       friends: user.friends

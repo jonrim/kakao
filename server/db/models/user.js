@@ -35,6 +35,9 @@ module.exports = function(db) {
     photo: {
       type: Sequelize.STRING
     },
+    backgroundPhoto: {
+      type: Sequelize.STRING
+    },
     motto: {
       type: Sequelize.STRING
     },

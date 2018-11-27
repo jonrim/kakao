@@ -42,14 +42,57 @@
       bottom: 0;
     }
 
-    .motto {
+    .motto, .edit-motto {
       position: absolute;
       left: 50%;
       top: 35%;
+      transform: translate(-50%, -50%);
+    }
+    
+    .motto {
       color: #fff;
-      transform: translate(-50%,-50%);
       text-align: center;
       font-family: 'Candara';
+
+      .motto-text {
+        max-width: 300px;
+        max-height: 200px;
+        overflow: auto;
+      }
+
+      .fa-pencil-alt {
+        color: #fff;
+        top: 2px;
+        right: -30px;
+        font-size: 20px;
+      }
+    }
+
+    .edit-motto {
+      width: 100%;
+
+      i {
+        position: absolute;
+        top: 12px;
+        cursor: pointer;
+        color: rgba(0,0,0,0.6);
+
+        &:hover {
+          color: rgba(0,0,0,1);
+        }
+      }
+
+      input {
+        font-size: 12px;
+      }
+
+      .fa-check {
+        right: 35px;
+      }
+
+      .fa-times {
+        right: 15px;
+      }
     }
   }
 
@@ -116,12 +159,11 @@
     }
   }
 
-  .edit-name-input {
+  .edit-input {
     border: 2px solid skyblue;
 
     input {
-      padding: 4px;
-      font-size: 14px;
+      padding-right: 55px !important;
     }  
   }
 
