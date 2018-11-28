@@ -9,6 +9,10 @@ const compiler = webpack(webpackConfig);
 require('dotenv').config({
   path: path.join(__dirname, './env/development.env')
 });
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
+const sio = require('socket.io');
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const secrets = process.env.NODE_ENV === 'production' ? require('../secretsProd') : require('../secrets');
@@ -16,8 +20,14 @@ const env = process.env.NODE_ENV;
 const PORT = process.env.PORT;
 
 const app = express();
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
+const options = { 
+  key: fs.readFileSync(__dirname + '/rtc-video-room-key.pem'),
+  cert: fs.readFileSync(__dirname + '/rtc-video-room-cert.pem')
+};
+// const server = process.env.NODE_ENV === 'production' ?
+//               http.createServer(app) : http.createServer(options, app);
+const server = http.createServer(app);
+const io = sio(server);
 
 // express can put req onto req.body
 app.use(express.urlencoded({ extended: false }));
@@ -150,6 +160,11 @@ io.on('connection', socket => {
     // sending to all clients in the room (channel) except sender
     socket.broadcast.to(room).emit('hangup');
     socket.leave(room);
+  });
+
+  socket.on('callingFriend', data => {
+    const { user, friend, roomId } = data;
+    io.to(`${users[data.friend.email]}`).emit('callIncoming', {friendEmail: user.email, roomId});
   });
 
   // Socket handler for sending/receiving messages in chatroom

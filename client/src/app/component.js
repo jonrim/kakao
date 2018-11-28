@@ -14,7 +14,7 @@ import { Loadable } from 'Utils'
 import SplitPane from 'react-split-pane'
 import socketIOClient from 'socket.io-client'
 import { Route, Switch, Link } from 'react-router-dom'
-import { Modal, Icon, Message } from 'semantic-ui-react'
+import { Modal, Icon, Message, Button } from 'semantic-ui-react'
 import ReactResizeDetector from 'react-resize-detector'
 
 import './index.scss'
@@ -31,13 +31,17 @@ export default class App extends Component {
       friendRequestsModal: false,
       navWidth: null,
       windowWidth: null,
-      socket: null
+      socket: null,
+      videoChat: null,
+      incomingCall: null,
     };
     this.initializeSocket = this.initializeSocket.bind(this);
     this.logOut = this.logOut.bind(this);
     this.toggleFriendRequestsModal = this.toggleFriendRequestsModal.bind(this);
     this.onNavResize = this.onNavResize.bind(this);
     this.onWindowResize = this.onWindowResize.bind(this);
+    this.openVideoChat = this.openVideoChat.bind(this);
+    this.closeVideoChat = this.closeVideoChat.bind(this);
   }
 
   componentDidMount() {
@@ -47,17 +51,20 @@ export default class App extends Component {
     if (user) {
       requestFriendsList(user);
       requestPendingFriendRequests(user);
-      this.initializeSocket();
     }
     if (!user) requestSession();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { requestFriendsList, requestPendingFriendRequests, user, pendingFriendRequests } = this.props;
+    const { user, friends, isFetchingFriendList, requestFriendsList, requestPendingFriendRequests, pendingFriendRequests } = this.props;
     
     if (!prevProps.user && user) {
       requestFriendsList(user);
       requestPendingFriendRequests(user);
+    }
+
+    // initialize socket only after getting back results from fetching friend list
+    if (prevProps.isFetchingFriendList && !isFetchingFriendList) {
       this.initializeSocket();
     }
 
@@ -67,7 +74,8 @@ export default class App extends Component {
   }
 
   initializeSocket() {
-    const { user, requestReceiveMessages, requestPendingFriendRequests, requestFriendsList } = this.props;
+    const { user, friends, requestReceiveMessages, requestPendingFriendRequests, requestFriendsList } = this.props;
+    console.log(user, friends)
     this.setState({
       socket: socketIOClient('localhost:8080', { transport: ['websocket', 'polling', 'flashsocket'] })
     }, () => {
@@ -84,6 +92,23 @@ export default class App extends Component {
       })
       socket.on('acceptedFriendRequest', userInfo => {
         requestFriendsList(user);
+      })
+      socket.on('callIncoming', data => {
+        this.setState({incomingCall: {
+          ...data,
+          friend: friends.find(f => f.email === data.friendEmail)
+        }}, () => {
+          let notification = document.getElementById('noti-incoming-call');
+          notification.classList.add('active');
+          setTimeout(() => {
+            notification.classList.add('inactive');
+          }, 14000);
+          setTimeout(() => {
+            notification.classList.remove('active', 'inactive');
+          }, 15000);
+          
+          // setTimeout(() => this.setState({incomingCall: null}), 15000); 
+        });
       })
     }); 
   }
@@ -107,11 +132,26 @@ export default class App extends Component {
     this.setState({windowWidth});
   }
 
+  openVideoChat(roomId, friend) {
+    this.setState({videoChat: {roomId, friend}}, () => {
+      this.props.push('r/'+this.state.videoChat.roomId);
+    });
+  }
+
+  closeVideoChat() {
+    this.setState({videoChat: null});
+  }
+
   render() {
-    const { socket, friendRequestsModal, navWidth, windowWidth } = this.state;
+    const { socket, friendRequestsModal, navWidth, windowWidth, videoChat, incomingCall } = this.state;
     const { user, friends, chatroom, profile, pendingFriendRequests, requestManageFriendRequest, errorManageFriendRequest } = this.props;
     return (
-      <div>
+      <div style={{
+        position: 'absolute',
+        height: '100%',
+        width: '100%',
+        overflow: 'hidden'
+      }}>
         <SplitPane
           split='vertical'
           minSize={300}
@@ -124,19 +164,34 @@ export default class App extends Component {
           <NavAndViews
             {...this.state}
             {...this.props}
-            {...this}
+            openVideoChat={this.openVideoChat}
+            closeVideoChat={this.closeVideoChat}
           />
           {
             profile ? 
-            <UserProfile /> : (
+            <UserProfile socket={socket} openVideoChat={this.openVideoChat} /> : 
+            (
               chatroom &&
-              <Chatroom
-                socket={socket}
-              />
+              <Chatroom socket={socket} />
             )
           }
         </SplitPane>
         <ReactResizeDetector handleWidth onResize={this.onWindowResize}/>
+        {
+          !videoChat && incomingCall &&
+          <div className='notification' id='noti-incoming-call'>
+            <div className='photo'>
+              <img src={incomingCall.friend && incomingCall.friend.photo} /> 
+            </div>
+            <div className='name'>{incomingCall.friend && (incomingCall.friend.tempName || incomingCall.friend.name)}</div>
+            <div className='text'>Incoming Call...</div>
+            <Button.Group>
+              <Button icon='phone' />
+              <Button.Or text='' />
+              <Button icon='phone' />
+            </Button.Group>
+          </div>
+        }
         <Modal
           open={friendRequestsModal}
           onClose={this.toggleFriendRequestsModal}
@@ -202,7 +257,8 @@ export default class App extends Component {
 }
 
 const NavAndViews = props => {
-  const { user, friends, chatroom, socket, logOut, toggleFriendRequestsModal, onNavResize, navWidth } = props;
+  const { user, friends, chatroom, socket, logOut, toggleFriendRequestsModal, 
+          onNavResize, navWidth, videoChat, openVideoChat, closeVideoChat } = props;
 
   return (
     <div className='nav-and-views'>
@@ -214,10 +270,11 @@ const NavAndViews = props => {
             logOut={logOut} 
             toggleFriendRequestsModal={toggleFriendRequestsModal}
             navWidth={navWidth}
+            videoChat={videoChat}
           />
           <Switch>
             <Route exact path='/' render={(props) => (
-              <Friends {...props} socket={socket} />
+              <Friends {...props} openVideoChat={openVideoChat} socket={socket} />
             )}/>
             <Route path='/chats' render={(props) => (
               <Chats {...props} socket={socket} />
@@ -226,8 +283,13 @@ const NavAndViews = props => {
               <Find {...props} socket={socket} />
             )}/>
             <Route path='/more' component={More} />
-            <Route path="/r/:room" render={(props) => (
-              <VideoChat {...props} socket={socket} />
+            <Route path='/r/:room' render={(props) => (
+              <VideoChat 
+                {...props}
+                socket={socket}
+                videoChat={videoChat}
+                closeVideoChat={closeVideoChat}
+              />
             )}/>
           </Switch>
         </div> :

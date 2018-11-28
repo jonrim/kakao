@@ -9,6 +9,133 @@
   height: 100%;
 }
 
+#noti-incoming-call {
+  height: 120px;
+
+  .photo, .name, .text, .buttons {
+    position: absolute;
+  }
+
+  .photo {
+    left: 10px;
+    top: 6px;
+    width: 40px;
+  }
+
+  .name {
+    top: 18px;
+    left: 60px;
+    font-size: 15px;
+    max-width: 65%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .text {
+    width: 100%;
+    top: 55px;
+    left: 0;
+    font-size: 10px;
+    border-top: 1.5px solid rgba(0,0,0,0.2);
+    padding: 1px;
+  }
+
+  .buttons {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+
+    button {
+      &:hover {
+        opacity: 0.8;
+      }
+
+      &:active {
+        opacity: 0.5;
+      }
+
+      i {
+        color: #fff;
+      }
+    }
+
+    button:first-child {
+      background-color: #2be000;
+
+      i {
+        transform: rotate(100deg);
+        left: 2px;
+        top: 2px;
+      }
+    }
+
+    .or {
+      top: 7px;
+      font-size: 11px;
+    }
+
+    button:last-child {
+      background-color: #ff251f;
+
+      i {
+        transform: rotate(-135deg);
+        left: -5px;
+        top: 4px;
+      }
+    }
+  }
+}
+
+.notification {
+  background: white;
+  position: absolute;
+  bottom: -120px;
+  right: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  width: 210px;
+  height: 60px;
+  text-align: center;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  padding: 10px 0;
+  
+  i {
+    font-size: 22px;
+    padding: 10px 5px 10px 0;
+    position: relative;
+    left: -7px;
+  }
+
+  span {
+    vertical-align: text-bottom;
+  }
+}
+
+.notification.active {
+  animation: showNotification 0.15s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
+}
+
+.notification.inactive {
+  animation: hideNotification 0.15s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
+}
+
+@include keyframes(showNotification) {
+  from { bottom: -120px; }
+  to   { bottom: 10px;  }
+}
+
+@include keyframes(hideNotification) {
+  from { bottom: 10px;  }
+  to   { bottom: -120px; }
+}
+
+
 .ui.modal {
   min-height: 400px;
   min-width: 300px;

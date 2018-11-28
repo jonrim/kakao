@@ -39,7 +39,7 @@ export default class Find extends Component {
     requestFriendRequest({user, friend: foundUser});
     socket.emit('sentFriendRequest', {userEmail: user.email, friendEmail: foundUser.email});
 
-    let notification = document.getElementById('notification');
+    let notification = document.getElementById('noti-friend-request-sent');
     notification.classList.add('active');
     setTimeout(() => {
       notification.classList.add('inactive');
@@ -101,7 +101,7 @@ export default class Find extends Component {
             )
           }
         </div>
-        <div id='notification'>
+        <div className='notification' id='noti-friend-request-sent'>
           <i className="fas fa-bell" />
           <span>Friend Request Sent!</span>
         </div>

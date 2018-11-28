@@ -3,6 +3,8 @@ import { bindActionCreators } from 'redux'
 import component from './component'
 import { withRouter } from 'react-router-dom'
 import { requestSession, requestLogout } from 'Actions/auth'
+import { push } from 'connected-react-router'
+
 import { 
   requestFriendsList,
   requestReceiveMessages,
@@ -14,6 +16,7 @@ const mapStateToProps = (state) => {
   return {
     user: state.auth.user,
     friends: state.user.friends || [],
+    isFetchingFriendList: state.user.isFetchingFriendList,
     chatroom: state.user.chatroom,
     profile: state.user.profile,
     pendingFriendRequests: state.user.pendingFriendRequests || [],
@@ -23,6 +26,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
+    push,
     requestSession,
     requestFriendsList,
     requestReceiveMessages,

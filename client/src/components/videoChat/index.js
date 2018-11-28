@@ -5,23 +5,26 @@ import { connect } from 'react-redux'
 import { store } from 'Redux/configureStore'
 import io from 'socket.io-client'
 
+import './index.scss'
+
 class VideoChat extends Component {
   constructor(props) {
     super(props);
     this.getUserMedia = navigator.mediaDevices.getUserMedia({
       audio: true,
       video: true
-    }).catch(e => alert('getUserMedia() error: ' + e.name))
+    }).catch(e => console.log(e))
+    console.log(this.getUserMedia)
   }
   componentDidMount() {
     this.props.addRoom();
   }
   render(){
-    const { socket } = this.props;
+    const { socket, videoChat, closeVideoChat } = this.props;
     return (
       <div>
-        <MediaContainer media={media => this.media = media} socket={this.socket} getUserMedia={this.getUserMedia} />
-        <CommunicationContainer socket={this.socket} media={this.media} getUserMedia={this.getUserMedia} />
+        <MediaContainer media={media => this.media = media} socket={socket} getUserMedia={this.getUserMedia} />
+        <CommunicationContainer socket={socket} media={this.media} getUserMedia={this.getUserMedia} />
       </div>
     );
   }

@@ -1,4 +1,3 @@
-import { push } from 'connected-react-router';
 import { auth } from 'Api';
 import * as Consts from 'Constants/user';
 import * as ConstsAuth from 'Constants/auth';

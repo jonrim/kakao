@@ -19,6 +19,7 @@ export default class UserProfile extends Component {
       showEditNameInput: false,
       showEditMottoInput: false
     };
+
     this.toggleEditNameInput = this.toggleEditNameInput.bind(this);
     this.toggleEditMottoInput = this.toggleEditMottoInput.bind(this);
     this.editInfo = this.editInfo.bind(this);
@@ -116,7 +117,8 @@ export default class UserProfile extends Component {
   render() {
     const { toggleEditNameInput, toggleEditMottoInput, editInfo, deletePhoto } = this;
     const { name, motto, showEditNameInput, showEditMottoInput, uploadedFileCloudinaryUrl } = this.state;
-    const { user, profile, chatroom, friends, viewUserProfile, changeChatroom, requestChangeInfo } = this.props;
+    const { user, profile, chatroom, friends, viewUserProfile, 
+            changeChatroom, requestChangeInfo, socket, openVideoChat } = this.props;
     const showingMyProfile = user.email === profile.email;
     return (
       <div className='user-profile'>
@@ -317,7 +319,6 @@ const EditButton = props => {
 const FavoriteButton = props => {
   const { user, profile, friends, requestChangeInfo } = props;
   const favoriteOrUnfavoriteThisFriend = () => {
-    console.log(profile.favorite)
     requestChangeInfo({user, friends, friend: profile, favorite: profile.favorite ? 'remove' : 'add'});
   };
   return (
@@ -329,8 +330,11 @@ const FavoriteButton = props => {
 }
 
 const FreeCallButton = props => {
-  const { user, profile } = props;
+  const { user, profile, socket, changeChatroom, openVideoChat } = props;
   const callThisFriend = () => {
+    let roomId = String(new Date() - new Date().setHours(0, 0, 0, 0));
+    openVideoChat(roomId, profile);
+    socket.emit('callingFriend', {user, friend: profile, roomId});
   };
   return (
     <div className='call-button'>

@@ -53,13 +53,19 @@ export default class Friends extends Component {
 
   handleClick(e, data) {
     const { chat, voice, video, favorite, viewProfile, friend } = data;
-    const { changeChatroom, requestChangeInfo, user, friends, viewUserProfile } = this.props;
+    const { changeChatroom, requestChangeInfo, user, friends, viewUserProfile,
+            openVideoChat, socket } = this.props;
     if (chat) {
       let classList = document.getElementsByClassName('SplitPane')[0].classList;
       classList.remove('profileOpen');
       classList.add('chatroomOpen');
       changeChatroom(friend);
       viewUserProfile(null);
+    }
+    if (video) {
+      let roomId = String(new Date() - new Date().setHours(0, 0, 0, 0));
+      openVideoChat(roomId, friend);
+      socket.emit('callingFriend', {user, friend, roomId});
     }
     if (favorite) requestChangeInfo({user, friends, friend, favorite});
     if (viewProfile) {

@@ -45,6 +45,7 @@ class CommunicationContainer extends React.Component {
     socket.emit('find');
     this.props.getUserMedia
       .then(stream => {
+        console.log(stream)
           this.localStream = stream;
           this.localStream.getVideoTracks()[0].enabled = this.state.video;
           this.localStream.getAudioTracks()[0].enabled = this.state.audio;

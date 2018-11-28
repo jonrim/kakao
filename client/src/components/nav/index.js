@@ -5,7 +5,7 @@ import { Dropdown } from 'semantic-ui-react'
 import './index.scss'
 
 const Nav = props => {
-  const { navWidth, toggleFriendRequestsModal, logOut, friends } = props;
+  const { navWidth, toggleFriendRequestsModal, logOut, friends, videoChat } = props;
   let numNewMessages = displayNumNewMessages(friends);
   return (
     <nav id='main-nav'>
@@ -32,6 +32,13 @@ const Nav = props => {
           <i className='fas fa-ellipsis-h' />
           <span className='tooltiptext'>More</span>
         </NavLink>
+        {
+          videoChat &&
+          <NavLink id='more-nav-button' className='main-button' activeClassName='clicked' to={'/r/'+videoChat.roomId}>
+            <i className='fas fa-video' />
+            <span className='tooltiptext'>Video/Voice Chat</span>
+          </NavLink>
+        }
       </span>
       <Dropdown 
         icon='content'
