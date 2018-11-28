@@ -84,7 +84,6 @@ export default class App extends Component {
         socket.emit('connected', {socketId: socket.id, userEmail: user.email}); 
       })
       socket.on('messageReceive', message => {
-        // console.log('receiving messages', message)
         requestReceiveMessages({socketId: socket.id, userEmail: message.userEmail, friendEmail: message.friendEmail});
       })
       socket.on('sentFriendRequest', userInfo => {
@@ -107,7 +106,7 @@ export default class App extends Component {
             notification.classList.remove('active', 'inactive');
           }, 15000);
           
-          // setTimeout(() => this.setState({incomingCall: null}), 15000); 
+          setTimeout(() => this.setState({incomingCall: null}), 15000); 
         });
       })
     }); 
