@@ -28,6 +28,9 @@ export default class App extends Component {
     this.state = {
       endpoint: require('ip').address() + ':8080',
       friendRequestsModal: false,
+      navWidth: null,
+      windowWidth: null,
+      socket: null
     };
     this.initializeSocket = this.initializeSocket.bind(this);
     this.logOut = this.logOut.bind(this);

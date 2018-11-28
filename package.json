@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@material-ui/core": "^3.6.0",
     "@okta/okta-react": "^1.1.4",
     "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
@@ -25,6 +26,7 @@
     "emoji-mart": "^2.8.1",
     "express": "^4.16.4",
     "http": "0.0.0",
+    "material-ui": "^0.20.2",
     "moment": "^2.22.2",
     "nodemailer": "^4.6.8",
     "pg": "^7.6.0",

@@ -69,7 +69,7 @@ export default class Friends extends Component {
   }
 
   render() {
-    const { searchNameInput, focusedFriend } = this.state;
+    const { searchNameInput } = this.state;
     const { chatroom, user, friends, isFetching, changeChatroom, viewUserProfile } = this.props;
     const { changeInputValue, handleClick } = this;
     let friendSections = [

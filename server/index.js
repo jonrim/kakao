@@ -16,6 +16,7 @@ const VideoGrant = AccessToken.VideoGrant;
 const secrets = process.env.NODE_ENV === 'production' ? require('../secretsProd') : require('../secrets');
 const env = process.env.NODE_ENV;
 const PORT = process.env.PORT;
+const chance = require('chance')(123);
 
 const app = express();
 const server = require('http').Server(app);
@@ -58,24 +59,13 @@ if (process.env.NODE_ENV !== 'production') {
 app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-app.use('/', require('./routes'));
-
-app.get('/bundle.js', (req, res, next) => {
-  res.sendFile(path.resolve(__dirname, '../client/dist/bundle.js'));
-});
-
-app.get('/*', (req, res, next) => {
-  res.sendFile(path.resolve(__dirname, '../client/dist/index.html'));
-});
-
 /**
  * Generate an Access Token for a chat application user - it generates a random
  * username for the client requesting a token, and takes a device ID as a query
  * parameter.
  */
 app.get('/token', function(request, response) {
-  var identity = randomName();
+  var identity = chance.word();
 
   // Create an access token which we will sign and return to the client,
   // containing the grant we just created.
@@ -97,6 +87,16 @@ app.get('/token', function(request, response) {
     identity: identity,
     token: token.toJwt()
   });
+});
+
+app.use('/', require('./routes'));
+
+app.get('/bundle.js', (req, res, next) => {
+  res.sendFile(path.resolve(__dirname, '../client/dist/bundle.js'));
+});
+
+app.get('/*', (req, res, next) => {
+  res.sendFile(path.resolve(__dirname, '../client/dist/index.html'));
 });
 
 app.use((err, req, res, next) => {
@@ -137,8 +137,6 @@ io.on('connection', socket => {
 
   socket.on('connected', IDs => {
     users[IDs.userEmail] = IDs.socketId;
-    // fetch new messages here
-
   });
 
   socket.on('message', message => {

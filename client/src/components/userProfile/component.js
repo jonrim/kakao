@@ -16,6 +16,8 @@ export default class UserProfile extends Component {
       name: props.profile.tempName || props.profile.name,
       motto: props.profile.motto,
       uploadedFileCloudinaryUrl: props.user.photo || '',
+      showEditNameInput: false,
+      showEditMottoInput: false
     };
     this.toggleEditNameInput = this.toggleEditNameInput.bind(this);
     this.toggleEditMottoInput = this.toggleEditMottoInput.bind(this);

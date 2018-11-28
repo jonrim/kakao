@@ -47,7 +47,7 @@ export default class Chats extends Component {
   }
 
   render() {
-    const { searchNameInput, focusedFriend } = this.state;
+    const { searchNameInput } = this.state;
     const { chatroom, myProfile, friends, isFetching, changeChatroom } = this.props;
     const { changeInputValue } = this;
     return (
