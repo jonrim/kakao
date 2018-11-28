@@ -50,6 +50,7 @@
     "redux": "^4.0.1",
     "redux-saga": "^0.16.2",
     "redux-thunk": "^2.3.0",
+    "remarkable": "^1.7.1",
     "sass-resources-loader": "^2.0.0",
     "semantic-ui-react": "^0.82.5",
     "sequelize": "^4.41.0",
@@ -57,7 +58,7 @@
     "socket.io-client": "^2.1.1",
     "superagent": "^4.0.0",
     "twilio": "^3.24.0",
-    "twilio-video": "^2.0.0-beta3",
+    "twilio-video": "^1.14.0",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {

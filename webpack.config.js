@@ -35,6 +35,7 @@ module.exports = {
       'Actions': path.resolve(__dirname, 'client/src/actions'),
       'Constants': path.resolve(__dirname, 'client/src/constants'),
       'Sagas': path.resolve(__dirname, 'client/src/sagas'),
+      'Redux': path.resolve(__dirname, 'client/src/redux'),
     }
   },
   /* historyApiFallback needs to be true to have routes working properly on localhost */

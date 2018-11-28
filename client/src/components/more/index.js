@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import VideoChat from '../videoChat'
 
 export default class More extends Component {
   constructor(props) {
@@ -8,7 +7,7 @@ export default class More extends Component {
 
   render() {
     return (
-      <VideoChat />
+      <div></div>
     )
   }
 }

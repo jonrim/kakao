@@ -8,6 +8,7 @@ import {
   More,
   Chatroom,
   UserProfile,
+  VideoChat
 } from 'Components'
 import { Loadable } from 'Utils'
 import SplitPane from 'react-split-pane'
@@ -225,6 +226,9 @@ const NavAndViews = props => {
               <Find {...props} socket={socket} />
             )}/>
             <Route path='/more' component={More} />
+            <Route path="/r/:room" render={(props) => (
+              <VideoChat {...props} socket={socket} />
+            )}/>
           </Switch>
         </div> :
         <Auth />

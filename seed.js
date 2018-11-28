@@ -109,7 +109,7 @@ const seedUsers = () => {
       email: 'm@m.com',
       phone: '3476032811',
       motto: '이 세상에서 제일 필요한건.. 마음이 따뜻한 사람~',
-      photo: 'https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1543289995/rk6z64bprndp66k2rnxf.jpg',
+      photo: 'https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1543377536/1538881826747_y8oajr.jpg',
       backgroundPhoto: 'https://i.redd.it/enmir0135l6y.jpg',
       isAdmin: true,
       friends: [

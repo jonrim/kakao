@@ -11,12 +11,9 @@ require('dotenv').config({
 });
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
-const AccessToken = require('twilio').jwt.AccessToken;
-const VideoGrant = AccessToken.VideoGrant;
 const secrets = process.env.NODE_ENV === 'production' ? require('../secretsProd') : require('../secrets');
 const env = process.env.NODE_ENV;
 const PORT = process.env.PORT;
-const chance = require('chance')(123);
 
 const app = express();
 const server = require('http').Server(app);
@@ -59,35 +56,6 @@ if (process.env.NODE_ENV !== 'production') {
 app.use(express.static(path.join(__dirname, '../client/dist')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-/**
- * Generate an Access Token for a chat application user - it generates a random
- * username for the client requesting a token, and takes a device ID as a query
- * parameter.
- */
-app.get('/token', function(request, response) {
-  var identity = chance.word();
-
-  // Create an access token which we will sign and return to the client,
-  // containing the grant we just created.
-  var token = new AccessToken(
-    process.env.TWILIO_ACCOUNT_SID,
-    process.env.TWILIO_API_KEY,
-    process.env.TWILIO_API_SECRET
-  );
-
-  // Assign the generated identity to the token.
-  token.identity = identity;
-
-  // Grant the access token Twilio Video capabilities.
-  var grant = new VideoGrant();
-  token.addGrant(grant);
-
-  // Serialize the token to a JWT string and include it in a JSON response.
-  response.send({
-    identity: identity,
-    token: token.toJwt()
-  });
-});
 
 app.use('/', require('./routes'));
 
@@ -123,10 +91,14 @@ app.get('/db', function (request, response) {
   });
 });
 
+// Switch off the default 'X-Powered-By: Express' header
+app.disable('x-powered-by');
+
 // the clients hash stores the sockets
 // the users hash stores the username of the connected user and its socket.id
 var clients = {};
 var users = {};
+
 
 io.on('connection', socket => {
   console.log(chalk.cyan('A user connected'));
@@ -139,6 +111,48 @@ io.on('connection', socket => {
     users[IDs.userEmail] = IDs.socketId;
   });
 
+  // Socket handler for setting up video call
+  let room = '';
+  const create = err => {
+    if (err) {
+      return console.log(err);
+    }
+    socket.join(room);
+    socket.emit('create');
+  };
+
+  socket.on('find', () => {
+    const url = socket.request.headers.referer.split('/');
+    room = url[url.length - 1];
+    const sr = io.sockets.adapter.rooms[room];
+    if (sr === undefined) {
+      // no room with such name is found so create it
+      socket.join(room);
+      socket.emit('create');
+    } else if (sr.length === 1) {
+      socket.emit('join');
+    } else { // max two clients
+      socket.emit('full', room);
+    }
+  });
+  socket.on('auth', data => {
+    data.sid = socket.id;
+    // sending to all clients in the room (channel) except sender
+    socket.broadcast.to(room).emit('approve', data);
+  });
+  socket.on('accept', id => {
+    io.sockets.connected[id].join(room);
+    // sending to all clients in 'game' room(channel), include sender
+    io.in(room).emit('bridge');
+  });
+  socket.on('reject', () => socket.emit('full'));
+  socket.on('leave', () => {
+    // sending to all clients in the room (channel) except sender
+    socket.broadcast.to(room).emit('hangup');
+    socket.leave(room);
+  });
+
+  // Socket handler for sending/receiving messages in chatroom
   socket.on('message', message => {
     // should still send message even if other user isn't connected
     // first update both users' friends prop (chatroom for friend/friends)
