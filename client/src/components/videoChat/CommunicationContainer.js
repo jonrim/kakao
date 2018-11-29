@@ -14,12 +14,9 @@ class CommunicationContainer extends React.Component {
       audio: true,
       video: true
     };
-    this.handleInvitation = this.handleInvitation.bind(this);
     this.handleHangup = this.handleHangup.bind(this);
-    this.handleInput = this.handleInput.bind(this);
     this.toggleVideo = this.toggleVideo.bind(this);
     this.toggleAudio = this.toggleAudio.bind(this);
-    this.send = this.send.bind(this);
   }
   hideAuth() {
     this.props.media.setState({bridge: 'connecting'});
@@ -32,15 +29,26 @@ class CommunicationContainer extends React.Component {
     console.log('props', this.props)
     this.setState({video: this.props.video, audio: this.props.audio});
 
-    socket.on('create', () =>
-      this.props.media.setState({user: 'host', bridge: 'create'}));
+    socket.on('create', () => {
+      this.props.media.setState({user: 'host', bridge: 'create'});
+      console.log('socket create')
+    });
     socket.on('full', this.full);
-    socket.on('bridge', role => this.props.media.init());
-    socket.on('join', () =>
-      this.props.media.setState({user: 'guest', bridge: 'join'}));
+    socket.on('bridge', role => {
+      console.log('socket bridge')
+      this.props.media.init();
+    });
+    socket.on('join', () => {
+      this.props.media.setState({user: 'guest', bridge: 'join'});
+      console.log('socket join')
+      socket.emit('auth', this.state);
+    });
     socket.on('approve', ({ message, sid }) => {
       this.props.media.setState({bridge: 'approve'});
       this.setState({ message, sid });
+      console.log('socket approve')
+      socket.emit('accept', this.state.sid);
+      this.hideAuth();
     });
     socket.emit('find');
     this.props.getUserMedia
@@ -50,19 +58,6 @@ class CommunicationContainer extends React.Component {
           this.localStream.getVideoTracks()[0].enabled = this.state.video;
           this.localStream.getAudioTracks()[0].enabled = this.state.audio;
         });
-  }
-  handleInput(e) {
-    this.setState({[e.target.dataset.ref]: e.target.value});
-  }
-  send(e) {
-    e.preventDefault();
-    this.props.socket.emit('auth', this.state);
-    this.hideAuth();
-  }
-  handleInvitation(e) {
-    e.preventDefault();
-    this.props.socket.emit([e.target.dataset.ref], this.state.sid);
-    this.hideAuth();
   }
   getContent(content) {
     return {__html: (new Remarkable()).render(content)};
@@ -87,10 +82,8 @@ class CommunicationContainer extends React.Component {
         toggleVideo={this.toggleVideo}
         toggleAudio={this.toggleAudio}
         getContent={this.getContent}
-        send={this.send}
         handleHangup={this.handleHangup}
-        handleInput={this.handleInput}
-        handleInvitation={this.handleInvitation} />
+      />
     );
   }
 }

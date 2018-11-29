@@ -131,6 +131,9 @@ io.on('connection', socket => {
     socket.emit('create');
   };
 
+  // sending to all clients in the room (channel) except sender
+  socket.on('joinedRoom', message => socket.broadcast.to(room).emit('joinedRoom', message));
+
   socket.on('find', () => {
     const url = socket.request.headers.referer.split('/');
     room = url[url.length - 1];

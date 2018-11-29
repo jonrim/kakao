@@ -37,16 +37,6 @@ const Communication = props =>
     </div>
     <div className="request-access">
       <p><span className="you-left">You hung up.&nbsp;</span>Send an invitation to join the room.</p>
-      <form onSubmit={props.send}>
-        <input type="text" autoFocus onChange={props.handleInput} data-ref="message"  maxLength="30" required placeholder="Hi, I'm John Doe." />
-        <button className="primary-button">Send</button>
-      </form>
-    </div>
-    <div className="grant-access">
-      <p>A peer has sent you a message to join the room:</p>
-      <div dangerouslySetInnerHTML={props.getContent(props.message)}></div>
-      <button onClick={props.handleInvitation} data-ref="reject" className="primary-button">Reject</button>
-      <button onClick={props.handleInvitation} data-ref="accept" className="primary-button">Accept</button>
     </div>
     <div className="room-occupied">
       <p>Please, try another room!</p>
@@ -64,10 +54,7 @@ Communication.propTypes = {
   toggleVideo: PropTypes.func.isRequired,
   toggleAudio: PropTypes.func.isRequired,
   getContent: PropTypes.func.isRequired,
-  send: PropTypes.func.isRequired,
   handleHangup: PropTypes.func.isRequired,
-  handleInput: PropTypes.func.isRequired,
-  handleInvitation: PropTypes.func.isRequired
 };
 
 export default Communication;
