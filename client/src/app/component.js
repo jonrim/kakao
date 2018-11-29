@@ -77,7 +77,6 @@ export default class App extends Component {
 
   initializeSocket() {
     const { user, friends, requestReceiveMessages, requestPendingFriendRequests, requestFriendsList } = this.props;
-    console.log(user, friends)
     this.setState({
       socket: socketIOClient('localhost:8080', { transport: ['websocket', 'polling', 'flashsocket'] })
     }, () => {

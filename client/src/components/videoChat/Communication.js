@@ -35,16 +35,6 @@ const Communication = props =>
         </svg>
       </button>
     </div>
-    <div className="request-access">
-      <p><span className="you-left">You hung up.&nbsp;</span>Send an invitation to join the room.</p>
-    </div>
-    <div className="room-occupied">
-      <p>Please, try another room!</p>
-      <Link  className="primary-button" to="/">OK</Link>
-    </div>
-    <div className="waiting">
-      <span className="remote-left">The remote side hung up.</span>
-    </div>
   </div>
 
 Communication.propTypes = {
