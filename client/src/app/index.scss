@@ -12,6 +12,16 @@
 #noti-incoming-call {
   height: 120px;
 
+  .fa-times {
+    position: absolute;
+    cursor: pointer;
+    top: 2px;
+    right: 2px;
+    color: rgba(0,0,0,0.3);
+    font-size: 14px;
+    width: 14px;
+  }
+
   .photo, .name, .text, .buttons {
     position: absolute;
   }
@@ -101,7 +111,7 @@
   border: 1px solid rgba(0, 0, 0, 0.3);
   padding: 10px 0;
   
-  i {
+  .fa-bell {
     font-size: 22px;
     padding: 10px 5px 10px 0;
     position: relative;

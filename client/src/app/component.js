@@ -42,6 +42,8 @@ export default class App extends Component {
     this.onWindowResize = this.onWindowResize.bind(this);
     this.openVideoChat = this.openVideoChat.bind(this);
     this.closeVideoChat = this.closeVideoChat.bind(this);
+    this.hideNotification = this.hideNotification.bind(this);
+    this.acceptCall = this.acceptCall.bind(this);
   }
 
   componentDidMount() {
@@ -98,15 +100,20 @@ export default class App extends Component {
           friend: friends.find(f => f.email === data.friendEmail)
         }}, () => {
           let notification = document.getElementById('noti-incoming-call');
+          notification.classList.remove('active', 'inactive');
           notification.classList.add('active');
           setTimeout(() => {
-            notification.classList.add('inactive');
+            if (notification.classList.contains('active'))
+              notification.classList.add('inactive');
           }, 14000);
           setTimeout(() => {
-            notification.classList.remove('active', 'inactive');
+            if (notification.classList.contains('inactive'))
+              notification.classList.remove('active', 'inactive');
           }, 15000);
           
-          setTimeout(() => this.setState({incomingCall: null}), 15000); 
+          setTimeout(() => {
+            if (this.state.incomingCall) this.setState({incomingCall: null});
+          }, 15000); 
         });
       })
     }); 
@@ -141,6 +148,22 @@ export default class App extends Component {
     this.setState({videoChat: null});
   }
 
+  hideNotification() {
+    let notification = document.getElementById('noti-incoming-call');
+    notification.classList.add('inactive');
+    setTimeout(() => {
+      notification.classList.remove('active', 'inactive');
+    }, 1000);
+    
+    setTimeout(() => this.setState({incomingCall: null}), 1000); 
+  }
+
+  acceptCall() {
+    const { incomingCall } = this.state;
+    this.hideNotification();
+    this.openVideoChat(incomingCall.roomId, incomingCall.friend);
+  }
+
   render() {
     const { socket, friendRequestsModal, navWidth, windowWidth, videoChat, incomingCall } = this.state;
     const { user, friends, chatroom, profile, pendingFriendRequests, requestManageFriendRequest, errorManageFriendRequest } = this.props;
@@ -163,8 +186,11 @@ export default class App extends Component {
           <NavAndViews
             {...this.state}
             {...this.props}
+            logOut={this.logOut}
+            toggleFriendRequestsModal={this.toggleFriendRequestsModal}
             openVideoChat={this.openVideoChat}
             closeVideoChat={this.closeVideoChat}
+            navWidth={navWidth}
           />
           {
             profile ? 
@@ -179,15 +205,16 @@ export default class App extends Component {
         {
           !videoChat && incomingCall &&
           <div className='notification' id='noti-incoming-call'>
+            <i className='fas fa-times' onClick={this.hideNotification} />
             <div className='photo'>
               <img src={incomingCall.friend && incomingCall.friend.photo} /> 
             </div>
             <div className='name'>{incomingCall.friend && (incomingCall.friend.tempName || incomingCall.friend.name)}</div>
             <div className='text'>Incoming Call...</div>
             <Button.Group>
-              <Button icon='phone' />
+              <Button icon='phone' onClick={this.acceptCall} />
               <Button.Or text='' />
-              <Button icon='phone' />
+              <Button icon='phone' onClick={this.hideNotification} />
             </Button.Group>
           </div>
         }
