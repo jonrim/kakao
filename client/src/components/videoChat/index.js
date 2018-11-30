@@ -1,39 +1,42 @@
 import React, { Component } from 'react'
-import MediaContainer from './MediaContainer'
-import CommunicationContainer from './CommunicationContainer'
 import { connect } from 'react-redux'
 import { store } from 'Redux/configureStore'
-import io from 'socket.io-client'
+import SimpleWebRTC from 'simplewebrtc'
 
 import './index.scss'
 
-class VideoChat extends Component {
+var webrtc = new SimpleWebRTC({
+    // the id/element dom element that will hold "our" video
+    localVideoEl: 'local-videos',
+    // the id/element dom element that will hold remote videos
+    remoteVideosEl: 'remote-videos',
+    // immediately ask for camera access
+    autoRequestMedia: true
+});
+
+export default class VideoChat extends Component {
   constructor(props) {
     super(props);
-    this.getUserMedia = navigator.mediaDevices.getUserMedia({
-      audio: true,
-      video: true
-    }).catch(e => console.log(e))
-    console.log(this.getUserMedia)
   }
   componentDidMount() {
-    this.props.addRoom();
-  }
-  render(){
     const { socket, videoChat, closeVideoChat } = this.props;
+    // we have to wait until it's ready
+    webrtc.on('readyToCall', function () {
+      // you can name it anything
+      webrtc.joinRoom(videoChat.roomId);
+    });
+  }
+
+  componentWillUnmount() {
+    this.props.closeVideoChat();
+  }
+
+  render(){
     return (
-      <div>
-        <MediaContainer media={media => this.media = media} socket={socket} getUserMedia={this.getUserMedia} />
-        <CommunicationContainer socket={socket} media={this.media} getUserMedia={this.getUserMedia} />
+      <div className='video-chat'>
+        <video id='local-videos'></video>
+        <div id='remote-videos'></div>
       </div>
     );
   }
 }
-
-const mapStateToProps = state => ({rooms: new Set([...state.rooms])});
-const mapDispatchToProps = (dispatch, ownProps) => (
-  {
-    addRoom: () => store.dispatch({ type: 'ADD_ROOM', room: ownProps.match.params.room })
-  }
-);
-export default connect(mapStateToProps, mapDispatchToProps)(VideoChat);
