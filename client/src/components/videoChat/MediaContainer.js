@@ -29,7 +29,7 @@ class MediaBridge extends Component {
         this.localVideo.srcObject = this.localStream = stream;
         console.log(this.localStream)
       });
-    this.props.socket.on('message', this.onMessage);
+    this.props.socket.on('joinedRoom', this.onMessage);
     this.props.socket.on('hangup', this.onRemoteHangup);
   }
   componentWillUnmount() {

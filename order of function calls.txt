@@ -1,0 +1,22 @@
+user calls friend, adds room
+user gets own media
+sets up onMessage (handler) on mount
+sets up socket.on(methods)
+user: socket.find (creates room, sends back to user socket.create)
+user: socket.create
+
+friend: socket.find
+friend finds user's room, asks to join
+friend: socket.join (*need to add icecandidates here)
+user (on join) adds guest to room
+
+friend sends message to user asking to join room (send) (socket.emit(auth)) (make friend automatically run send upon mount (socket.emit(auth)), after find)
+user: socket.approve (this is automatic, user now has to accept or reject)
+
+user accepts (handleInvitation) (socket.accept) (change to autoaccept once user adds guest to room, on join. accept in socket.approve)
+both run socket.bridge
+
+media.init runs for both
+
+
+where does onMessage get called????
