@@ -119,6 +119,8 @@ export default function reducer(state = initialState, action) {
         if (friendInState.email === friend.email) return {...friendInState, ...friend};
         return friendInState;
       });
+      console.log(state, state.chatroom)
+      console.log(state.chatroom ? friend.chatHistory : null)
       return {
         ...state,
         isFetchingMessage: false,
