@@ -25,9 +25,9 @@ function configureStore (history, sagaMiddleware) {
   //   };
 
   const middleware = [thunk, promise, routerMiddleware(history), sagaMiddleware]
-  if (process.env.NODE_ENV !== 'production') {
+  
     middleware.push(logger)
-  }
+  
 
   const enhancers = composeWithDevTools(
     applyMiddleware(...middleware)

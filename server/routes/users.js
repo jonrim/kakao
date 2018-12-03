@@ -375,6 +375,7 @@ router.put('/messageRead', function(req, res, next) {
         const error = new Error('Cannot find user/friend when trying to mark messages as read. User/friend email:', personEmail);
         error.status = 400;
         next(error);
+        return;
       }
       let index = person.friends.map(f => JSON.parse(f)).findIndex(f => f.email === (person.email === userEmail ? friendEmail : userEmail));
       
