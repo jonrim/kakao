@@ -123,11 +123,11 @@ export default function reducer(state = initialState, action) {
         ...state,
         isFetchingMessage: false,
         friends,
-        chatHistory: state.chatroom && friend.chatHistory,
-        chatroom: state.chatroom && {
+        chatHistory: state.chatroom ? friend.chatHistory : null,
+        chatroom: state.chatroom ? {
           ...state.chatroom,
           chatHistory: friend.chatHistory
-        }
+        } : null
       }
     case Consts.READMESSAGES_SUCCESS:
     case Consts.SENDMESSAGE_SUCCESS:
