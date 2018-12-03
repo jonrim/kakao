@@ -22,6 +22,7 @@
     "crypto": "^1.0.1",
     "dotenv": "^6.1.0",
     "emoji-mart": "^2.8.1",
+    "event-stream": "^4.0.1",
     "express": "^4.16.4",
     "http": "0.0.0",
     "moment": "^2.22.2",
