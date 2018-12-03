@@ -15,7 +15,8 @@ const https = require('https');
 const sio = require('socket.io');
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
-const secrets = process.env.NODE_ENV === 'production' ? require('../secretsProd') : require('../secrets');
+const devMode = process.env.NODE_ENV !== 'production';
+const secrets = require('../secretsProd');
 const env = process.env.NODE_ENV;
 const PORT = process.env.PORT;
 
@@ -33,7 +34,7 @@ const io = sio(server);
 app.use(express.urlencoded({ extended: false }));
 
 app.use(cookieSession({
-  secret: secrets.SESSION_SECRET,
+  secret: secrets.SESSION_SECRET || "ajdp8o2u8o2japdng",
   maxAge: 1000 * 60 * 60 * 24 * 7,
   keys: ['verification9123', 'helperkey9123']
 }));
