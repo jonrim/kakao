@@ -123,7 +123,7 @@ export default function reducer(state = initialState, action) {
         ...state,
         isFetchingMessage: false,
         friends,
-        chatHistory: friend.chatHistory,
+        chatHistory: state.chatroom && friend.chatHistory,
         chatroom: state.chatroom && {
           ...state.chatroom,
           chatHistory: friend.chatHistory
