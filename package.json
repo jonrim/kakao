@@ -63,6 +63,7 @@
     "socket.io-client": "^2.1.1",
     "superagent": "^4.0.0",
     "webpack": "^4.19.0",
+    "webpack-cli": "^3.1.0",
     "webpack-dev-server": "^3.1.8",
     "whatwg-fetch": "^3.0.0"
   },
@@ -90,7 +91,6 @@
     "style-loader": "^0.23.0",
     "uglifyjs-webpack-plugin": "^2.0.1",
     "url-loader": "^1.1.2",
-    "webpack-cli": "^3.1.0",
     "webpack-dev-middleware": "^3.4.0",
     "webpack-hot-middleware": "^2.24.3"
   },
