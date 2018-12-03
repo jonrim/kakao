@@ -4,7 +4,7 @@ const db = require('../db');
 const User = db.model('user');
 const Auth = require('../configure/auth-middleware');
 const cloudinary = require('cloudinary');
-const secrets = process.env.NODE_ENV === 'production' ? require('../../secretsProd') : require('../../secrets');
+const secrets = require('../../secretsProd');
 
 cloudinary.config({ 
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 

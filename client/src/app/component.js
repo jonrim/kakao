@@ -16,6 +16,12 @@ import socketIOClient from 'socket.io-client'
 import { Route, Switch, Link } from 'react-router-dom'
 import { Modal, Icon, Message, Button } from 'semantic-ui-react'
 import ReactResizeDetector from 'react-resize-detector'
+import {
+  BrowserView,
+  MobileView,
+  isBrowser,
+  isMobile
+} from 'react-device-detect'
 
 import './index.scss'
 
@@ -133,8 +139,8 @@ export default class App extends Component {
     this.setState({navWidth});
   }
 
-  onWindowResize(windowWidth) {
-    this.setState({windowWidth});
+  onWindowResize(windowWidth, windowHeight) {
+    this.setState({windowWidth, windowHeight, mobileLandscape: (windowHeight < windowWidth) && isMobile});
   }
 
   openVideoChat(roomId, friend) {
@@ -164,7 +170,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { socket, friendRequestsModal, navWidth, windowWidth, videoChat, incomingCall } = this.state;
+    const { socket, friendRequestsModal, navWidth, windowWidth, videoChat, incomingCall, mobileLandscape } = this.state;
     const { user, friends, chatroom, profile, pendingFriendRequests, requestManageFriendRequest, errorManageFriendRequest } = this.props;
     return (
       <div style={{
@@ -173,34 +179,54 @@ export default class App extends Component {
         width: '100%',
         overflow: 'hidden'
       }}>
-        <SplitPane
-          split='vertical'
-          minSize={300}
-          pane1Style={{
-            maxWidth: chatroom || profile ? '67%' : 'inherit',
-            display: (chatroom || profile) && windowWidth <= 900 ? 'none': 'block' 
-          }}
-          resizerStyle={{display: (chatroom || profile) && windowWidth >= 900 ? 'inherit' : 'none'}}
-        >
-          <NavAndViews
-            {...this.state}
-            {...this.props}
-            logOut={this.logOut}
-            toggleFriendRequestsModal={this.toggleFriendRequestsModal}
-            openVideoChat={this.openVideoChat}
-            closeVideoChat={this.closeVideoChat}
-            navWidth={navWidth}
-          />
-          {
-            profile ? 
-            <UserProfile socket={socket} openVideoChat={this.openVideoChat} /> : 
-            (
-              chatroom &&
-              <Chatroom socket={socket} />
-            )
-          }
-        </SplitPane>
-        <ReactResizeDetector handleWidth onResize={this.onWindowResize}/>
+        {
+          isBrowser || isMobile && mobileLandscape ?
+          <SplitPane
+            split='vertical'
+            minSize={300}
+            pane1Style={{
+              maxWidth: chatroom || profile ? '67%' : 'inherit',
+              display: (chatroom || profile) && windowWidth <= 900 ? 'none': 'block' 
+            }}
+            resizerStyle={{display: (chatroom || profile) && windowWidth >= 900 ? 'inherit' : 'none'}}
+          >
+            <NavAndViews
+              {...this.state}
+              {...this.props}
+              logOut={this.logOut}
+              toggleFriendRequestsModal={this.toggleFriendRequestsModal}
+              openVideoChat={this.openVideoChat}
+              closeVideoChat={this.closeVideoChat}
+              navWidth={navWidth}
+            />
+            {
+              profile ? 
+              <UserProfile socket={socket} openVideoChat={this.openVideoChat} /> : 
+              (
+                chatroom &&
+                <Chatroom socket={socket} />
+              )
+            }
+          </SplitPane> :
+          <div>
+            {
+              profile ? 
+              <UserProfile socket={socket} openVideoChat={this.openVideoChat} /> : 
+              chatroom ?
+              <Chatroom socket={socket} /> :
+              <NavAndViews
+                {...this.state}
+                {...this.props}
+                logOut={this.logOut}
+                toggleFriendRequestsModal={this.toggleFriendRequestsModal}
+                openVideoChat={this.openVideoChat}
+                closeVideoChat={this.closeVideoChat}
+                navWidth={navWidth}
+              />
+            }
+          </div>
+        }
+        <ReactResizeDetector handleWidth handleHeight onResize={this.onWindowResize}/>
         {
           !videoChat && incomingCall &&
           <div className='notification' id='noti-incoming-call'>
