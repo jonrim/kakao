@@ -64,7 +64,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "246ba3df583b722f365e";
+/******/ 	var hotCurrentHash = "b34987980db844c46519";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -56101,7 +56101,7 @@ function (_Component) {
           requestPendingFriendRequests = _this$props3.requestPendingFriendRequests,
           requestFriendsList = _this$props3.requestFriendsList;
       this.setState({
-        socket: socket_io_client__WEBPACK_IMPORTED_MODULE_4___default()('localhost:8080', {
+        socket: socket_io_client__WEBPACK_IMPORTED_MODULE_4___default()({
           transport: ['websocket', 'polling', 'flashsocket']
         })
       }, function () {
