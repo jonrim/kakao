@@ -21,10 +21,10 @@ const env = process.env.NODE_ENV;
 const PORT = process.env.PORT;
 
 const app = express();
-const options = { 
-  key: fs.readFileSync(__dirname + '/rtc-video-room-key.pem'),
-  cert: fs.readFileSync(__dirname + '/rtc-video-room-cert.pem')
-};
+// const options = { 
+//   key: fs.readFileSync(__dirname + '/rtc-video-room-key.pem'),
+//   cert: fs.readFileSync(__dirname + '/rtc-video-room-cert.pem')
+// };
 // const server = process.env.NODE_ENV === 'production' ?
 //               http.createServer(app) : http.createServer(options, app);
 const server = http.createServer(app);
