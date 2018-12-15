@@ -296,7 +296,7 @@ const BackButton = props => {
   const { viewUserProfile } = props;
   const goBack = () => {
     viewUserProfile(null);
-    document.getElementsByClassName('SplitPane')[0].classList.remove('profileOpen');
+    document.getElementsByClassName('SplitPane')[0].classList.remove('profile-open');
   };
   return (
     <i 
@@ -353,8 +353,8 @@ const ChatButton = props => {
     changeChatroom(profile);
     viewUserProfile(null);
     let classList = document.getElementsByClassName('SplitPane')[0].classList;
-    classList.add('chatroomOpen');
-    classList.remove('profileOpen');
+    classList.add('chatroom-open');
+    classList.remove('profile-open');
   };
   return (
     <div className='chat-button'>

@@ -101,7 +101,65 @@ const seedUsers = () => {
       photo: 'https://res.cloudinary.com/fresh-aire-mechanical-co/image/upload/v1541254120/johnchen_hnl598.jpg',
       backgroundPhoto: 'https://ak2.picdn.net/shutterstock/videos/5517722/thumb/1.jpg',
       isAdmin: false,
-      friends: [JSON.stringify({email: 'm@m.com', favorite: true, chatHistory: []})]
+      friends: [
+        JSON.stringify({email: 'm@m.com', favorite: true, chatHistory: [
+          {
+            date: new Date(2018, 9, 20, 7, 30, 20, 0),
+            text: 'First message of the day.',
+            friend: false,
+            firstMessageOfDay: true,
+            firstMessageOfMinute: true,
+            read: false
+          },
+          {
+            date: new Date(2018, 9, 20, 7, 30, 55, 0),
+            text: 'Another message at the same minute.',
+            friend: false,
+            firstMessageOfDay: false,
+            firstMessageOfMinute: false,
+            read: false
+          },
+          {
+            date: new Date(2018, 9, 20, 7, 30, 58, 0),
+            text: 'My Message.',
+            friend: true,
+            firstMessageOfDay: false,
+            firstMessageOfMinute: true,
+            read: false
+          },
+          {
+            date: new Date(2018, 9, 20, 7, 31, 20, 0),
+            text: 'Another one of my messages except on a different minute. Another one of my messages except on a different minute. Another one of my messages except on a different minute. Another one of my messages except on a different minute. Another one of my messages except on a different minute. Another one of my messages except on a different minute.',
+            friend: true,
+            firstMessageOfDay: false,
+            firstMessageOfMinute: true,
+            read: false
+          },
+          {
+            date: new Date(2018, 9, 21, 7, 30, 20, 0),
+            text: 'Another one of my messages except on a different date.',
+            friend: true,
+            firstMessageOfDay: true,
+            firstMessageOfMinute: true,
+            read: false
+          },
+          {
+            date: new Date(2018, 9, 21, 7, 30, 21, 0),
+            text: `Another message`,
+            friend: false,
+            firstMessageOfDay: false,
+            firstMessageOfMinute: true,
+            read: false
+          },
+          {
+            date: new Date(2018, 9, 21, 7, 32, 22, 0),
+            text: `Another message on a different minute. Another message on a different minute. Another message on a different minute. Another message on a different minute. Another message on a different minute. Another message on a different minute.`,
+            friend: false,
+            firstMessageOfDay: false,
+            firstMessageOfMinute: true,
+            read: false
+          }
+        ]})]
     },
     {
       password: 'm',
@@ -171,7 +229,64 @@ const seedUsers = () => {
             read: false
           }
         ]}),
-        JSON.stringify({email: 'm2@m.com', favorite: true, chatroom: []}),
+        JSON.stringify({email: 'm2@m.com', favorite: true, chatHistory: [
+          {
+            date: new Date(2018, 9, 20, 7, 30, 20, 0),
+            text: 'First message of the day.',
+            friend: true,
+            firstMessageOfDay: true,
+            firstMessageOfMinute: true,
+            read: false
+          },
+          {
+            date: new Date(2018, 9, 20, 7, 30, 55, 0),
+            text: 'Another message at the same minute.',
+            friend: true,
+            firstMessageOfDay: false,
+            firstMessageOfMinute: false,
+            read: false
+          },
+          {
+            date: new Date(2018, 9, 20, 7, 30, 58, 0),
+            text: 'My Message.',
+            friend: false,
+            firstMessageOfDay: false,
+            firstMessageOfMinute: true,
+            read: false
+          },
+          {
+            date: new Date(2018, 9, 20, 7, 31, 20, 0),
+            text: 'Another one of my messages except on a different minute. Another one of my messages except on a different minute. Another one of my messages except on a different minute. Another one of my messages except on a different minute. Another one of my messages except on a different minute. Another one of my messages except on a different minute.',
+            friend: false,
+            firstMessageOfDay: false,
+            firstMessageOfMinute: true,
+            read: false
+          },
+          {
+            date: new Date(2018, 9, 21, 7, 30, 20, 0),
+            text: 'Another one of my messages except on a different date.',
+            friend: false,
+            firstMessageOfDay: true,
+            firstMessageOfMinute: true,
+            read: false
+          },
+          {
+            date: new Date(2018, 9, 21, 7, 30, 21, 0),
+            text: `Another message`,
+            friend: true,
+            firstMessageOfDay: false,
+            firstMessageOfMinute: true,
+            read: false
+          },
+          {
+            date: new Date(2018, 9, 21, 7, 32, 22, 0),
+            text: `Another message on a different minute. Another message on a different minute. Another message on a different minute. Another message on a different minute. Another message on a different minute. Another message on a different minute.`,
+            friend: true,
+            firstMessageOfDay: false,
+            firstMessageOfMinute: true,
+            read: false
+          }
+        ]}),
         JSON.stringify({email: 'm3@m.com', chatroom: []}),
         JSON.stringify({email: 'm4@m.com', chatroom: []}),
         JSON.stringify({email: 'm5@m.com', chatroom: []}),

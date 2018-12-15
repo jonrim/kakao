@@ -57,8 +57,8 @@ export default class Friends extends Component {
             openVideoChat, socket } = this.props;
     if (chat) {
       let classList = document.getElementsByClassName('SplitPane')[0].classList;
-      classList.remove('profileOpen');
-      classList.add('chatroomOpen');
+      classList.remove('profile-open');
+      classList.add('chatroom-open');
       changeChatroom(friend);
       viewUserProfile(null);
     }
@@ -69,7 +69,7 @@ export default class Friends extends Component {
     }
     if (favorite) requestChangeInfo({user, friends, friend, favorite});
     if (viewProfile) {
-      document.getElementsByClassName('SplitPane')[0].classList.add('profileOpen');
+      document.getElementsByClassName('SplitPane')[0].classList.add('profile-open');
       viewUserProfile(friend);
     }
   }

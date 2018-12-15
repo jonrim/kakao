@@ -9,7 +9,9 @@ import {
   requestFriendsList,
   requestReceiveMessages,
   requestPendingFriendRequests,
-  requestManageFriendRequest
+  requestManageFriendRequest,
+  changeChatroom,
+  viewUserProfile
 } from 'Actions/user'
 
 const mapStateToProps = (state) => {
@@ -33,6 +35,8 @@ const mapDispatchToProps = (dispatch) => {
     requestPendingFriendRequests,
     requestLogout,
     requestManageFriendRequest,
+    changeChatroom,
+    viewUserProfile
   }, dispatch)
 }
 

@@ -156,12 +156,9 @@
 .emoji-mart {
   visibility: hidden;
   position: absolute;
-  bottom: 0;
-  left: -348px;
-  @media (max-width: 900px) {
-    bottom: 120px;
-    left: 0;
-  }
+  bottom: 120px;
+  left: 0;
+  z-index: 10;
 }
 
 .visible {

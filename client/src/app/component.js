@@ -126,7 +126,10 @@ export default class App extends Component {
   }
 
   logOut() {
-    const { requestLogout } = this.props;
+    const { requestLogout, changeChatroom, viewUserProfile, chatroom, profile } = this.props;
+    let splitPaneClasses = document.getElementsByClassName('SplitPane')[0].classList;
+    if (chatroom) splitPaneClasses.remove('chatroom-open');
+    if (profile) splitPaneClasses.remove('profile-open');
     requestLogout();
   }
 

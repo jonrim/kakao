@@ -329,7 +329,7 @@ hr {
 .SplitPane {
   min-width: 350px;
 
-  &:not(.chatroomOpen):not(.profileOpen) {
+  &:not(.chatroom-open):not(.profile-open) {
     & > .Pane1 {
       width: 100% !important;
     }
@@ -380,7 +380,7 @@ hr {
 }
 
 @media (max-width: 900px) {
-  .SplitPane.chatroomOpen, .SplitPane.profileOpen {
+  .SplitPane.chatroom-open, .SplitPane.profile-open {
     & > .Pane1 {
       width: 0 !important;
     }
